@@ -1,0 +1,54 @@
+<style>
+	#hexmap1 { height: 1200px; width: 100%; animation-duration: 0.3s; }
+	#hexmap1 .hex-cell { stroke: white; stroke-width: 2; transition: fill 0.3s ease-in, stroke 0.3s ease-in, stroke-width 0.3s ease-in; }
+	/* Make the hexagon larger when hovered */
+	#hexmap1 .hex-cell.hover { stroke-width: 4px; transform: scale(2); }
+	/* Set the on and off styles for the text labels */
+	#hexmap1 .hex-label tspan.on { display: none; }
+	#hexmap1 .hex-label tspan.off { display: block; }
+	#hexmap1 .hex-label tspan.big { font-weight: bold; font-size: 1.2em; }
+	#hexmap1 .hex-label.hover tspan.on { display: block; }
+	#hexmap1 .hex-label.hover tspan.off { display: none; }
+	
+	#hexmap1 a { text-decoration: none;}
+</style>
+
+<div id="hexmap1"></div>
+
+    
+<script>
+	var data = gon.data
+	hex = new OI.hexmap(document.getElementById('hexmap1'),{
+		'label':{
+			'show': true,	// Show a label
+			'clip': false,	// Make sure the label is clipped to the hexagon
+			// Define a function to format the hex labels
+			// It is passed:
+			//  * txt - a text string with the hex's name
+			//  * attr - an object containing:
+			//		* size - the size in pixels
+			//		* font-size - the font size in pixels
+			//		* x - the horizontal position in pixels
+			//		* y - the vertical position in pixels
+			//		* hex - the hexagon's HexJSON properties
+			'format': function(txt,attr){
+				tspans = '<tspan class="off">'+txt.substr(0,3)+'</tspan>';
+				lines = txt.split(/ /);
+				lines.push(attr.hex.hex_loc.toLocaleString());
+				for(var i = 0; i < lines.length; i++){
+				  if (i % 2 != 0) {
+				    tspans += '<tspan class="on'+(i==lines.length-1 ? ' big':'')+'" y="'+(attr.y + (i-lines.length/2+0.5)*attr['font-size'])+'" x="'+attr.x+'"><a href="/#'+lines[i]+'" target="_blank">'+lines[i]+'</a></tspan>';
+				  } else {
+				    tspans += '<tspan class="on'+(i==lines.length-1 ? ' big':'')+'" y="'+(attr.y + (i-lines.length/2+0.5)*attr['font-size'])+'" x="'+attr.x+'">'+lines[i]+'</tspan>';
+				  }
+				}
+				return tspans;
+			}
+		},
+		// The HexJSON layout
+		'hexjson':{
+			"layout":"even-q",
+			"hexes": data
+		}
+	});
+</script>

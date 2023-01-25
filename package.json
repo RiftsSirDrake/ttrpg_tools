@@ -1,0 +1,24 @@
+{
+  "name": "ttrpg_tools",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "main": "app/javascript/application.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RiftsSirDrake/ttrpg_tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RiftsSirDrake/ttrpg_tools/issues"
+  },
+  "homepage": "https://github.com/RiftsSirDrake/ttrpg_tools#readme"
+}
