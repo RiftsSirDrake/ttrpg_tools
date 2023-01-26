@@ -1,6 +1,6 @@
 class IndexController < ApplicationController
     
-    def landing_page
+    def system_details
         @data = System.translated_system_info
     end
     

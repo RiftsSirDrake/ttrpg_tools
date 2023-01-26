@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   
-  root 'index#landing_page'
+  root 'index#hexmap'
   
   resources :index do
     collection do
-      get 'landing_page'
+      get 'system_details'
       get 'hexmap'
     end
   end
