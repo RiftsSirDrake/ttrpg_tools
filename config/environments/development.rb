@@ -69,4 +69,7 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
   
   config.hosts << "9f9acf483be8498194d021278db6820a.vfs.cloud9.us-east-1.amazonaws.com"
+  
+  # Devise requires default url setup
+  # config.action_mailer.default_url_options = { host: '9f9acf483be8498194d021278db6820a.vfs.cloud9.us-east-1.amazonaws.com', port: 8080 }
 end

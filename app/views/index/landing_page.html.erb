@@ -1,0 +1,15 @@
+<% content_for :page_title, 'TTRPG Tools' %>
+<div>
+  <p>
+    Temp landing page until I get around to making a real landing page...
+  </p>
+  
+  <p>
+    <%= link_to "hexmap", hexmap_hex_system_index_path, :method => :delete %>
+  </p>
+  
+  
+  <p>
+    <%= button_to "logout", destroy_user_session_path, method: :delete  %>
+  </p>
+</div>

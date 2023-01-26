@@ -38,7 +38,7 @@
 				lines.push(attr.hex.hex_loc.toLocaleString());
 				for(var i = 0; i < lines.length; i++){
 				  if (i % 2 != 0) {
-				    tspans += '<tspan class="on'+(i==lines.length-1 ? ' big':'')+'" y="'+(attr.y + (i-lines.length/2+0.5)*attr['font-size'])+'" x="'+attr.x+'"><a href="/index/system_details#'+lines[i]+'" target="_blank">'+lines[i]+'</a></tspan>';
+				    tspans += '<tspan class="on'+(i==lines.length-1 ? ' big':'')+'" y="'+(attr.y + (i-lines.length/2+0.5)*attr['font-size'])+'" x="'+attr.x+'"><a href="/hex_system/system_details#'+lines[i]+'" target="_blank">'+lines[i]+'</a></tspan>';
 				  } else {
 				    tspans += '<tspan class="on'+(i==lines.length-1 ? ' big':'')+'" y="'+(attr.y + (i-lines.length/2+0.5)*attr['font-size'])+'" x="'+attr.x+'">'+lines[i]+'</tspan>';
 				  }

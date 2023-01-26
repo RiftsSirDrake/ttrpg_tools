@@ -6,6 +6,8 @@ ruby "3.0.5"
 gem 'aws-sdk-secretsmanager'
 gem 'gon'
 gem 'colorize'
+gem 'devise'
+gem 'jquery-rails'
 
 #Trying to solve date gem conflict
 gem 'date', "= 3.1.3"

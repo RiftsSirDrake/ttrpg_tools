@@ -1,19 +1,20 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root 'index#landing_page'
+  devise_for :users
 
-  # Defines the root path route ("/")
-  # root "articles#index"
-  
-  root 'index#hexmap'
-  
+  # Should move hexmap stuff into its own controller and use index as main landing pages... thinking about future expansion and such
+  # Example single route for my goldfish like memory: get 'index/hexmap', to: 'index#hexmap'
   resources :index do
+    collection do
+      get 'landing_page'
+    end
+  end
+
+  resources :hex_system do
     collection do
       get 'system_details'
       get 'hexmap'
     end
   end
-  
-  #get 'index/hexmap', to: 'index#hexmap'
-  
-  
+
 end

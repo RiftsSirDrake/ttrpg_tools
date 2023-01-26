@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= yield(:page_title) %></title>
+    <title>Polaris Systems</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= include_gon %>
+    <%= javascript_include_tag "hexmap" %>
+    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
