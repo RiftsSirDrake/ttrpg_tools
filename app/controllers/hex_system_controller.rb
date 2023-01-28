@@ -1,5 +1,6 @@
 class HexSystemController < ApplicationController
-
+	before_action :presets
+	
 	def system_details
 		@data = System.translated_system_info
 	end
@@ -32,4 +33,10 @@ class HexSystemController < ApplicationController
 		gon.data = formatted_data
 	end
 
+	private
+	
+	def presets
+		@page_libs = [:hexmap]
+	end
+	
 end
