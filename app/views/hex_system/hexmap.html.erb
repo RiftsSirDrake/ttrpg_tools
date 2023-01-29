@@ -61,9 +61,10 @@
   		svg.appendChild(tip);
   	}
   	// Update contents of tooltip
-  	tip.innerHTML = '<a href="/hex_system/system_details#'+e.data.data.n+'>'+e.data.data.n+'</a>'+
+  	tip.innerHTML = '<a href="/hex_system/system_details#'+e.data.data.n+'">'+e.data.data.n+'</a>'+
   	  '<br />'+'Traveller Coordinates '+e.data.data.hex_loc.toLocaleString()+
   	  '<br /> Hexmap Coordinates q:'+e.data.data.q+' r:'+e.data.data.r;
+  	console.log(tip.innerHTML)
   	// Update position of tooltip
   	bb = hex.getBoundingClientRect();
   	bbo = svg.getBoundingClientRect();

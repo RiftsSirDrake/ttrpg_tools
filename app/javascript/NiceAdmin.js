@@ -6,7 +6,6 @@
 */
 $(document).ready(function() {
   "use strict";
-  console.log("NiceAdmin JS doing...something?")
   /**
    * Easy selector helper function
    */
@@ -41,7 +40,6 @@ $(document).ready(function() {
    * Sidebar toggle
    */
   if (select('.toggle-sidebar-btn')) {
-    console.log("sidebar if statement triggered")
     on('click', '.toggle-sidebar-btn', function(e) {
       select('body').classList.toggle('toggle-sidebar')
     })
@@ -141,4 +139,4 @@ $(document).ready(function() {
     new simpleDatatables.DataTable(datatable);
   })
 
-})();
+});

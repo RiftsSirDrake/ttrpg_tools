@@ -20,7 +20,6 @@
     <% if @page_libs&.include?(:hexmap) %>
       <%= include_gon %>
       <%= javascript_include_tag "hex_system/hexmap.js" %>
-      <%= stylesheet_link_tag "hex_system/hex_system.css", "data-turbo-track": "reload" %>
     <% end %>
     
   </head>
