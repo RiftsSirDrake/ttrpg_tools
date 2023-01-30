@@ -1,12 +1,12 @@
 module Shared
   module SystemMapping
-    
+
     ADVISORY_MAP = {
       'A' => 'Dangerous: Societal Upheaval, Hazardous Environment, Spacial Anomolies, or Pirate Activity',
       'R' => 'Restricted: Extreme Environmental Hazards, Navel Interdiction, Pirate Stronghold, or Similar',
       nil => 'None: No Major Travel Risks'
     }
-  
+
     PORT_MAP = {
       'X' => 'None',
       'E' => 'Frontier - No Services', 
@@ -15,7 +15,7 @@ module Shared
       'B' => 'Good - Refined Fuel, Advanced Repair, Basic Shipyard', 
       'A' => 'Excellent - Refined Fuel, Advanced Repair, Advanced Shipyard'    
     }
-  
+
     SIZE_MAP = {
       'C' => 'Huge - 18,400+ KM',
       'B' => 'Huge - 16,800+ KM',
@@ -34,7 +34,7 @@ module Shared
       'D' => 'Debris',
       'R' => 'Planetary Ring'    
     }
-  
+
     ATMO_MAP = {
       "F" => "Thin, Low - Atmosphere in Valleys",
       "E" => "Ellipsoid - Uneven Atmosphere",
@@ -53,7 +53,7 @@ module Shared
       "1" => "Trace - Requires Vacc Suit",
       "0" => "Vacuum - Requires Vacc Suit"    
     }
-    
+
     HYDRO_MAP = {
       "A" => "Water World - 100%",
       "9" => "Very Wet World - 95%",
@@ -67,7 +67,7 @@ module Shared
       "1" => "Dry World - 15%",
       "0" => "Desert World - 5%"    
     }
-    
+
     POP_MAP = {
       "C" => proc { |pbg| "#{pbg[0]} Trillion"},
       "B" => proc { |pbg| "#{pbg[0]}00 Billion"},
@@ -83,7 +83,7 @@ module Shared
       "1" => proc { |pbg| "#{pbg[0].to_i * 10}"},
       "0" => proc { |pbg| "None"} 
     }
-  
+
     GOV_MAP = {
         "F" => "Totalitarian Oligarchy - Government by an all-powerful minority which maintains absolute control through widespread coercion and oppression",
         "E" => "Religious Autocracy - Government by a single religious leader having absolute power over the citizenry.",
@@ -102,7 +102,7 @@ module Shared
         "1" => "Corporate - Government by a company managerial elite, citizens are company employees.",
         "0" => "No Government Structure - In many cases, tribal, clan or family bonds predominate"
       }
-      
+
     LAW_MAP = {
       	'J' => 'Extreme - Routinely Oppressive and Restrictive',
       	'H' => 'Extreme - Legalized Oppressive Practices',
@@ -124,7 +124,7 @@ module Shared
       	'1' => 'Low - Undetectable Weapons, WMD, Poison Gas',
       	'0' => 'Lawless'
       }
-    
+
     TECH_MAP = {
         'X' => 'Pocket Universes Age',
         'W' => 'Remote Technology Age',
@@ -159,9 +159,9 @@ module Shared
         '1' => 'Iron Age',
         '0' => 'Neolithic'
       }
-  
+
     BASES_MAP = {'Z' => 'Shaper Safehouse', 'S' => 'Scout', 'N' => 'Navel', '2' => 'Scout and Navel', nil => 'None'}
-  
+
     NOTES_MAP = {
         'Ab' => 'Data Repository',
         'Ag' => 'Agriculture',
@@ -182,13 +182,13 @@ module Shared
         'Fo' => 'Forbidden',
         'Ga' => 'Garden',
         'He' => 'Hellworld',
-        'Hi' => 'High Population',
+        'Hi' => 'High Population Density',
         'Ho' => 'Hot',
         'Ht' => 'High Tech',
         'Ic' => 'Ice-Capped',
         'In' => 'Industrial',
         'Lk' => 'Tidally Locked',
-        'Lo' => 'Low Population',
+        'Lo' => 'Low Population Density',
         'Lt' => 'Low Tech',
         'Mi' => 'Mining',
         'Mr' => 'Military Rule',
@@ -214,6 +214,6 @@ module Shared
         'Va' => 'Vacuum',
         'Xb' => 'Rapid Message Transmission'
       }
-      
+
   end
 end

@@ -1,6 +1,6 @@
 class System < ApplicationRecord
   include Shared::SystemMapping
-  self.table_name = 'traveller_systems.system'
+  self.table_name = 'traveller_systems.systems'
 
   # Start of methods to convert UWP codes into human readable attributes.
   def starport

@@ -28,7 +28,7 @@
 		},
 		'label':{
 			'show': true,	// Show a label
-			'clip': false,	// Make sure the label is clipped to the hexagon
+			'clip': true,	// Make sure the label is clipped to the hexagon
 			// Define a function to format the hex labels
 			// It is passed:
 			//  * txt - a text string with the hex's name
@@ -64,7 +64,6 @@
   	tip.innerHTML = '<a href="/hex_system/hex_details?name='+e.data.data.n+'">'+e.data.data.n+'</a>'+
   	  '<br />'+'Traveller Coordinates '+e.data.data.hex_loc.toLocaleString()+
   	  '<br /> Hexmap Coordinates q:'+e.data.data.q+' r:'+e.data.data.r;
-  	console.log(tip.innerHTML)
   	// Update position of tooltip
   	bb = hex.getBoundingClientRect();
   	bbo = svg.getBoundingClientRect();

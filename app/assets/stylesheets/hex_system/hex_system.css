@@ -45,6 +45,9 @@
   border-bottom-color: black; 
 }
 
+#hexmap tspan {font-size: 14px;}
+
 #hexmap a { text-decoration: none;}
 
 .hexmap-inner {padding: 5px;}
+
