@@ -4,6 +4,8 @@ module Shared
     ADVISORY_MAP = {
       'A' => 'Dangerous: Societal Upheaval, Hazardous Environment, Spacial Anomolies, or Pirate Activity',
       'R' => 'Restricted: Extreme Environmental Hazards, Navel Interdiction, Pirate Stronghold, or Similar',
+      'P' => 'Pirate: Controlled By What is Generally Considered a Pirate Faction or Clan',
+      'C' => 'Contested: Two or More Factions Currently Contest Ownership, Conflict Likely',
       nil => 'None: No Major Travel Risks'
     }
 

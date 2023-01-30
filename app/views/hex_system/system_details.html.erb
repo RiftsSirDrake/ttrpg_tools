@@ -42,13 +42,10 @@
           <th scope="col">Law</th>
           <th scope="col">Tech</th>
           <th scope="col">Bases</th>
-          <th scope="col">Notes1</th>
-          <th scope="col">Notes2</th>
-          <th scope="col">Notes3</th>
+          <th scope="col">Traits</th>
           <th scope="col">Travel Ring</th>
           <th scope="col">Asteroid Belts</th>
           <th scope="col">Gas Giants</th>
-          <th scope="col">Edit</th>
         </tr>
       </thead>
       <% unless @data.blank? %>
@@ -61,17 +58,14 @@
               <td><%=details.atmosphere %></td>
               <td><%=details.hydrosphere %></td>
               <td><%=details.population %></td>
-              <td><%=details.goverment %></td>
+              <td><%=details.goverment.split('-').first %></td>
               <td><%=details.law %></td>
               <td><%=details.tech_level %></td>
               <td><%=details.bases %></td>
-              <td><%=details.notes1 %></td>
-              <td><%=details.notes2 %></td>
-              <td><%=details.notes3 %></td>
-              <td><%=details.ring %></td>
+              <td><%= [details.notes1, details.notes2, details.notes3].compact.join(', ') %></td>
+              <td><strong><%= details.advisory.split(':').first %>:</strong> <%= details.advisory.split(':').last %></td>
               <td><%=details.asteroid_belts %></td>
               <td><%=details.gas_giants %></td>
-              <td>TBD Edit Function</td>
             </tr>
           <% end %>
       <% end %>
