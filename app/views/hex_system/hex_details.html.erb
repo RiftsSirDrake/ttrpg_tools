@@ -1,0 +1,187 @@
+<style>
+  thead {
+    position: sticky;
+    inset-block-start: 0; /* "top" */
+    background: #eee;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  table {
+    border-collapse: collapse;
+  }
+
+  html {
+    scroll-padding-top: 70px; /* height of sticky header */
+  }
+
+  .card {min-height: 165px}
+
+</style>
+
+<div class="pagetitle">
+  <h1><%= @data.name %> <span>| <%= @data.location %></span></h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item active"><a href="/hex_system/hexmap">Hexmap</a></li>
+      <li class="breadcrumb-item active"><%= link_to "Hex Details", hex_details_hex_system_index_path(name: params[:name]) %></li>
+    </ol>
+  </nav>
+</div>
+
+<section class='section dashboard'>
+  <div id="row1" class='row'>
+    
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Starport <span>| <%= @data.starport.split.first %></span></h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <h6><%= @data.starport.split(" - ").last %></h6>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Planet Size <span>| <%= @data.planet_size %></span></h5>
+            <div class="d-flex justify-content-around">
+              <div class="card-icon rounded-circle d-flex flex-column align-items-center justify-content-center mx-5">
+                <i id="icon1" class="bi bi-globe" data-value="<%= planet_size_int(@data.planet_size) %>"></i>
+                <h6><%= @data.name %></h6>
+              </div>
+              <div class="d-flex align-items-center mx-1">
+                <h3>VS</h3>
+              </div>
+              <div class="card-icon rounded-circle d-flex flex-column align-items-center justify-content-center mx-5">
+                <i id="icon2" class="bi bi-globe" data-value="12000"></i>
+                <h6>Earth</h6>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Environment</h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <h6><strong>Atmo:</strong> <%= @data.atmosphere %></h6>
+                <h6><strong>Hydro:</strong> <%= @data.hydrosphere %></h6>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Population</h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <h6><strong>Permanent Population:</strong> <%= @data.population %></h6>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Society</h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <div>
+                  <h6><strong>Gov:</strong> <%= @data.goverment.split(" - ").first %></h6>
+                  <h6><strong>Law:</strong> <%= @data.law %></h6>
+                  <h6><strong>Tech:</strong> <%= @data.tech_level %></h6>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Faction Bases</h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <div>
+                  <h6><%= @data.bases %></h6>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Traits</h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <div>
+                  <h6><%= [@data.notes1, @data.notes2, @data.notes3].compact.join(', ') %></h6>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>System Elements</h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <div>
+                  <h6><strong>Asteroid Belts:</strong> <%= @data.asteroid_belts %></h6>
+                  <h6><strong>Gas Giants:</strong> <%= @data.gas_giants %></h6>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class='col-xxl-4 col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>Travel Advisory</h5>
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <div>
+                  <h6><strong><%= @data.advisory.split(':').first %>:</strong> <%= @data.advisory.split(':').last %></h6>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div> 
+    
+  </div>
+</section>
+
+<script>
+  $(document).ready(function() {
+    var icon1 = parseInt($('#icon1').data('value'));
+    var icon2 = parseInt($('#icon2').data('value'));
+    var ratio = icon1 / icon2;
+  
+    $('#icon1').css({
+      'font-size': ratio + 'em'
+    });    
+  });
+</script>

@@ -51,28 +51,30 @@
           <th scope="col">Edit</th>
         </tr>
       </thead>
-      <% @data.each do |details| %>
-          <tr>
-            <td id=<%=details.name %>><%=details.name %></td>
-            <td id=<%=details.location %>><%=details.location %></td>
-            <td><%=details.starport %></td>
-            <td><%=details.size %></td>
-            <td><%=details.atmosphere %></td>
-            <td><%=details.hydrosphere %></td>
-            <td><%=details.population %></td>
-            <td><%=details.goverment %></td>
-            <td><%=details.law %></td>
-            <td><%=details.tech_level %></td>
-            <td><%=details.bases %></td>
-            <td><%=details.notes1 %></td>
-            <td><%=details.notes2 %></td>
-            <td><%=details.notes3 %></td>
-            <td><%=details.travel_ring %></td>
-            <td><%=details.asteroid_belts %></td>
-            <td><%=details.gas_giants %></td>
-            <td>TBD Edit Function</td>
-          </tr>
-        <% end %>
+      <% unless @data.blank? %>
+        <% @data.each do |details| %>
+            <tr>
+              <td id=<%=details.name %>><%=details.name %></td>
+              <td id=<%=details.location %>><%=details.location %></td>
+              <td><%=details.starport %></td>
+              <td><%=details.planet_size %></td>
+              <td><%=details.atmosphere %></td>
+              <td><%=details.hydrosphere %></td>
+              <td><%=details.population %></td>
+              <td><%=details.goverment %></td>
+              <td><%=details.law %></td>
+              <td><%=details.tech_level %></td>
+              <td><%=details.bases %></td>
+              <td><%=details.notes1 %></td>
+              <td><%=details.notes2 %></td>
+              <td><%=details.notes3 %></td>
+              <td><%=details.ring %></td>
+              <td><%=details.asteroid_belts %></td>
+              <td><%=details.gas_giants %></td>
+              <td>TBD Edit Function</td>
+            </tr>
+          <% end %>
+      <% end %>
     </table>
   </div>  
 </section>

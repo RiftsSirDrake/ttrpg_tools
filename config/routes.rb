@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     collection do
       get 'system_details'
       get 'hexmap'
-      get 'hextest'
+      get 'hex_details'
     end
   end
 
