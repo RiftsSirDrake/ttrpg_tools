@@ -1,12 +1,8 @@
 class HexSystemController < ApplicationController
 	before_action :presets
-	
-	def system_details
-		@data = System.all
-	end
 
 	def hexmap
-		raw_hexmap_data = System.hexmap
+		raw_hexmap_data = SectorModel::System.hexmap
 
 		organized_data = raw_hexmap_data.map {|point| {n: point.name, q: point.q, r: point.r, hex_loc: point.location, colour:"rgb(247, 171, 45)"}}
 		raw_json_data = organized_data.as_json.to_json
@@ -17,10 +13,6 @@ class HexSystemController < ApplicationController
 		end
 
 		gon.data = formatted_data
-	end
-
-	def hex_details
-		@data = System.where(["name = ?", params[:name]]).first
 	end
 
 	private

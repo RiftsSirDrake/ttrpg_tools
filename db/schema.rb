@@ -10,20 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_26_174359) do
-  create_table "system", primary_key: "location", id: { type: :string, limit: 45 }, charset: "latin1", comment: "Table to hold primary data on systems based on Traveller system and originally generated via random generators like: https://zhodani.space/stuff/generators/random-subsector-generator/ and can be translated into human readable following guidiance here: https://www.traveller-srd.com/core-rules/world-creation/", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2023_01_31_225710) do
+  create_table "sectors", charset: "latin1", force: :cascade do |t|
+    t.string "name"
+    t.string "author"
+    t.binary "public_view"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "system_notes", charset: "latin1", force: :cascade do |t|
+    t.integer "sector_id"
+    t.integer "system_id"
+    t.string "author"
+    t.binary "public_view"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "system_overrides", charset: "latin1", force: :cascade do |t|
+    t.integer "sector_id"
+    t.integer "system_id"
+    t.string "property"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "systems", charset: "latin1", comment: "Table to hold primary data on systems based on Traveller system and originally generated via random generators like: https://zhodani.space/stuff/generators/random-subsector-generator/ and can be translated into human readable following guidiance here: https://www.traveller-srd.com/core-rules/world-creation/", force: :cascade do |t|
+    t.bigint "sector_id", null: false
     t.string "name", limit: 45, null: false
+    t.string "location", limit: 45, null: false
     t.string "uwp", limit: 9
     t.string "base", limit: 45
     t.string "notes", limit: 45
     t.string "ring", limit: 1
     t.string "pbg", limit: 3
     t.string "allegiance", limit: 2
-  end
-
-  create_table "system_desc", primary_key: "location", id: :integer, default: nil, charset: "latin1", comment: "Table to contain more detailed descriptions of each system, or important notes.", force: :cascade do |t|
-    t.string "public_desc", limit: 2000
-    t.string "private_desc", limit: 2000
+    t.index ["sector_id"], name: "index_systems_on_sector_id"
   end
 
   create_table "users", charset: "latin1", force: :cascade do |t|
@@ -34,8 +58,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_26_174359) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "systems", "sectors"
 end

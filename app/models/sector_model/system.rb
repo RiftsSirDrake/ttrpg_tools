@@ -1,6 +1,9 @@
-class System < ApplicationRecord
+class SectorModel::System < ApplicationRecord
+  belongs_to :sector
+  has_many :system_notes, dependent: :destroy
+  has_many :system_overrides, dependent: :destroy
+  
   include Shared::SystemMapping
-  self.table_name = 'traveller_systems.systems'
 
   # Start of methods to convert UWP codes into human readable attributes.
   def starport

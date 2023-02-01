@@ -1,0 +1,27 @@
+<%= form_with model: @sector, url: sector_path(@sector), method: :patch do |f| %>
+
+  <% if @sector.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@sector.errors.count, "error") %> prohibited this sector from being saved:
+      </h2>
+      <ul>
+        <% @sector.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.hidden_field :author, value: current_user.email %>
+  
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  
+  <%= f.label :public_view %>
+  <%= f.check_box :public_view %>
+  
+  <%= f.hidden_field :updated_at, value: Time.now %>
+  
+  <%= f.submit %>
+<% end %>

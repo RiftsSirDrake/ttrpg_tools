@@ -12,10 +12,12 @@ Rails.application.routes.draw do
 
   resources :hex_system do
     collection do
-      get 'system_details'
       get 'hexmap'
       get 'hex_details'
     end
   end
+
+  resources :sectors, controller:'sector/sectors'
+  resources :systems, controller:'sector/systems'
 
 end

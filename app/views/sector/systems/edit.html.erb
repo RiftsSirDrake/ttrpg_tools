@@ -1,0 +1,59 @@
+<%= form_with model: @system, url: system_path(@system), method: :patch do |f| %>
+
+  <% if @system.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@system.errors.count, "error") %> prohibited this system from being saved:
+      </h2>
+      <ul>
+        <% @system.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div>System located in: <%= @system.sector.id %> sector</div>
+  
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :location %>
+    <%= f.text_field :location, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :uwp %>
+    <%= f.text_field :uwp, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :base %>
+    <%= f.text_field :base, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :notes %>
+    <%= f.text_area :notes, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :ring %>
+    <%= f.text_field :ring, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :pbg %>
+    <%= f.text_field :pbg, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :allegiance %>
+    <%= f.text_field :allegiance, class: 'form-control' %>
+  </div>
+
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

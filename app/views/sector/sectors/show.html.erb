@@ -1,0 +1,21 @@
+
+<% unless @sector.blank? %>
+  <div class="pagetitle">
+    <h1><%= @sector.name %> Sector</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item active"><%= link_to @sector.name, sector_path(@sector.id) %></li>
+      </ol>
+    </nav>
+  </div>
+  
+  <section>
+    <div class="card">
+      <p><strong>Name: </strong><%= @sector.name %></p>
+      <p><strong>Author: </strong><%= @sector.author %></p>
+      <p><strong>Open To Public?</strong> <%= @sector.public_view == '1' ? 'Yes' : 'No' %></p>
+    </div>
+  </section>
+<% end %>

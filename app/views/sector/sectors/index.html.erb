@@ -1,0 +1,57 @@
+
+<div class="pagetitle">
+  <h1>Sectors</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item active"><%= link_to "Sectors", sectors_path %></li>
+    </ol>
+  </nav>
+</div>
+
+<section>
+  <div class="col-12">
+    <div class="card overflow-auto">
+      <div class="card-body">
+        <h5 class="card-title">Sectors <span>| <%= link_to 'New Sector', new_sector_path %></span></h5>
+        <table class="table table-borderless table-sm table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">System List</th>
+              <th scope="col">Hexmap</th>
+              <th scope="col">Author</th>
+              <th scope="col">Public View</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% unless @sectors.blank? %>
+              <% @sectors.each do |sector| %>
+                <% if sector.author == current_user.email || sector.public_view == '1' %>
+                <tr>
+                  <th scope="row"><%= link_to sector.name, sector_path(sector) %></th>
+                  <td><%= link_to "View", systems_path(sector_id: sector.id) %></td>
+                  <td><%= link_to "View", '/hex_system/hexmap' %></td>
+                  <td><%= sector.author.split('@').first %>@</td>
+                  <td><%= sector.public_view == '1' ? 'Yes' : 'No' %></td>
+                  <td><%= sector.created_at.strftime("%m/%d/%Y") %></td>
+                  <td><%= sector.updated_at.strftime("%m/%d/%Y") %></td>
+                  <td>
+                    <% unless sector.author == current_user.email %>
+                      <%= link_to 'Edit', edit_sector_path(sector) %>
+                      <%= link_to 'Delete', sector_path(sector), method: :delete, data: { confirm: 'Are you sure?' } %>
+                    <% end %>
+                  </td>
+                </tr>
+                <% end %>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
