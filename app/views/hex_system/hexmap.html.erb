@@ -61,7 +61,7 @@
   		svg.appendChild(tip);
   	}
   	// Update contents of tooltip
-  	tip.innerHTML = '<a href="/hex_system/hex_details?name='+e.data.data.n+'">'+e.data.data.n+'</a>'+
+  	tip.innerHTML = '<a href="/systems/'+e.data.data.sys_id+'">'+e.data.data.n+'</a>'+
   	  '<br />'+'Traveller Coordinates '+e.data.data.hex_loc.toLocaleString()+
   	  '<br /> Hexmap Coordinates q:'+e.data.data.q+' r:'+e.data.data.r;
   	// Update position of tooltip

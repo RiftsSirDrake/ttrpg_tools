@@ -67,7 +67,7 @@ class SectorModel::System < ApplicationRecord
   end
 
   def self.hexmap
-    select("location, name, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r")
+    select("id, location, name, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r")
     .group(:location)
   end
 

@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   resources :hex_system do
     collection do
       get 'hexmap'
-      get 'hex_details'
     end
   end
 
