@@ -20,6 +20,11 @@
       <%= javascript_include_tag "hex_system/hexmap.js" %>
     <% end %>
     
+    <% if @page_libs&.include?(:color_picker) %>
+      <%= stylesheet_link_tag "color_picker/spectrum.css" %>
+      <%= javascript_include_tag "color_picker/spectrum.js" %>
+    <% end %>    
+    
   </head>
   
   <body <%if request.original_url != root_url %> class='toggle-sidebar' <%end%>>

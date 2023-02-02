@@ -18,5 +18,6 @@ Rails.application.routes.draw do
 
   resources :sectors, controller:'sector/sectors'
   resources :systems, controller:'sector/systems'
+  resources :factions, controller:'sector/factions'
 
 end

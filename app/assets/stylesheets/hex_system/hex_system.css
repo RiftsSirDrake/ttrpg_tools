@@ -1,5 +1,5 @@
 #hexmap { 
-  height: 1200px; 
+  height: 85vh; 
   width: 100%; 
   margin-top: 1em; 
   position: relative; 
@@ -49,5 +49,5 @@
 
 #hexmap a { text-decoration: none;}
 
-.hexmap-inner {padding: 5px;}
+.hexmap-inner {padding: 2em;}
 

@@ -2,6 +2,7 @@ class SectorModel::System < ApplicationRecord
   belongs_to :sector
   has_many :system_notes, dependent: :destroy
   has_many :system_overrides, dependent: :destroy
+  self.table_name = 'systems'
   
   include Shared::SystemMapping
 
@@ -100,7 +101,8 @@ class SectorModel::System < ApplicationRecord
   end
 
   def self.hexmap(sector_id)
-    select("*, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r")
+    select("systems.id as id, systems.name as name, systems.location as location, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r, factions.color_code as color_code")
+    .joins('left join factions on factions.name = systems.allegiance')
     .where(sector_id: sector_id)
     .group(:location)
   end

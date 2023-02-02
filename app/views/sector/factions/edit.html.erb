@@ -1,0 +1,41 @@
+<% content_for :page_title, 'Edit Faction' %>
+
+<%= form_with model: @faction, url: faction_path(@faction), method: :patch do |f| %>
+
+  <% if @faction.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@faction.errors.count, "error") %> prohibited this faction from being saved:
+      </h2>
+      <ul>
+        <% @faction.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.hidden_field :sector_id, value: @sector.id %>
+  
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+  
+  <%= f.label :color_code %>
+  <%= f.text_field :color_code, id: 'color_picker' %>
+  
+  <%= f.hidden_field :updated_at, value: Time.now %>
+  
+  <%= f.submit %>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('#color_picker').spectrum({
+      preferredFormat: "rgb",
+      showInput: true
+    });
+  });
+</script>

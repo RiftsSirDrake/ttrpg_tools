@@ -18,9 +18,9 @@
           <thead>
             <tr>
               <th scope="col">Name</th>
-              <th scope="col">System List</th>
+              <th scope="col">Systems</th>
               <th scope="col">Hexmap</th>
-              <th scope="col">Author</th>
+              <th scope="col">Factions</th>
               <th scope="col">Public View</th>
               <th scope="col">Created Date</th>
               <th scope="col">Last Updated</th>
@@ -35,7 +35,7 @@
                   <th scope="row"><%= link_to sector.name, sector_path(sector) %></th>
                   <td><%= link_to "View", systems_path(sector_id: sector.id) %></td>
                   <td><%= link_to "View", "/hex_system/hexmap?sector_id=#{sector.id}" %></td>
-                  <td><%= sector.author.split('@').first %>@</td>
+                  <td><%= link_to "View", factions_path(sector_id: sector.id) %></td>
                   <td><%= sector.public_view == '1' ? 'Yes' : 'No' %></td>
                   <td><%= sector.created_at.strftime("%m/%d/%Y") %></td>
                   <td><%= sector.updated_at.strftime("%m/%d/%Y") %></td>

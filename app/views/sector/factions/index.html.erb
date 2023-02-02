@@ -1,0 +1,52 @@
+<% content_for :page_title, 'Factions' %>
+
+<div class="pagetitle">
+  <h1>Factions</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+    </ol>
+  </nav>
+</div>
+
+<section>
+  <div class="col-12">
+    <div class="card overflow-auto">
+      <div class="card-body">
+        <h5 class="card-title">Factions <span>| <%= link_to 'New Faction', new_faction_path(sector_model_faction: { sector_id: params[:sector_id] }) %></span></h5>
+        <table class="table table-borderless table-sm table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Color Code</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Last Updated</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% unless @factions.blank? %>
+              <% @factions.each do |faction| %>
+                <tr>
+                  <td><%= faction.name %></td>
+                  <td><%= faction.description %></td>
+                  <td><%= faction.color_code %></td>
+                  <td><%= faction.created_at.strftime("%m/%d/%Y") %></td>
+                  <td><%= faction.updated_at.strftime("%m/%d/%Y") %></td>
+                  <td>
+                    <% unless @sector.author != current_user.email %>
+                      <%= link_to 'Edit', edit_faction_path(faction, sector_model_faction: { sector_id: params[:sector_id] }) %>
+                      <%= link_to 'Delete', faction_path(faction, sector_model_faction: { sector_id: params[:sector_id] }), method: :delete, data: { confirm: 'Are you sure?' } %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
