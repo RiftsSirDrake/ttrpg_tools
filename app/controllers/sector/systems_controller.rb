@@ -9,7 +9,7 @@ class Sector::SystemsController < ApplicationController
   end
 
   def show
-    @system = SectorModel::System.joins('left join factions on factions.name = systems.allegiance').find(params[:id])
+    @system = SectorModel::System.select('systems.*, factions.name as faction_name, factions.description as faction_description').joins('left join factions on factions.name = systems.allegiance').find(params[:id])
   end
 
   def new

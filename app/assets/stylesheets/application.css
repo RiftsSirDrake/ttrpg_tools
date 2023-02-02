@@ -30,3 +30,7 @@
   margin: auto;
   width: 50%;
 }
+
+.form_input_padding {
+  padding: 0.375rem 0.75rem;
+}

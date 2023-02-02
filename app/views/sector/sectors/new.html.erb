@@ -14,17 +14,48 @@
       </ul>
     </div>
   <% end %>
+
+  <div class="pagetitle">
+    <h1>New Sector</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item action"><%= link_to "Sectors", sectors_path %></li>
+      </ol>
+    </nav>
+  </div>
+
+    <section class='section'>
+      <div class='row'>
+        <div class='col-lg-10'>
+          <div class='card'>
+            <div class='card-body'>
+              <h5 class='card-title'>
+              </h5>
+            <div>
+              <%= f.hidden_field :author, value: current_user.email %>
+              
+            <div class="form-group form_input_padding">
+              <%= f.label :name %>
+              <%= f.text_field :name, class: 'form-control' %>
+            </div>
+            
+            <div class="form_input_padding">
+              <div class="form-check form-switch">
+                <%= f.label :public_view, class: "form-check-label" %>
+                <%= f.check_box :public_view, class: 'form-check-input' %>
+              </div>
+            </div>
+            
+            <%= f.hidden_field :created_at, value: Time.now %>
+            <%= f.hidden_field :updated_at, value: Time.now %>
   
-  <%= f.hidden_field :author, value: current_user.email %>
+            <div class='col-12 form_input_padding'><%= f.submit class: 'btn btn-primary' %></div>  
+          </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  
-  <%= f.label :public_view %>
-  <%= f.check_box :public_view %>
-  
-  <%= f.hidden_field :created_at, value: Time.now %>
-  <%= f.hidden_field :updated_at, value: Time.now %>
-  
-  <%= f.submit %>
 <% end %>

@@ -14,21 +14,54 @@
       </ul>
     </div>
   <% end %>
+
+  <div class="pagetitle">
+    <h1>New Faction</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item active"><%= link_to @sector.name, factions_path(sector_id: @sector.id) %></li>
+      </ol>
+    </nav>
+  </div>
   
-  <%= f.hidden_field :sector_id, value: @sector.id %>
+  <section class='section'>
+    <div class='row'>
+      <div class='col-lg-10'>
+        <div class='card'>
+          <div class='card-body'>
+            <h5 class='card-title'>
+              Faction located in: <%= @sector.name %> sector
+              <%= f.hidden_field :sector_id, value: @sector.id %>
+            </h5>
+            <div>
+              
+            <div class="form-group form_input_padding">
+              <%= f.label :name %>
+              <%= f.text_field :name, class: 'form-control' %>
+            </div>
+            
+            <div class="form-group form_input_padding">
+              <%= f.label :description %>
+              <%= f.text_field :description, class: 'form-control' %>
+            </div>
+            
+            <div class="form-group form_input_padding">
+              <%= f.label :color_code %>
+              <%= f.text_field :color_code, id: 'color_picker' %>
+            </div>
+            
+            <%= f.hidden_field :updated_at, value: Time.now %>
+            
+            <div class='col-12 form_input_padding'><%= f.submit class: 'btn btn-primary' %></div>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  
-  <%= f.label :description %>
-  <%= f.text_field :description %>
-  
-  <%= f.label :color_code %>
-  <%= f.text_field :color_code, id: 'color_picker' %>
-  
-  <%= f.hidden_field :updated_at, value: Time.now %>
-  
-  <%= f.submit %>
 <% end %>
 
 <script>
