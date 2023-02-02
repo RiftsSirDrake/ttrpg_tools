@@ -25,7 +25,6 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Home</a></li>
       <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
-      <li class="breadcrumb-item"><%= link_to "Systems", systems_path(sector_model_system: { sector_id: params[:sector_id] }) %></li>
     </ol>
   </nav>
 </div>
@@ -34,12 +33,12 @@
   <div class="col-12">
     <div class="card overflow-auto">
       <div class="card-body">
-        <h5 class="card-title">Systems <span>| <%= link_to 'New System', new_system_path(sector_model_system: { sector_id: params[:sector_id] }) %></span></h5>
+        <h5 class="card-title">Systems <span>| <%= link_to "Hexmap", "/hex_system/hexmap?sector_id=#{params[:sector_id]}" %></span> <span>| <%= link_to 'New System', new_system_path(sector_model_system: { sector_id: params[:sector_id] }) %></span></h5>
         <table class="table table-borderless table-sm table-striped">
           <thead>
             <tr>
               <th scope="col">Name</th>
-              <th scope="col">StarPort</th>
+              <th scope="col">Port</th>
               <th scope="col">Size</th>
               <th scope="col">Atmo</th>
               <th scope="col">Hydro</th>
@@ -55,8 +54,8 @@
               <th scope="col">Actions</th>
             </tr>
           </thead>
-          <% unless @system.blank? %>
-            <% @system.each do |details| %>
+          <% unless @systems.blank? %>
+            <% @systems.each do |details| %>
                 <tr>
                   <th scope="row"><%= link_to details.name, system_path(details.id) %></th>
                   <td><%=details.starport.split('-').first %></td>
@@ -73,10 +72,12 @@
                   <td><%=details.asteroid_belts %></td>
                   <td><%=details.gas_giants %></td>
                   <td>
-                    <% unless @sector.author != current_user.email %>
-                      <%= link_to 'Edit', edit_system_path(details) %>
-                      <%= link_to 'Delete', system_path(id: details.id, sector_id: @sector.id), method: :delete, data: { confirm: 'Are you sure?' } %>
-                    <% end %>                  
+                    <div class="btn-group" role="group">
+                      <% unless @sector.author != current_user.email %>
+                        <%= link_to 'Edit', edit_system_path(details), class: "btn btn-warning", style:"width: 5em" %>
+                        <%= link_to 'Delete', system_path(id: details.id, sector_id: @sector.id), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", style:"width: 5em" %>
+                      <% end %>
+                    </div>
                   </td>
                 </tr>
               <% end %>

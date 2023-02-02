@@ -99,8 +99,9 @@ class SectorModel::System < ApplicationRecord
     end
   end
 
-  def self.hexmap
+  def self.hexmap(sector_id)
     select("*, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r")
+    .where(sector_id: sector_id)
     .group(:location)
   end
 

@@ -28,7 +28,7 @@
         <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
         <li class="breadcrumb-item"><%= link_to "Systems", systems_path(sector_id: @system.sector.id) %></li>
-        <li class="breadcrumb-item active"><%= link_to "System Details", system_path(@system.id) %></li>
+        <li class="breadcrumb-item"><%= link_to "Hexmap", "/hex_system/hexmap?sector_id=#{@system.sector.id}" %></li>
       </ol>
     </nav>
   </div>
@@ -175,6 +175,12 @@
         </div>
       </div> 
       
+    </div>
+    <div class="btn-group" role="group">
+      <% unless @system.sector.author != current_user.email %>
+        <%= link_to 'Edit', edit_system_path(@system), class: "btn btn-warning", style:"width: 5em" %>
+        <%= link_to 'Delete', system_path(id: @system.id, sector_id: @system.sector.id), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", style:"width: 5em" %>
+      <% end %>
     </div>
   </section>
 <% end %>

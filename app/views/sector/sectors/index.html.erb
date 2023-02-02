@@ -5,7 +5,6 @@
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item active"><%= link_to "Sectors", sectors_path %></li>
     </ol>
   </nav>
 </div>
@@ -35,7 +34,7 @@
                 <tr>
                   <th scope="row"><%= link_to sector.name, sector_path(sector) %></th>
                   <td><%= link_to "View", systems_path(sector_id: sector.id) %></td>
-                  <td><%= link_to "View", '/hex_system/hexmap' %></td>
+                  <td><%= link_to "View", "/hex_system/hexmap?sector_id=#{sector.id}" %></td>
                   <td><%= sector.author.split('@').first %>@</td>
                   <td><%= sector.public_view == '1' ? 'Yes' : 'No' %></td>
                   <td><%= sector.created_at.strftime("%m/%d/%Y") %></td>

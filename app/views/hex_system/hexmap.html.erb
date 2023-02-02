@@ -5,7 +5,8 @@
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item active"><a href="/">Hexmap V1</a></li>
+      <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+      <li class="breadcrumb-item"><%= link_to "Systems", systems_path(sector_id: params[:sector_id]) %></li>
     </ol>
   </nav>
 </div>
@@ -13,7 +14,6 @@
 <section>
   <figure>
   	<div id="hexmap" class="card"></div>
-  	<figcaption>Polaris Sector map created by Enclave Rangers. (For use in Shapers TTRGP Cortex Campaign)</figcaption>
   </figure>  
 </section>
 

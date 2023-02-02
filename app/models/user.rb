@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :timeoutable
   
-  enum role: [:user, :admin]
+  enum role: [:user, :member, :admin]
   after_initialize :set_default_role, if: :new_record?
   
   def set_default_role

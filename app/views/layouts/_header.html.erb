@@ -65,12 +65,12 @@
           </a>
         </li>
         
-        <% if current_user.admin? %>
+        <% if current_user.admin? || current_user.member? %>
           <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#sector-nav" data-bs-toggle="collapse" href="#">
               <i class="bi bi-menu-button-wide"></i><span>Sectors</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="sector-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="sector-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
               <li>
                 <%= link_to sectors_path do %>
                   <i class="bi bi-circle"></i><span>Sectors List</span>
@@ -79,25 +79,7 @@
             </ul>
           </li>
         <% end %>
-  
-        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#polaris-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-menu-button-wide"></i><span>Polaris Sector</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul id="polaris-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li>
-              <a href="/hex_system/hexmap">
-                <i class="bi bi-circle"></i><span>Hexmap</span>
-              </a>
-            </li>
-            <li>
-                <%= link_to systems_path(sector_id: 1) do %>
-                  <i class="bi bi-circle"></i><span>System List</span>
-                <% end %>
-            </li>
-          </ul>
-        </li>
-  
+
         <li class="nav-heading">Misc</li>
   
         <li class="nav-item">

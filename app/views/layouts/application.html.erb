@@ -21,7 +21,9 @@
     <% end %>
     
   </head>
-  <body>
+  
+  <body <%if request.original_url != root_url %> class='toggle-sidebar' <%end%>>
+    
     <%= render "layouts/header" %>
     
     <p class="notice"><%= notice %></p>
