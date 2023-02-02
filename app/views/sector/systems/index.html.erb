@@ -1,3 +1,5 @@
+<% content_for :page_title, 'Systems' %>
+
 <style>
   thead {
     position: sticky;
@@ -23,54 +25,64 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Home</a></li>
       <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
-      <li class="breadcrumb-item"><%= link_to "Systems", systems_path(sector_id: params[:sector_id]) %></li>
+      <li class="breadcrumb-item"><%= link_to "Systems", systems_path(sector_model_system: { sector_id: params[:sector_id] }) %></li>
     </ol>
   </nav>
 </div>
 
-<% unless @system.blank? %>
-  <section>
-    <div class="container-fluid">
-      <table class="table table-hover table-striped table-sm">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">StarPort</th>
-            <th scope="col">Size</th>
-            <th scope="col">Atmosphere</th>
-            <th scope="col">Hydrosphere</th>
-            <th scope="col">Population</th>
-            <th scope="col">Government</th>
-            <th scope="col">Law</th>
-            <th scope="col">Tech</th>
-            <th scope="col">Bases</th>
-            <th scope="col">Traits</th>
-            <th scope="col">Travel Ring</th>
-            <th scope="col">Asteroid Belts</th>
-            <th scope="col">Gas Giants</th>
-          </tr>
-        </thead>
-        <% unless @system.blank? %>
-          <% @system.each do |details| %>
-              <tr>
-                <th scope="row"><%= link_to details.name, system_path(details.id) %></th>
-                <td><%=details.starport.split('-').first %></td>
-                <td><%=details.planet_size.split('-').first %></td>
-                <td><%=details.atmosphere.split('-').first %></td>
-                <td><%=details.hydrosphere.split('-').last %> Water</td>
-                <td><%=details.population %></td>
-                <td><%=details.goverment.split('-').first %></td>
-                <td><%=details.law %></td>
-                <td><%=details.tech_level %></td>
-                <td><%=details.bases %></td>
-                <td><%= [details.notes1, details.notes2, details.notes3].compact.join(', ') %></td>
-                <td><strong><%= details.advisory.split(':').first %></strong></td>
-                <td><%=details.asteroid_belts %></td>
-                <td><%=details.gas_giants %></td>
-              </tr>
-            <% end %>
-        <% end %>
-      </table>
-    </div>  
-  </section>
-<% end %>
+<section>
+  <div class="col-12">
+    <div class="card overflow-auto">
+      <div class="card-body">
+        <h5 class="card-title">Systems <span>| <%= link_to 'New System', new_system_path(sector_model_system: { sector_id: params[:sector_id] }) %></span></h5>
+        <table class="table table-borderless table-sm table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">StarPort</th>
+              <th scope="col">Size</th>
+              <th scope="col">Atmo</th>
+              <th scope="col">Hydro</th>
+              <th scope="col">Pop</th>
+              <th scope="col">Gov</th>
+              <th scope="col">Law</th>
+              <th scope="col">Tech</th>
+              <th scope="col">Bases</th>
+              <th scope="col">Traits</th>
+              <th scope="col">Advisory</th>
+              <th scope="col">Belts</th>
+              <th scope="col">Gas Giants</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <% unless @system.blank? %>
+            <% @system.each do |details| %>
+                <tr>
+                  <th scope="row"><%= link_to details.name, system_path(details.id) %></th>
+                  <td><%=details.starport.split('-').first %></td>
+                  <td><%=details.planet_size.split('-').first %></td>
+                  <td><%=details.atmosphere.split('-').first %></td>
+                  <td><%=details.hydrosphere.split('-').last %> Water</td>
+                  <td><%=details.population %></td>
+                  <td><%=details.goverment.split('-').first %></td>
+                  <td><%=details.law %></td>
+                  <td><%=details.tech_level %></td>
+                  <td><%=details.bases %></td>
+                  <td><%= [details.notes1, details.notes2, details.notes3].compact.join(', ') %></td>
+                  <td><strong><%= details.advisory.split(':').first %></strong></td>
+                  <td><%=details.asteroid_belts %></td>
+                  <td><%=details.gas_giants %></td>
+                  <td>
+                    <% unless details.sector.author != current_user.email %>
+                      <%= link_to 'Edit', edit_system_path(details) %>
+                      <%= link_to 'Delete', system_path(id: details.id, sector_id: details.sector_id), method: :delete, data: { confirm: 'Are you sure?' } %>
+                    <% end %>                  
+                  </td>
+                </tr>
+              <% end %>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,3 +1,5 @@
+<% content_for :page_title, 'New Sector' %>
+
 <%= form_for @sector, url: sectors_path do |f| %>
 
   <% if @sector.errors.any? %>

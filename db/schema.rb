@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_31_225710) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_01_165134) do
   create_table "sectors", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.string "author"
@@ -42,11 +42,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_31_225710) do
     t.string "name", limit: 45, null: false
     t.string "location", limit: 45, null: false
     t.string "uwp", limit: 9
-    t.string "base", limit: 45
+    t.string "base", limit: 1
     t.string "notes", limit: 45
     t.string "ring", limit: 1
     t.string "pbg", limit: 3
-    t.string "allegiance", limit: 2
+    t.string "allegiance", limit: 45
     t.index ["sector_id"], name: "index_systems_on_sector_id"
   end
 

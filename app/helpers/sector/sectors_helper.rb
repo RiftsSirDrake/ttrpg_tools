@@ -1,0 +1,2 @@
+module Sector::SectorsHelper
+end
