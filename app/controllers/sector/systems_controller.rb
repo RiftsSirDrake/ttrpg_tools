@@ -5,6 +5,7 @@ class Sector::SystemsController < ApplicationController
   
   def index
     @system = SectorModel::System.where("sector_id = ?", params[:sector_id])
+    @sector = @system.first.sector
   end
 
   def show

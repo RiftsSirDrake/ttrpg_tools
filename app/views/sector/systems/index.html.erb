@@ -73,9 +73,9 @@
                   <td><%=details.asteroid_belts %></td>
                   <td><%=details.gas_giants %></td>
                   <td>
-                    <% unless details.sector.author != current_user.email %>
+                    <% unless @sector.author != current_user.email %>
                       <%= link_to 'Edit', edit_system_path(details) %>
-                      <%= link_to 'Delete', system_path(id: details.id, sector_id: details.sector_id), method: :delete, data: { confirm: 'Are you sure?' } %>
+                      <%= link_to 'Delete', system_path(id: details.id, sector_id: @sector.id), method: :delete, data: { confirm: 'Are you sure?' } %>
                     <% end %>                  
                   </td>
                 </tr>
