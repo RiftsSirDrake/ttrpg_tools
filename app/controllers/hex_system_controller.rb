@@ -2,6 +2,7 @@ class HexSystemController < ApplicationController
 	before_action :presets
 
 	def hexmap
+		@factions = SectorModel::Faction.where(sector_id: params[:sector_id])
 		raw_hexmap_data = SectorModel::System.hexmap(params[:sector_id])
 
 		organized_data = raw_hexmap_data.map {|point| {sys_id: point.id, n: point.name, q: point.q, r: point.r, hex_loc: point.location,

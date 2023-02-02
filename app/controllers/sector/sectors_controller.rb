@@ -17,7 +17,7 @@ class Sector::SectorsController < ApplicationController
     @sector = SectorModel::Sector.new(sector_params)
 
     if @sector.save
-      redirect_to sector_path(@sector.id)
+      redirect_to sectors_path
     else
       render 'new'
     end
@@ -36,7 +36,7 @@ class Sector::SectorsController < ApplicationController
     
     if @sector.author == current_user.email
       if @sector.update(sector_params)
-        redirect_to sector_path(@sector.id)
+        redirect_to sectors_path
       else
         render 'edit'
       end

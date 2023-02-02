@@ -12,9 +12,33 @@
 </div>
 
 <section>
-  <figure>
-  	<div id="hexmap" class="card"></div>
-  </figure>  
+  <div class="row">
+    
+    <div class="col-lg-10">
+    	<div id="hexmap" class="card"></div>
+    </div>
+    
+    <div class="col-lg-2">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Legend</h6>
+          <table class="table table-sm">
+            <thead>
+            </thead>
+            <tbody>
+              <% @factions.order(:name).each do |faction| %>
+                <tr>
+                  <td><%= faction.name %></td>
+                  <td><i class="bi bi-flag-fill" style="color: <%= faction.color_code %>; font-size: 1.75em"></i></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </section>
 
 
