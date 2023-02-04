@@ -30,7 +30,7 @@
           <tbody>
             <% unless @sectors.blank? %>
               <% @sectors.each do |sector| %>
-                <% if sector.author == current_user.email || sector.public_view == '1' %>
+                <% if sector.author == current_user.email || sector.public_view == '1' || current_user.admin? %>
                 <tr>
                   <th scope="row"><%= link_to sector.name, sector_path(sector) %></th>
                   <td><%= link_to "View", systems_path(sector_id: sector.id) %></td>
@@ -40,7 +40,7 @@
                   <td><%= sector.created_at.strftime("%m/%d/%Y") %></td>
                   <td><%= sector.updated_at.strftime("%m/%d/%Y") %></td>
                   <td>
-                    <% unless sector.author != current_user.email %>
+                    <% if sector.author == current_user.email || current_user.admin? %>
                       <div class='btn-group'>
                         <%= link_to 'Edit', edit_sector_path(sector), class: "btn btn-warning", style:"width: 5em" %>
                         <%= link_to 'Delete', sector_path(sector), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", style:"width: 5em" %>
