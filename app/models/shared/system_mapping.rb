@@ -6,7 +6,9 @@ module Shared
       'R' => 'Restricted: Extreme Environmental Hazards, Navel Interdiction, Pirate Stronghold, or Similar',
       'P' => 'Pirate: Controlled By What is Generally Considered a Pirate Faction or Clan',
       'C' => 'Contested: Two or More Factions Currently Contest Ownership, Conflict Likely',
-      nil => 'None: No Major Travel Risks'
+      nil => 'None: No Major Travel Risks',
+      ""  => 'None: No Major Travel Risks',
+      "*" => 'Unknown: Invalid mapping'
     }
 
     PORT_MAP = {
@@ -15,7 +17,8 @@ module Shared
       'D' => 'Poor - Unrefined Fuel', 
       'C' => 'Routine - Unrefined Fuel, Basic Repair',
       'B' => 'Good - Refined Fuel, Advanced Repair, Basic Shipyard', 
-      'A' => 'Excellent - Refined Fuel, Advanced Repair, Advanced Shipyard'    
+      'A' => 'Excellent - Refined Fuel, Advanced Repair, Advanced Shipyard',
+      "*" => 'Unknown - Invalid mapping'
     }
 
     SIZE_MAP = {
@@ -34,7 +37,8 @@ module Shared
       'S' => 'Very Small - 200+ KM',
       '0' => 'Asteroid Belt',
       'D' => 'Debris',
-      'R' => 'Planetary Ring'    
+      'R' => 'Planetary Ring',
+      "*" => 'Unknown - Invalid mapping'
     }
 
     ATMO_MAP = {
@@ -53,7 +57,8 @@ module Shared
       "3" => "Very Thin - Requires Respirator",
       "2" => "Very Thin, Tainted - Requires Filter Mask and Respirator",
       "1" => "Trace - Requires Vacc Suit",
-      "0" => "Vacuum - Requires Vacc Suit"    
+      "0" => "Vacuum - Requires Vacc Suit",
+      "*" => 'Unknown - Invalid mapping'
     }
 
     HYDRO_MAP = {
@@ -67,7 +72,8 @@ module Shared
       "3" => "Wet World - 35%",
       "2" => "Dry World - 25%",
       "1" => "Dry World - 15%",
-      "0" => "Desert World - 5%"    
+      "0" => "Desert World - 5%",
+      "*" => 'Unknown - Invalid mapping'
     }
 
     POP_MAP = {
@@ -83,7 +89,8 @@ module Shared
       "3" => proc { |pbg| "#{pbg[0]} Thousand"},
       "2" => proc { |pbg| "#{pbg[0]}00"},
       "1" => proc { |pbg| "#{pbg[0].to_i * 10}"},
-      "0" => proc { |pbg| "None"} 
+      "0" => proc { |pbg| "None"},
+      "*" => proc { |pbg| "Invalid mapping"}
     }
 
     GOV_MAP = {
@@ -102,7 +109,8 @@ module Shared
         "3" => "Self-perpetuating Oligarchy - Government by a restricted minority, with little or no input from the masses.",
         "2" => "Participating Democracy - Government by advice and consent of the citizen.",
         "1" => "Corporate - Government by a company managerial elite, citizens are company employees.",
-        "0" => "No Government Structure - In many cases, tribal, clan or family bonds predominate"
+        "0" => "No Government Structure - In many cases, tribal, clan or family bonds predominate",
+        "*" => 'Unknown - Invalid mapping'
       }
 
     LAW_MAP = {
@@ -124,7 +132,8 @@ module Shared
       	'3' => 'Low - Heavy Weapons',
       	'2' => 'Low - Portable Energy Weapons',
       	'1' => 'Low - Undetectable Weapons, WMD, Poison Gas',
-      	'0' => 'Lawless'
+      	'0' => 'Lawless',
+      	"*" => 'Unknown - Invalid mapping'
       }
 
     TECH_MAP = {
@@ -159,10 +168,19 @@ module Shared
         '3' => 'Industrial Revolution Age',
         '2' => 'Age of Sail',
         '1' => 'Iron Age',
-        '0' => 'Neolithic'
+        '0' => 'Neolithic',
+        "*" => 'Unknown - Invalid mapping'
       }
 
-    BASES_MAP = {'Z' => 'Shaper Safehouse', 'S' => 'Scout', 'N' => 'Navel', '2' => 'Scout and Navel', nil => 'None'}
+    BASES_MAP = {
+        'Z' => 'Shaper Safehouse', 
+        'S' => 'Scout', 
+        'N' => 'Navel', 
+        '2' => 'Scout and Navel',
+        ""  => "None",
+        nil => 'None',
+        "*" => 'Unknown - Invalid mapping'
+    }
 
     NOTES_MAP = {
         'Ab' => 'Data Repository',
@@ -214,7 +232,10 @@ module Shared
         'Tz' => 'Tidally Locked',
         'Wa' => 'Water World',
         'Va' => 'Vacuum',
-        'Xb' => 'Rapid Message Transmission'
+        'Xb' => 'Rapid Message Transmission',
+        ""   => '',
+        nil  => '',
+        "*"  => 'Unknown - Invalid mapping'
       }
 
   end

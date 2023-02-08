@@ -83,8 +83,8 @@ class SectorModel::System < ApplicationRecord
   end
   
   def advisory
-    unless self.ring.nil?
-    ADVISORY_MAP[self.ring[0]] if ADVISORY_MAP.key?(self.ring[0])
+    unless self.nil?
+    ADVISORY_MAP[self.ring] if ADVISORY_MAP.key?(self.ring)
   end
   end
   
