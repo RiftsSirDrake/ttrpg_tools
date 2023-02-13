@@ -1,7 +1,10 @@
   <div class="col-12">
     <div class="card overflow-auto">
       <div class="card-body">
-        <h5 class="card-title">Notes <span>| <button class='btn btn-primary btn-sm open-modal-click' id="new_note">New Note</button></span></h5>
+        <h5 class="card-title">Notes <span>| 
+        <% if current_user.member? || current_user.admin? %>
+          <button class='btn btn-primary btn-sm open-modal-click' id="new_note">New Note</button></span></h5>
+        <% end %>
         <table class="table table-borderless table-sm table-striped">
           <thead>
             <tr>
@@ -22,7 +25,7 @@
                     <td><%= note.created_at.strftime("%m/%d/%Y") %></td>
                     <td><%= note.updated_at.strftime("%m/%d/%Y") %></td>
                     <td>
-                      <% unless note.author != current_user.email %>
+                      <% unless note.author != current_user.email || !current_user.admin? %>
                         <div class="btn-group">
                           <button class='btn btn-warning open-modal-click' id="edit_note" data-url="<%= edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }) %>">Edit</button>
                           <%= link_to 'Delete', system_note_path(note, sector_model_system_note: { system_id: @system.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
