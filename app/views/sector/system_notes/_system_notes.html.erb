@@ -1,7 +1,7 @@
   <div class="col-12">
     <div class="card overflow-auto">
       <div class="card-body">
-        <h5 class="card-title">Notes <span>| <button class='btn btn-primary btn-sm' id="new_note">New Note</button></span></h5>
+        <h5 class="card-title">Notes <span>| <button class='btn btn-primary btn-sm open-modal-click' id="new_note">New Note</button></span></h5>
         <table class="table table-borderless table-sm table-striped">
           <thead>
             <tr>
@@ -24,7 +24,7 @@
                     <td>
                       <% unless note.author != current_user.email %>
                         <div class="btn-group">
-                          <%= link_to 'Edit', edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }), class: "btn btn-warning" %>
+                          <button class='btn btn-warning open-modal-click' id="edit_note" data-url="<%= edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }) %>">Edit</button>
                           <%= link_to 'Delete', system_note_path(note, sector_model_system_note: { system_id: @system.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
                         </div>
                       <% end %>
@@ -54,10 +54,20 @@
   </div>
   
 <script>
+
   $(document).ready(function() {
-    $("#new_note").click(function() {
+    $(".open-modal-click").click(function(event) {
+      var clicked = $(this);
+      var target = "";
+
+      if (clicked.attr("id") == "new_note") {
+        target = "<%= j new_system_note_path(sector_model_system_note: { system_id: @system.id }) %>"
+      } else if (clicked.attr("id") == "edit_note") {
+        target = clicked.data("url")
+      }
+  
       $.ajax({
-        url: "<%= j new_system_note_path(sector_model_system_note: { system_id: @system.id }) %>",
+        url: target,
         type: "GET",
         dataType: "script",
         success: function(data) {
@@ -67,20 +77,7 @@
     });
   });
 
-  $(document).ready(function() {
-    $("#edit_note").click(function() {
-      $.ajax({
-        url: "<%= j new_system_note_path(sector_model_system_note: { system_id: @system.id }) %>",
-        type: "GET",
-        dataType: "script",
-        success: function(data) {
-          $("#modal-content").html(data);
-        }
-      });
-    });
-  });
-  
-  $(document).off('submit', 'form#new_sector_model_system_note').on('submit', 'form#new_sector_model_system_note', function(event) {
+  $(document).off('submit', 'form.form_for_notes').on('submit', 'form.form_for_notes', function(event) {
     event.preventDefault();
     var form = $(this);
     $.ajax({
@@ -105,4 +102,5 @@
       }
     });
   });
+  
 </script>

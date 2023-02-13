@@ -53,9 +53,15 @@ class Sector::SystemNotesController < ApplicationController
     
     if @system_note.author == current_user.email
       if @system_note.update(system_note_params)
-        redirect_to system_path(@system.id)
+        respond_to do |format|
+          format.html { redirect_to system_note_path(@system_note) }
+          format.js
+        end
       else
-        render 'edit'
+        respond_to do |format|
+          format.html { render 'edit' }
+          format.js { render partial: 'form', locals: { errors: @system_note.errors } }
+        end
       end
     else
       redirect_to system_path(@system.id)
