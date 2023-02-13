@@ -1,0 +1,54 @@
+<% content_for :page_title, 'Notes' %>
+
+<div class="pagetitle">
+  <h1>Notes</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><%= link_to "System", systems_path %></li>
+    </ol>
+  </nav>
+</div>
+
+<section>
+  <div class="col-12">
+    <div class="card overflow-auto">
+      <div class="card-body">
+        <h5 class="card-title">Notes <span>| <button class='btn btn-primary btn-sm' id="new_note">New Note</button></span></h5>
+        <table class="table table-borderless table-sm table-striped">
+          <thead>
+            <tr>
+              <th>Author</th>
+              <th>Content</th>
+              <th>Created Date</th>
+              <th>Last Updated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% unless @system_notes.blank? %>
+              <% @system_notes.each do |note| %>
+                <% if note.author == current_user.email || note.public_view == '1' || current_user.admin? %>
+                  <tr>
+                    <td><%= note.author.split('@').first %></td>
+                    <td><%= note.content %></td>
+                    <td><%= note.created_at.strftime("%m/%d/%Y") %></td>
+                    <td><%= note.updated_at.strftime("%m/%d/%Y") %></td>
+                    <td>
+                      <% unless note.author != current_user.email %>
+                        <div class="btn-group">
+                          <%= link_to 'Edit', edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }), class: "btn btn-warning" %>
+                          <%= link_to 'Delete', system_note_path(note, sector_model_system_note: { system_id: @system.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
+                        </div>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

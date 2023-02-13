@@ -8,6 +8,7 @@ gem 'gon'
 gem 'colorize'
 gem 'devise'
 gem 'jquery-rails'
+gem 'bootstrap'
 
 #Trying to solve date gem conflict
 gem 'date', "= 3.1.3"

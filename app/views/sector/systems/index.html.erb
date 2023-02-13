@@ -67,7 +67,7 @@
                   <td><%=details.law %></td>
                   <td><%=details.tech_level %></td>
                   <td><%=details.bases %></td>
-                  <td><%= [details.notes1, details.notes2, details.notes3].compact.join(', ') %></td>
+                  <td><%= [details.notes1, details.notes2, details.notes3].reject { |n| n.blank? }.compact.join(', ') %></td>
                   <td><strong><%= details.advisory.split(':').first %></strong></td>
                   <td><%=details.asteroid_belts %></td>
                   <td><%=details.gas_giants %></td>

@@ -1,0 +1,108 @@
+  <div class="col-12">
+    <div class="card overflow-auto">
+      <div class="card-body">
+        <h5 class="card-title">Notes <span>| <button class='btn btn-primary btn-sm' id="new_note">New Note</button></span></h5>
+        <table class="table table-borderless table-sm table-striped">
+          <thead>
+            <tr>
+              <th>Author</th>
+              <th>Content</th>
+              <th>Created Date</th>
+              <th>Last Updated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% unless @system_notes.blank? %>
+              <% @system_notes.each do |note| %>
+                <% if note.author == current_user.email || note.public_view == '1' || current_user.admin? %>
+                  <tr>
+                    <td><%= note.author.split('@').first %></td>
+                    <td><%= note.content %></td>
+                    <td><%= note.created_at.strftime("%m/%d/%Y") %></td>
+                    <td><%= note.updated_at.strftime("%m/%d/%Y") %></td>
+                    <td>
+                      <% unless note.author != current_user.email %>
+                        <div class="btn-group">
+                          <%= link_to 'Edit', edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }), class: "btn btn-warning" %>
+                          <%= link_to 'Delete', system_note_path(note, sector_model_system_note: { system_id: @system.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
+                        </div>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+          <div id="modal-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<script>
+  $(document).ready(function() {
+    $("#new_note").click(function() {
+      $.ajax({
+        url: "<%= j new_system_note_path(sector_model_system_note: { system_id: @system.id }) %>",
+        type: "GET",
+        dataType: "script",
+        success: function(data) {
+          $("#modal-content").html(data);
+        }
+      });
+    });
+  });
+
+  $(document).ready(function() {
+    $("#edit_note").click(function() {
+      $.ajax({
+        url: "<%= j new_system_note_path(sector_model_system_note: { system_id: @system.id }) %>",
+        type: "GET",
+        dataType: "script",
+        success: function(data) {
+          $("#modal-content").html(data);
+        }
+      });
+    });
+  });
+  
+  $(document).off('submit', 'form#new_sector_model_system_note').on('submit', 'form#new_sector_model_system_note', function(event) {
+    event.preventDefault();
+    var form = $(this);
+    $.ajax({
+      url: form.attr('action'),
+      type: form.attr('method'),
+      data: form.serialize(),
+      dataType: 'script',
+      success: function(data) {
+        $('#myModal').modal('hide');
+        $('.modal-content').html('');
+        $.ajax({
+          url: '<%= system_notes_path(system_id: @system.id, partial: "yes") %>',
+          type: 'GET',
+          success: function(data) {
+            $('#notes_table').html(data);
+          }
+        });
+      },
+      error: function(xhr) {
+        $('.modal-content').html(xhr.responseText);
+        $('#myModal').show();
+      }
+    });
+  });
+</script>

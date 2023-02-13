@@ -1,0 +1,62 @@
+<% content_for :page_title, 'Edit Note' %>
+
+<%= form_with model: @system_note, url: system_note_path(@system_note), method: :patch do |f| %>
+
+  <% if @system_note.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@system_note.errors.count, "error") %> prohibited this note from being saved:
+      </h2>
+      <ul>
+        <% @system_note.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="pagetitle">
+    <h1>New Note</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item active"><%= link_to @system.name, system_notes_path(system_id: @system.id) %></li>
+      </ol>
+    </nav>
+  </div>
+  
+  <section class='section'>
+    <div class='row'>
+      <div class='col-lg-10'>
+        <div class='card'>
+          <div class='card-body'>
+            <h5 class='card-title'>
+              Note located in: <%= @system.name %> system
+              <%= f.hidden_field :system_id, value: @system.id %>
+            </h5>
+            <div>
+              
+            <div class="form-group form_input_padding">
+              <%= f.label :content %>
+              <%= f.text_field :content, class: 'form-control' %>
+            </div>
+
+            <div class="form_input_padding">
+              <div class="form-check form-switch">
+                <%= f.label :public_view, class: "form-check-label" %>
+                <%= f.check_box :public_view, class: 'form-check-input' %>
+              </div>
+            </div>
+            
+            <%= f.hidden_field :updated_at, value: Time.now %>
+            
+            <div class='col-12 form_input_padding'><%= f.submit class: 'btn btn-primary' %></div>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<% end %>

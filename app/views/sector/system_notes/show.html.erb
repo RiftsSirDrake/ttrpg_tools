@@ -1,0 +1,22 @@
+<% content_for :page_title, 'Faction' %>
+
+<% unless @faction.blank? %>
+  <div class="pagetitle">
+    <h1><%= @faction.name %> Faction</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item active"><%= link_to @sector.name, factions_path(sector_id: @sector.id) %></li>
+      </ol>
+    </nav>
+  </div>
+  
+  <section>
+    <div class="card">
+      <p><strong>Name: </strong><%= @faction.name %></p>
+      <p><strong>Description: </strong><%= @faction.description %></p>
+      <p><strong>Color Code: </strong> <%= @faction.color_code %></p>
+    </div>
+  </section>
+<% end %>

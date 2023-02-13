@@ -138,7 +138,7 @@
               <div class="d-flex justify-content-around">
                 <div class="d-flex flex-column align-items-center justify-content-center">
                   <div>
-                    <h6><%= [@system.notes1, @system.notes2, @system.notes3].compact.join(', ') %></h6>
+                    <h6><%= [@system.notes1, @system.notes2, @system.notes3].reject { |n| n.blank? }.compact.join(', ') %></h6>
                   </div>
                 </div>
               </div>
@@ -176,14 +176,20 @@
           </div>
         </div>
       </div> 
-      
+
+      <div class="btn-group col-lg-6 offset-lg-3" role="group">
+        <% unless @system.sector.author != current_user.email %>
+          <%= link_to 'Edit', edit_system_path(@system), class: "btn btn-warning", style:"width: 5em" %>
+          <%= link_to 'Delete', system_path(id: @system.id, sector_id: @system.sector.id), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", style:"width: 5em" %>
+        <% end %>
+      </div>
+    
     </div>
-    <div class="btn-group" role="group">
-      <% unless @system.sector.author != current_user.email %>
-        <%= link_to 'Edit', edit_system_path(@system), class: "btn btn-warning", style:"width: 5em" %>
-        <%= link_to 'Delete', system_path(id: @system.id, sector_id: @system.sector.id), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", style:"width: 5em" %>
-      <% end %>
+    
+    <div id="notes_table" class='row py-5'>
+      <%= render partial: 'sector/system_notes/system_notes' %>
     </div>
+    
   </section>
 <% end %>
 
