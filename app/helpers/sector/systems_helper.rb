@@ -7,12 +7,8 @@ module Sector::SystemsHelper
     "#{params[:notes1]} #{params[:notes2]} #{params[:notes3]}".rstrip
   end
 
-  def combine_pbg_params(pbg_base, params)
-    if pbg_base.length == 1
-      "#{pbg_base}#{params[:asteroid_belts]}#{params[:gas_giants]}" 
-    else
-      "#{pbg_base[0]}#{params[:asteroid_belts]}#{params[:gas_giants]}"
-    end
+  def combine_pbg_params(params)
+    "#{params[:pop_base]}#{params[:asteroid_belts]}#{params[:gas_giants]}" 
   end
   
 end

@@ -26,6 +26,7 @@
           <div class="form-group form_input_padding">
             <%= f.label :content %>
             <%= f.text_area :content, class: 'form-control', style:"height: 100px" %>
+            <span class="pull-right label label-default" id="count_message"></span>
           </div>
 
           <div class="form_input_padding">
@@ -45,3 +46,17 @@
       </div>
 
 <% end %>
+
+<script>
+  $(document).ready(function() {
+    var text_max = 512;
+    $('#count_message').html('0 / ' + text_max );
+    
+    $('#sector_model_system_note_content').keyup(function() {
+      var text_length = $('#sector_model_system_note_content').val().length;
+      var text_remaining = text_max - text_length;
+      
+      $('#count_message').html(text_length + ' / ' + text_max);
+    });
+  });
+</script>

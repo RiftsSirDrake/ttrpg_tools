@@ -3,5 +3,6 @@ class SectorModel::SystemNote < ApplicationRecord
   self.table_name = 'system_notes'
   
   validates :content, presence: true
-
+  validates_length_of :content, minimum: 5, maximum: 512
+  
 end

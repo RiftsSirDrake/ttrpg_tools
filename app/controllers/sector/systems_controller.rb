@@ -18,6 +18,11 @@ class Sector::SystemsController < ApplicationController
     
     if @sector.author == current_user.email
       @system = SectorModel::System.new
+      @system.uwp = ""
+      @system.pbg = 000
+      @system.base = ""
+      @system.notes = ""
+      @system.ring = ""
     else
       redirect_to systems_path(sector_id: params[:sector_id])
     end
@@ -32,7 +37,7 @@ class Sector::SystemsController < ApplicationController
       @system.sector = @sector
       @system.uwp = combine_uwp_params(params[:sector_model_system])
       @system.notes = combine_note_params(params[:sector_model_system])
-      @system.pbg = combine_pbg_params(params[:sector_model_system][:pop_base], params[:sector_model_system])
+      @system.pbg = combine_pbg_params(params[:sector_model_system])
   
       if @system.save
         redirect_to system_path(@system.id)
@@ -62,7 +67,7 @@ class Sector::SystemsController < ApplicationController
     if @sector.author == current_user.email
       @system.uwp = combine_uwp_params(params[:sector_model_system])
       @system.notes = combine_note_params(params[:sector_model_system])
-      @system.pbg = combine_pbg_params(@system.pbg, params[:sector_model_system])
+      @system.pbg = combine_pbg_params(params[:sector_model_system])
   
       if @system.update(system_params)
         redirect_to system_path(@system.id)

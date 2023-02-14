@@ -6,10 +6,8 @@ module Shared
       'R' => 'Restricted: Extreme Environmental Hazards, Navel Interdiction, Pirate Stronghold, or Similar',
       'P' => 'Pirate: Controlled By What is Generally Considered a Pirate Faction or Clan',
       'C' => 'Contested: Two or More Factions Currently Contest Ownership, Conflict Likely',
-      nil => 'None: No Major Travel Risks',
-      ""  => 'None: No Major Travel Risks',
-      "*" => 'Unknown: Invalid mapping'
-    }
+      ''  => 'None: No Major Listed Concerns'
+    }.tap { |h| h.default = "None" }
 
     PORT_MAP = {
       'X' => 'None',
@@ -17,9 +15,8 @@ module Shared
       'D' => 'Poor - Unrefined Fuel', 
       'C' => 'Routine - Unrefined Fuel, Basic Repair',
       'B' => 'Good - Refined Fuel, Advanced Repair, Basic Shipyard', 
-      'A' => 'Excellent - Refined Fuel, Advanced Repair, Advanced Shipyard',
-      "*" => 'Unknown - Invalid mapping'
-    }
+      'A' => 'Excellent - Refined Fuel, Advanced Repair, Advanced Shipyard'
+    }.tap { |h| h.default = "None" }
 
     SIZE_MAP = {
       'C' => 'Huge - 18,400+ KM',
@@ -37,9 +34,8 @@ module Shared
       'S' => 'Very Small - 200+ KM',
       '0' => 'Asteroid Belt',
       'D' => 'Debris',
-      'R' => 'Planetary Ring',
-      "*" => 'Unknown - Invalid mapping'
-    }
+      'R' => 'Planetary Ring'
+    }.tap { |h| h.default = "None" }
 
     ATMO_MAP = {
       "F" => "Thin, Low - Atmosphere in Valleys",
@@ -57,9 +53,8 @@ module Shared
       "3" => "Very Thin - Requires Respirator",
       "2" => "Very Thin, Tainted - Requires Filter Mask and Respirator",
       "1" => "Trace - Requires Vacc Suit",
-      "0" => "Vacuum - Requires Vacc Suit",
-      "*" => 'Unknown - Invalid mapping'
-    }
+      "0" => "Vacuum - Requires Vacc Suit"
+    }.tap { |h| h.default = "None" }
 
     HYDRO_MAP = {
       "A" => "Water World - 100%",
@@ -72,9 +67,8 @@ module Shared
       "3" => "Wet World - 35%",
       "2" => "Dry World - 25%",
       "1" => "Dry World - 15%",
-      "0" => "Desert World - 5%",
-      "*" => 'Unknown - Invalid mapping'
-    }
+      "0" => "Desert World - 5%"
+    }.tap { |h| h.default = "None" }
 
     POP_MAP = {
       "C" => proc { |pbg| "#{pbg[0]} Trillion"},
@@ -89,9 +83,8 @@ module Shared
       "3" => proc { |pbg| "#{pbg[0]} Thousand"},
       "2" => proc { |pbg| "#{pbg[0]}00"},
       "1" => proc { |pbg| "#{pbg[0].to_i * 10}"},
-      "0" => proc { |pbg| "None"},
-      "*" => proc { |pbg| "Invalid mapping"}
-    }
+      "0" => proc { |pbg| "None"}
+    }.tap { |h| h.default = "None" }
 
     GOV_MAP = {
         "F" => "Totalitarian Oligarchy - Government by an all-powerful minority which maintains absolute control through widespread coercion and oppression",
@@ -109,9 +102,8 @@ module Shared
         "3" => "Self-perpetuating Oligarchy - Government by a restricted minority, with little or no input from the masses.",
         "2" => "Participating Democracy - Government by advice and consent of the citizen.",
         "1" => "Corporate - Government by a company managerial elite, citizens are company employees.",
-        "0" => "No Government Structure - In many cases, tribal, clan or family bonds predominate",
-        "*" => 'Unknown - Invalid mapping'
-      }
+        "0" => "No Government Structure - In many cases, tribal, clan or family bonds predominate"
+      }.tap { |h| h.default = "None" }
 
     LAW_MAP = {
       	'J' => 'Extreme - Routinely Oppressive and Restrictive',
@@ -132,9 +124,8 @@ module Shared
       	'3' => 'Low - Heavy Weapons',
       	'2' => 'Low - Portable Energy Weapons',
       	'1' => 'Low - Undetectable Weapons, WMD, Poison Gas',
-      	'0' => 'Lawless',
-      	"*" => 'Unknown - Invalid mapping'
-      }
+      	'0' => 'Lawless'
+      }.tap { |h| h.default = "None" }
 
     TECH_MAP = {
         'X' => 'Pocket Universes Age',
@@ -168,19 +159,16 @@ module Shared
         '3' => 'Industrial Revolution Age',
         '2' => 'Age of Sail',
         '1' => 'Iron Age',
-        '0' => 'Neolithic',
-        "*" => 'Unknown - Invalid mapping'
-      }
+        '0' => 'Neolithic'
+      }.tap { |h| h.default = "None" }
 
     BASES_MAP = {
         'Z' => 'Shaper Safehouse', 
         'S' => 'Scout', 
         'N' => 'Navel', 
         '2' => 'Scout and Navel',
-        ""  => "None",
-        nil => 'None',
-        "*" => 'Unknown - Invalid mapping'
-    }
+        "" => 'None'
+    }.tap { |h| h.default = "None" }
 
     NOTES_MAP = {
         'Ab' => 'Data Repository',
@@ -232,11 +220,8 @@ module Shared
         'Tz' => 'Tidally Locked',
         'Wa' => 'Water World',
         'Va' => 'Vacuum',
-        'Xb' => 'Rapid Message Transmission',
-        ""   => '',
-        nil  => '',
-        "*"  => 'Unknown - Invalid mapping'
-      }
+        'Xb' => 'Rapid Message Transmission'
+      }.tap { |h| h.default = "" }
 
   end
 end
