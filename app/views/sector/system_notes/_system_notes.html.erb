@@ -68,22 +68,24 @@
       type: form.attr('method'),
       data: form.serialize(),
       dataType: 'script',
-      success: function(data) {
-        $('#myModal').modal('hide');
-        $('.modal-content').html('');
-        $.ajax({
-          url: '<%= system_notes_path(system_id: @system.id, partial: "yes") %>',
-          type: 'GET',
-          success: function(data) {
-            $('#notes_table').html(data);
-          }
-        });
+      success: function(data, textStatus, xhr) {
+        if (xhr.status === 204) {
+          $('#myModal').modal('hide');
+          $('.modal-content').html('');
+          $.ajax({
+            url: '<%= system_notes_path(system_id: @system.id, partial: "yes") %>',
+            type: 'GET',
+            success: function(data) {
+              $('#notes_table').html(data);
+            }
+          });
+        }
       },
       error: function(xhr) {
         $('.modal-content').html(xhr.responseText);
         $('#myModal').show();
-      }
+      },
     });
   });
-  
+
 </script>

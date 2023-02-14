@@ -33,7 +33,7 @@ class Sector::SystemNotesController < ApplicationController
     else
       respond_to do |format|
         format.html { render 'new' }
-        format.js { render partial: 'form', locals: { errors: @system_note.errors } }
+        format.js { render partial: 'form', locals: { errors: @system_note.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -60,7 +60,7 @@ class Sector::SystemNotesController < ApplicationController
       else
         respond_to do |format|
           format.html { render 'edit' }
-          format.js { render partial: 'form', locals: { errors: @system_note.errors } }
+          format.js { render partial: 'form', locals: { errors: @system_note.errors }, status: :unprocessable_entity }
         end
       end
     else
