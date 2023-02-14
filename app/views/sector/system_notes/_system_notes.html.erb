@@ -1,47 +1,27 @@
-  <div class="col-12">
-    <div class="card overflow-auto">
-      <div class="card-body">
-        <h5 class="card-title">Notes <span>| 
-        <% if current_user.member? || current_user.admin? %>
-          <button class='btn btn-primary btn-sm open-modal-click' id="new_note">New Note</button></span></h5>
-        <% end %>
-        <table class="table table-borderless table-sm table-striped">
-          <thead>
-            <tr>
-              <th>Author</th>
-              <th>Content</th>
-              <th>Created Date</th>
-              <th>Last Updated</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% unless @system_notes.blank? %>
-              <% @system_notes.each do |note| %>
-                <% if note.author == current_user.email || note.public_view == '1' || current_user.admin? %>
-                  <tr>
-                    <td><%= note.author.split('@').first %></td>
-                    <td><%= note.content %></td>
-                    <td><%= note.created_at.strftime("%m/%d/%Y") %></td>
-                    <td><%= note.updated_at.strftime("%m/%d/%Y") %></td>
-                    <td>
-                      <% unless note.author != current_user.email || !current_user.admin? %>
-                        <div class="btn-group">
-                          <button class='btn btn-warning open-modal-click' id="edit_note" data-url="<%= edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }) %>">Edit</button>
-                          <%= link_to 'Delete', system_note_path(note, sector_model_system_note: { system_id: @system.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
-                        </div>
-                      <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="pagetitle">
+    <h1>Notes <span>| 
+    <% if current_user.member? || current_user.admin? %>
+      <button class='btn btn-primary btn-sm open-modal-click' id="new_note">New Note</button>
+    <% end %></span></h5>
   </div>
   
+  <% @system_notes.each do |note| %>
+    <div class="col-12">
+      <div class="card overflow-auto" style="min-height: 50px;">
+        <div class="card-body">
+          <h5 class="card-title"><%= note.author.split('@').first %> <span>| <small><%= note.updated_at.strftime("%m/%d/%Y") %></small></span></h5>
+          <%= note.content %>
+          <% unless note.author != current_user.email || !current_user.admin? %>
+            <div class="pt-3">
+              <button class='btn btn-warning open-modal-click' id="edit_note" data-url="<%= edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }) %>">Edit</button>
+              <%= link_to 'Delete', system_note_path(note, sector_model_system_note: { system_id: @system.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
+            </div>
+          <% end %>          
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
