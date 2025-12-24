@@ -4,6 +4,12 @@ class SectorModel::System < ApplicationRecord
   has_many :system_overrides, dependent: :destroy
   self.table_name = 'systems'
   
+  validates :name, presence: true
+  validates :location, presence: true, format: { with: /\A\d{4}\z/, message: "must be 4 digits (e.g. 0102)" }, uniqueness: { scope: :sector_id, message: "already exists in this sector" }
+  validates :uwp, presence: true, format: { with: /\A[A-X][0-9A-S][0-9A-F][0-9A][0-9A-C][0-9A-F][0-9A-J]-[0-9A-X]\z/, message: "must be in valid UWP format (e.g. A000000-0)" }
+  validates :pbg, format: { with: /\A\d{3}\z/, message: "must be 3 digits (e.g. 000)" }, allow_blank: true
+  validates :base, length: { maximum: 1 }, allow_blank: true
+
   include Shared::SystemMapping
 
   # Start of methods to convert UWP codes into human readable attributes.
@@ -104,7 +110,7 @@ class SectorModel::System < ApplicationRecord
     select("systems.id as id, systems.name as name, systems.location as location, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r, factions.color_code as color_code")
     .joins('left join factions on factions.name = systems.allegiance')
     .where(sector_id: sector_id)
-    .group(:location)
+    .group("systems.location, systems.id, systems.name, factions.color_code")
   end
 
 end

@@ -2,13 +2,19 @@ class HexSystemController < ApplicationController
 	before_action :presets
 
 	def hexmap
-		@factions = SectorModel::Faction.where(sector_id: params[:sector_id])
-		raw_hexmap_data = SectorModel::System.hexmap(params[:sector_id])
+		@sector = SectorModel::Sector.find_by(id: params[:sector_id])
+		if @sector.nil?
+			redirect_to sectors_path, alert: "Sector not found."
+			return
+		end
 
-		organized_data = raw_hexmap_data.map {|point| {sys_id: point.id, n: point.name, q: point.q, r: point.r, hex_loc: point.location,
+		@factions = SectorModel::Faction.where(sector_id: @sector.id)
+		raw_hexmap_data = SectorModel::System.hexmap(@sector.id)
+
+		@organized_data = raw_hexmap_data.map {|point| {sys_id: point.id, n: point.name, q: point.q, r: point.r, hex_loc: point.location,
 			colour: "#{point.color_code.nil? ? "rgb(247, 171, 45)" : point.color_code}"}}
 			
-		raw_json_data = organized_data.as_json.to_json
+		raw_json_data = @organized_data.as_json.to_json
 		parsed_data = JSON.parse(raw_json_data)
 		
 		formatted_data = {}

@@ -1,0 +1,24 @@
+_fixture:
+  model_class: SectorModel::System
+
+one:
+  sector_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  name: "System One"
+  location: "0101"
+  uwp: "A766543-8"
+  base: "S"
+  notes: "Ag"
+  ring: ""
+  pbg: "100"
+  allegiance: "Faction One"
+
+two:
+  sector_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  name: "System Two"
+  location: "0202"
+  uwp: "B543210-9"
+  base: "N"
+  notes: "Ni"
+  ring: ""
+  pbg: "200"
+  allegiance: "Faction Two"

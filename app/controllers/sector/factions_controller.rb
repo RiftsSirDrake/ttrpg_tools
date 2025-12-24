@@ -13,33 +13,39 @@ class Sector::FactionsController < ApplicationController
   end
 
   def new
-    @sector = SectorModel::Sector.find(params[:sector_model_faction][:sector_id])
+    @sector = SectorModel::Sector.find(params[:sector_id] || params.dig(:sector_model_faction, :sector_id))
     @faction = SectorModel::Faction.new
   end
 
   def create
-    @sector = SectorModel::Sector.find(params[:sector_model_faction][:sector_id])
+    @sector = SectorModel::Sector.find(params[:sector_id] || params.dig(:sector_model_faction, :sector_id))
     @faction = SectorModel::Faction.new(faction_params)
     @faction.sector = @sector
 
     if @faction.save
-      redirect_to factions_path(sector_id: @sector.id)
+      respond_to do |format|
+        format.html { redirect_to factions_path(sector_id: @sector.id) }
+        format.json { render json: @faction, status: :created }
+      end
     else
-      render 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @faction.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def edit
-    @sector = SectorModel::Sector.find(params[:sector_model_faction][:sector_id])
+    @sector = SectorModel::Sector.find(params[:sector_id] || params.dig(:sector_model_faction, :sector_id))
     @faction = SectorModel::Faction.find(params[:id])
     
     unless @sector.author == current_user.email
-      redirect_to factions_path
+      redirect_to factions_path(sector_id: @sector.id)
     end
   end
 
   def update
-    @sector = SectorModel::Sector.find(params[:sector_model_faction][:sector_id])
+    @sector = SectorModel::Sector.find(params[:sector_id] || params.dig(:sector_model_faction, :sector_id))
     @faction = SectorModel::Faction.find(params[:id])
     
     if @sector.author == current_user.email
@@ -49,22 +55,22 @@ class Sector::FactionsController < ApplicationController
         render 'edit'
       end
     else
-      redirect_to factions_path
+      redirect_to factions_path(sector_id: @sector.id)
     end
     
   end
 
   def destroy
-    @sector = SectorModel::Sector.find(params[:sector_id])
+    @sector = SectorModel::Sector.find(params[:sector_id] || params[:sector_model_faction][:sector_id])
     @faction = SectorModel::Faction.find(params[:id])
     
     if @sector.author == current_user.email
       @faction.destroy
     else
-      redirect_to factions_path
+      redirect_to factions_path(sector_id: @sector.id) and return
     end
     
-    redirect_to factions_path
+    redirect_to factions_path(sector_id: @sector.id)
   end
 
   private

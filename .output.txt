@@ -1,5 +1,4 @@
 <%= form_for @system, url: @system.persisted? ? system_path(@system) : systems_path do |f| %>
-
   <% if @system.errors.any? %>
     <div id="error_explanation">
       <h2>
@@ -12,7 +11,7 @@
       </ul>
     </div>
   <% end %>
-  
+
   <section class='section'>
     <div class='row'>
       <div class='col-lg-10'>
@@ -27,94 +26,92 @@
               <%= f.label :name %>
               <%= f.text_field :name, maxlength: 45, class: 'form-control' %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label :location %> <small>(Ex. 0301 = third column, first row)</small>
               <%= f.number_field :location, class: 'form-control' %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Port' %>
               <%= f.select :starport, options_for_select(Shared::SystemMapping::PORT_MAP.map { |k, v| [v, k] }, selected: @system.uwp[0]), {}, { class: "form-control" } %>
             </div>
-            
+
             <div class="form-group">
               <%= f.label 'Size' %>
               <%= f.select :planet_size, options_for_select(Shared::SystemMapping::SIZE_MAP.map { |k, v| [v, k] }, selected: @system.uwp[1]), {}, { class: "form-control" } %>
             </div>
-            
+
             <div class="form-group">
               <%= f.label 'Atmo' %>
               <%= f.select :atmosphere, options_for_select(Shared::SystemMapping::ATMO_MAP.map { |k, v| [v, k] }, selected: @system.uwp[2]), {}, { class: "form-control" } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Hydro' %>
               <%= f.select :hydrosphere, options_for_select(Shared::SystemMapping::HYDRO_MAP.map { |k, v| [v, k] }, selected: @system.uwp[3]), {}, { class: "form-control" } %>
             </div>
-
             <div id="population">
               <div class="form-group">
                 <%= f.label 'Pop Base' %>
                 <%= f.select :pop_base, options_for_select((0..9).to_a, @system.pbg[0]), {}, { class: 'form-control' } %>
               </div>
-            
+
               <div class="form-group">
                 <%= f.label 'Pop' %>
                 <%= f.select :population, options_for_select(Shared::SystemMapping::POP_MAP.map { |k, v| [v.call(@system.pbg[0]), k] }, selected: @system.uwp[4]), {}, { class: "form-control" } %>
               </div>
             </div>
-
             <div class="form-group">
               <%= f.label 'Gov' %>
               <%= f.select :goverment, options_for_select(Shared::SystemMapping::GOV_MAP.map { |k, v| [v, k] }, selected: @system.uwp[5]), {}, { class: "form-control" } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'LAW' %>
               <%= f.select :law, options_for_select(Shared::SystemMapping::LAW_MAP.map { |k, v| [v, k] }, selected: @system.uwp[6]), {}, { class: "form-control" } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Tech' %>
               <%= f.select :tech_level, options_for_select(Shared::SystemMapping::TECH_MAP.map { |k, v| [v, k] }, selected: @system.uwp[8]), {}, { class: "form-control" } %>
             </div>
-            
+
             <div class="form-group">
               <%= f.label 'Bases' %>
               <%= f.select :base, options_for_select(Shared::SystemMapping::BASES_MAP.map { |k, v| [v, k] },selected: @system.base[0]), { include_blank: true }, { class: "form-control" } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Note 1' %>
               <%= f.select :notes1, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[0,2]), { include_blank: true },  { class: "form-control" } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Note 2' %>
               <%= f.select :notes2, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[3,2]), { include_blank: true }, { class: "form-control" } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Note 3' %>
               <%= f.select :notes3, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[6,2]), { include_blank: true }, { class: "form-control" } %>
             </div>
-            
+
             <div class="form-group">
               <%= f.label 'Travel Advisory' %>
               <%= f.select :ring, options_for_select(Shared::SystemMapping::ADVISORY_MAP.map { |k, v| [v, k] }, selected: @system.ring[0]), {}, { class: "form-control" } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Asteroid Belts' %>
               <%= f.select :asteroid_belts, options_for_select((0..9).to_a, @system.pbg[1]), {}, { class: 'form-control' } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Gas Giants' %>
               <%= f.select :gas_giants, options_for_select((0..9).to_a, @system.pbg[2]), {}, { class: 'form-control' } %>
             </div>
-          
+
             <div class="form-group">
               <%= f.label 'Faction' %>
               <div class="input-group">
@@ -124,17 +121,15 @@
                 </button>
               </div>
             </div>
-            
+
             <div class='col-12'><%= f.submit class: 'btn btn-primary' %></div>
-          </div>            
+          </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-
 <% end %>
-
 <!-- Modal -->
 <div class="modal fade" id="newFactionModal" tabindex="-1" aria-labelledby="newFactionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -167,81 +162,34 @@
     </div>
   </div>
 </div>
-
 <script>
-
   $(document).ready(function(){
       $('#color_picker_modal').spectrum({
           preferredFormat: "rgb",
           showInput: true
       });
-
       $('#saveFactionBtn').on('click', function() {
           var btn = $(this);
-          var form = $('#new_faction_form');
-          
-          if (!form[0].checkValidity()) {
-              form[0].reportValidity();
-              return;
-          }
-
           btn.prop('disabled', true);
           btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
-          
-          $.ajax({
-              url: form.attr('action'),
-              method: 'POST',
-              data: form.serialize(),
-              dataType: 'json',
-              success: function(data) {
-                  if (data && data.name) {
-                      var newOption = new Option(data.name, data.name, true, true);
-                      $('#faction_select').append(newOption).trigger('change');
-                  } else {
-                      console.error("No faction data received or name missing", data);
-                  }
-                  
-                  closeFactionModal();
-                  form[0].reset();
-                  
-                  if ($.fn.spectrum) {
-                      $('#color_picker_modal').spectrum('set', '');
-                  }
-                  btn.prop('disabled', false).text('Save Faction');
-              },
-              error: function(xhr, status, error) {
-                  console.error('Error creating faction:', error);
-                  alert('Error creating faction');
-                  btn.prop('disabled', false).text('Save Faction');
-              }
-          });
+          $('#new_faction_form').submit();
       });
+      $('#new_faction_form').on('ajax:success', function(event) {
+          var detail = event.detail;
+          var data = detail[0];
 
-      function closeFactionModal() {
-          var modalElement = document.getElementById('newFactionModal');
-          
-          // Use Bootstrap 5 API explicitly
-          if (window.bootstrap && bootstrap.Modal) {
-              var modal = bootstrap.Modal.getInstance(modalElement);
-              if (!modal) {
-                  modal = new bootstrap.Modal(modalElement);
-              }
-              modal.hide();
-          } else if (typeof $(modalElement).modal === 'function') {
-              $(modalElement).modal('hide');
-          }
-          
-          // Fallback if bootstrap modal doesn't close properly
-          setTimeout(function() {
-            if ($('.modal-backdrop').length > 0) {
-                $('.modal-backdrop').remove();
-                $('body').removeClass('modal-open');
-                $('body').css('overflow', '');
-                $('body').css('padding-right', '');
-            }
-          }, 500);
-      }
+          var newOption = new Option(data.name, data.name, true, true);
+          $('#faction_select').append(newOption).trigger('change');
 
+          $('#newFactionModal').modal('hide');
+          $('#new_faction_form')[0].reset();
+
+          // Reset button state
+          $('#saveFactionBtn').prop('disabled', false).text('Save Faction');
+      }).on('ajax:error', function(event) {
+          alert('Error creating faction');
+          $('#saveFactionBtn').prop('disabled', false).text('Save Faction');
+      });
       $('#population').on('change', '#sector_model_system_pop_base', function(){
         var pop_base_value = $(this).val();
         if (pop_base_value !== '0') {
@@ -256,5 +204,4 @@
         }
         });
       });
-
 </script>

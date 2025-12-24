@@ -10,34 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_01_165134) do
-  create_table "sectors", charset: "latin1", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2025_12_23_234500) do
+  create_table "factions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "sector_id", null: false
+    t.string "name"
+    t.text "description"
+    t.string "color_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["sector_id"], name: "index_factions_on_sector_id"
+  end
+
+  create_table "sectors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "author"
     t.binary "public_view"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "system_notes", charset: "latin1", force: :cascade do |t|
+  create_table "system_notes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "sector_id"
     t.integer "system_id"
     t.string "author"
     t.binary "public_view"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "system_overrides", charset: "latin1", force: :cascade do |t|
+  create_table "system_overrides", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "sector_id"
     t.integer "system_id"
     t.string "property"
     t.string "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "systems", charset: "latin1", comment: "Table to hold primary data on systems based on Traveller system and originally generated via random generators like: https://zhodani.space/stuff/generators/random-subsector-generator/ and can be translated into human readable following guidiance here: https://www.traveller-srd.com/core-rules/world-creation/", force: :cascade do |t|
+  create_table "systems", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", comment: "Table to hold primary data on systems based on Traveller system and originally generated via random generators like: https://zhodani.space/stuff/generators/random-subsector-generator/ and can be translated into human readable following guidiance here: https://www.traveller-srd.com/core-rules/world-creation/", force: :cascade do |t|
     t.bigint "sector_id", null: false
     t.string "name", limit: 45, null: false
     t.string "location", limit: 45, null: false
@@ -47,21 +57,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_165134) do
     t.string "ring", limit: 1
     t.string "pbg", limit: 3
     t.string "allegiance", limit: 45
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["sector_id"], name: "index_systems_on_sector_id"
   end
 
-  create_table "users", charset: "latin1", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "role"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "factions", "sectors"
   add_foreign_key "systems", "sectors"
 end

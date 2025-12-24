@@ -17,7 +17,12 @@ Rails.application.routes.draw do
   end
 
   resources :sectors, controller:'sector/sectors'
-  resources :systems, controller:'sector/systems'
+  resources :systems, controller:'sector/systems' do
+    collection do
+      get 'bulk_upload'
+      post 'process_bulk_upload'
+    end
+  end
   resources :factions, controller:'sector/factions'
   resources :system_notes, controller:'sector/system_notes'
 

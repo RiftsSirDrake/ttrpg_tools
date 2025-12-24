@@ -33,7 +33,7 @@
   <div class="col-12">
     <div class="card overflow-auto">
       <div class="card-body">
-        <h5 class="card-title">Systems <span>| <%= link_to "Hexmap", "/hex_system/hexmap?sector_id=#{params[:sector_id]}" %></span> <span>| <%= link_to 'New System', new_system_path(sector_model_system: { sector_id: params[:sector_id] }) %></span></h5>
+        <h5 class="card-title">Systems <span>| <%= link_to "Hexmap", "/hex_system/hexmap?sector_id=#{params[:sector_id]}" %></span> <span>| <%= link_to 'New System', new_system_path(sector_model_system: { sector_id: params[:sector_id] }) %></span> <span>| <%= link_to 'Bulk Upload', bulk_upload_systems_path(sector_id: params[:sector_id]) %></span></h5>
         <table class="table table-borderless table-sm table-striped">
           <thead>
             <tr>

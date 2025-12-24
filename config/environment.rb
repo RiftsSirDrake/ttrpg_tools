@@ -50,11 +50,13 @@ def get_secret()
   end
 end
 
-db_secret = get_secret()
-ENV['DB_HOST'] = db_secret['host']
-ENV['DB_USER'] = db_secret['username']
-ENV['DB_PASS'] = db_secret['password']
-ENV['DB_PORT'] = db_secret['port'].to_s
-
 # Initialize the Rails application.
+if Rails.env.production?
+  db_secret = get_secret()
+  ENV['DB_HOST'] = db_secret['host']
+  ENV['DB_USER'] = db_secret['username']
+  ENV['DB_PASS'] = db_secret['password']
+  ENV['DB_PORT'] = db_secret['port'].to_s
+end
+
 Rails.application.initialize!

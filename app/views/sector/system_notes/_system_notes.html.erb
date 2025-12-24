@@ -2,7 +2,7 @@
     <h1>Notes <span>| 
     <% if current_user.member? || current_user.admin? %>
       <button class='btn btn-primary btn-sm open-modal-click' id="new_note">New Note</button>
-    <% end %></span></h5>
+    <% end %></span></h1>
   </div>
   
   <% @system_notes.each do |note| %>
@@ -70,7 +70,8 @@
       dataType: 'script',
       success: function(data, textStatus, xhr) {
         if (xhr.status === 204) {
-          $('#myModal').modal('hide');
+          closeSystemNotesModal();
+
           $('.modal-content').html('');
           $.ajax({
             url: '<%= system_notes_path(system_id: @system.id, partial: "yes") %>',
@@ -87,5 +88,30 @@
       },
     });
   });
+
+  function closeSystemNotesModal() {
+      var modalElement = document.getElementById('myModal');
+      
+      // Use Bootstrap 5 API explicitly
+      if (window.bootstrap && bootstrap.Modal) {
+          var modal = bootstrap.Modal.getInstance(modalElement);
+          if (!modal) {
+              modal = new bootstrap.Modal(modalElement);
+          }
+          modal.hide();
+      } else if (typeof $(modalElement).modal === 'function') {
+          $(modalElement).modal('hide');
+      }
+
+      // Fallback if bootstrap modal doesn't close properly
+      setTimeout(function() {
+        if ($('.modal-backdrop').length > 0) {
+          $('.modal-backdrop').remove();
+          $('body').removeClass('modal-open');
+          $('body').css('overflow', '');
+          $('body').css('padding-right', '');
+        }
+      }, 500);
+  }
 
 </script>

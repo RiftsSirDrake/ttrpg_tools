@@ -1,21 +1,30 @@
-<% content_for :page_title, 'Hexmap v1' %>
+<% content_for :page_title, "Hexmap - #{@sector.name}" %>
 
 <div class="pagetitle">
-  <h1>Hexmap V1</h1>
+  <h1>Hexmap - <%= @sector.name %></h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Home</a></li>
       <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
-      <li class="breadcrumb-item"><%= link_to "Systems", systems_path(sector_id: params[:sector_id]) %></li>
+      <li class="breadcrumb-item"><%= link_to "Systems", systems_path(sector_id: @sector.id) %></li>
     </ol>
   </nav>
 </div>
 
 <section>
   <div class="row">
-    
+
     <div class="col-lg-10">
-    	<div id="hexmap" class="card"></div>
+      <% if @organized_data.present? %>
+    	  <div id="hexmap" class="card"></div>
+      <% else %>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">No Systems Found</h5>
+            <p>There are no systems to display in this sector. You can add systems via the <%= link_to "Systems", systems_path(sector_id: @sector.id) %> page.</p>
+          </div>
+        </div>
+      <% end %>
     </div>
     
     <div class="col-lg-2">
@@ -42,6 +51,7 @@
 </section>
 
 
+<% if @organized_data.present? %>
 <script>
 	var data = gon.data
 	hex = new OI.hexmap(document.getElementById('hexmap'),{
@@ -96,3 +106,4 @@
   });
 
 </script>
+<% end %>

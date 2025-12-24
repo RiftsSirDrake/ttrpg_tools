@@ -1,0 +1,4 @@
+Name,Location,UWP,Base,Note1,Note2,Ring,PBG
+InvalidUWP,0101,INVALID,"","","","",000
+InvalidLoc,ABC,A000000-0,"","","","",000
+Valid,0202,A000000-0,"","","","",000
