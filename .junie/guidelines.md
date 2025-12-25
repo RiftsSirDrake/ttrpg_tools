@@ -83,3 +83,13 @@ To maintain a consistent and professional look across the application, all new a
 - **Icons**: Use [Bootstrap Icons](https://icons.getbootstrap.com/) (`<i class="bi bi-..."></i>`) to provide visual cues for data and actions.
 - **Badges**: Use color-coded badges for status or roles (e.g., `.bg-success`, `.bg-danger`, `.bg-info`, `.bg-secondary`).
 - **Information Alerts**: Use `.alert .alert-info .d-flex .align-items-center` for contextual information.
+
+## Libraries & Documentation
+
+### Hexmap Library
+For detailed instructions, examples, and API reference for the `hexmap.js` library, please refer to the [Hexmap Library Documentation](../docs/Hexmap%20Library.md). This document covers:
+- Basic hexmap setup and HexJSON layout.
+- Styling hexes and labels using CSS.
+- Loading external HexJSON and data.
+- Adding tooltips and custom event callbacks.
+- Advanced styling like boundaries, patterns, and images.
