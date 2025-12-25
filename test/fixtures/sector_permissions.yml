@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sector: one
+  user: one
+  can_view_sector: false
+  can_edit_sector: false
+  can_view_factions: false
+  can_edit_factions: false
+  can_view_systems: false
+  can_edit_systems: false
+  can_view_system_notes: false
+  can_edit_system_notes: false
+
+two:
+  sector: two
+  user: two
+  can_view_sector: false
+  can_edit_sector: false
+  can_view_factions: false
+  can_edit_factions: false
+  can_view_systems: false
+  can_edit_systems: false
+  can_view_system_notes: false
+  can_edit_system_notes: false

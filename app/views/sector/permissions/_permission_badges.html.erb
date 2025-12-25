@@ -1,0 +1,9 @@
+<% if view && edit %>
+  <span class="badge bg-success" title="View & Edit"><i class="bi bi-pencil-square"></i> Full</span>
+<% elsif view %>
+  <span class="badge bg-info text-dark" title="View Only"><i class="bi bi-eye"></i> View</span>
+<% elsif edit %>
+  <span class="badge bg-warning text-dark" title="Edit Only"><i class="bi bi-pencil"></i> Edit</span>
+<% else %>
+  <span class="badge bg-light text-muted" title="No Access"><i class="bi bi-x-circle"></i> None</span>
+<% end %>

@@ -1,22 +1,81 @@
-<% content_for :page_title, 'Faction' %>
+<% content_for :page_title, "#{@faction.name} Faction" %>
 
-<% unless @faction.blank? %>
-  <div class="pagetitle">
-    <h1><%= @faction.name %> Faction</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
-        <li class="breadcrumb-item active"><%= link_to @sector.name, factions_path(sector_id: @sector.id) %></li>
-      </ol>
-    </nav>
-  </div>
-  
-  <section>
-    <div class="card">
-      <p><strong>Name: </strong><%= @faction.name %></p>
-      <p><strong>Description: </strong><%= @faction.description %></p>
-      <p><strong>Color Code: </strong> <%= @faction.color_code %></p>
+<div class="container-fluid">
+  <% unless @faction.blank? %>
+    <div class="pagetitle">
+      <h1><%= @faction.name %> Faction</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+          <li class="breadcrumb-item"><%= link_to @sector.name, sector_path(@sector) %></li>
+          <li class="breadcrumb-item"><%= link_to "Factions", factions_path(sector_id: @sector.id) %></li>
+          <li class="breadcrumb-item active"><%= @faction.name %></li>
+        </ol>
+      </nav>
     </div>
-  </section>
-<% end %>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title">Faction Details</h5>
+                <i class="bi bi-flag-fill fs-3" style="color: <%= @faction.color_code %>;" title="<%= @faction.color_code %>"></i>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 label fw-bold text-primary">Name</div>
+                <div class="col-lg-9 col-md-8"><%= @faction.name %></div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 label fw-bold text-primary">Description</div>
+                <div class="col-lg-9 col-md-8"><%= @faction.description %></div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-lg-3 col-md-4 label fw-bold text-primary">Color Code</div>
+                <div class="col-lg-9 col-md-8">
+                  <code><%= @faction.color_code %></code>
+                </div>
+              </div>
+
+              <div class="mt-4 pt-3 border-top">
+                <div class="d-flex gap-2">
+                  <% if can_edit_factions?(@sector, current_user) %>
+                    <%= link_to edit_faction_path(@faction, sector_model_faction: { sector_id: @sector.id }), class: 'btn btn-primary' do %>
+                      <i class="bi bi-pencil"></i> Edit Faction
+                    <% end %>
+                  <% end %>
+                  <%= link_to factions_path(sector_id: @sector.id), class: 'btn btn-secondary' do %>
+                    <i class="bi bi-arrow-left"></i> Back to Factions
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Quick Actions</h5>
+              <div class="list-group">
+                <%= link_to sector_path(@sector), class: "list-group-item list-group-item-action" do %>
+                  <i class="bi bi-globe me-2 text-primary"></i> Sector Details
+                <% end %>
+                <% if can_view_systems?(@sector, current_user) %>
+                  <%= link_to systems_path(sector_id: @sector.id), class: "list-group-item list-group-item-action" do %>
+                    <i class="bi bi-layers me-2 text-info"></i> View Systems
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

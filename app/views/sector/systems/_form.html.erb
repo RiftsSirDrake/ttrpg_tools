@@ -1,137 +1,129 @@
-<%= form_for @system, url: @system.persisted? ? system_path(@system) : systems_path do |f| %>
+<%= form_for @system, url: @system.persisted? ? system_path(@system) : systems_path, html: { class: "row g-3" } do |f| %>
 
   <% if @system.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@system.errors.count, "error") %> prohibited this system from being saved:
-      </h2>
-      <ul>
-        <% @system.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  
-  <section class='section'>
-    <div class='row'>
-      <div class='col-lg-10'>
-        <div class='card'>
-          <div class='card-body'>
-            <h5 class='card-title'>
-              System located in: <%= @sector.name %> sector
-              <%= f.hidden_field :sector_id, value: @sector.id %>
-            </h5>
-          <div>
-            <div class="form-group">
-              <%= f.label :name %>
-              <%= f.text_field :name, maxlength: 45, class: 'form-control' %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label :location %> <small>(Ex. 0301 = third column, first row)</small>
-              <%= f.number_field :location, class: 'form-control' %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Port' %>
-              <%= f.select :starport, options_for_select(Shared::SystemMapping::PORT_MAP.map { |k, v| [v, k] }, selected: @system.uwp[0]), {}, { class: "form-control" } %>
-            </div>
-            
-            <div class="form-group">
-              <%= f.label 'Size' %>
-              <%= f.select :planet_size, options_for_select(Shared::SystemMapping::SIZE_MAP.map { |k, v| [v, k] }, selected: @system.uwp[1]), {}, { class: "form-control" } %>
-            </div>
-            
-            <div class="form-group">
-              <%= f.label 'Atmo' %>
-              <%= f.select :atmosphere, options_for_select(Shared::SystemMapping::ATMO_MAP.map { |k, v| [v, k] }, selected: @system.uwp[2]), {}, { class: "form-control" } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Hydro' %>
-              <%= f.select :hydrosphere, options_for_select(Shared::SystemMapping::HYDRO_MAP.map { |k, v| [v, k] }, selected: @system.uwp[3]), {}, { class: "form-control" } %>
-            </div>
-
-            <div id="population">
-              <div class="form-group">
-                <%= f.label 'Pop Base' %>
-                <%= f.select :pop_base, options_for_select((0..9).to_a, @system.pbg[0]), {}, { class: 'form-control' } %>
-              </div>
-            
-              <div class="form-group">
-                <%= f.label 'Pop' %>
-                <%= f.select :population, options_for_select(Shared::SystemMapping::POP_MAP.map { |k, v| [v.call(@system.pbg[0]), k] }, selected: @system.uwp[4]), {}, { class: "form-control" } %>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <%= f.label 'Gov' %>
-              <%= f.select :goverment, options_for_select(Shared::SystemMapping::GOV_MAP.map { |k, v| [v, k] }, selected: @system.uwp[5]), {}, { class: "form-control" } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'LAW' %>
-              <%= f.select :law, options_for_select(Shared::SystemMapping::LAW_MAP.map { |k, v| [v, k] }, selected: @system.uwp[6]), {}, { class: "form-control" } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Tech' %>
-              <%= f.select :tech_level, options_for_select(Shared::SystemMapping::TECH_MAP.map { |k, v| [v, k] }, selected: @system.uwp[8]), {}, { class: "form-control" } %>
-            </div>
-            
-            <div class="form-group">
-              <%= f.label 'Bases' %>
-              <%= f.select :base, options_for_select(Shared::SystemMapping::BASES_MAP.map { |k, v| [v, k] },selected: @system.base[0]), { include_blank: true }, { class: "form-control" } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Note 1' %>
-              <%= f.select :notes1, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[0,2]), { include_blank: true },  { class: "form-control" } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Note 2' %>
-              <%= f.select :notes2, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[3,2]), { include_blank: true }, { class: "form-control" } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Note 3' %>
-              <%= f.select :notes3, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[6,2]), { include_blank: true }, { class: "form-control" } %>
-            </div>
-            
-            <div class="form-group">
-              <%= f.label 'Travel Advisory' %>
-              <%= f.select :ring, options_for_select(Shared::SystemMapping::ADVISORY_MAP.map { |k, v| [v, k] }, selected: @system.ring[0]), {}, { class: "form-control" } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Asteroid Belts' %>
-              <%= f.select :asteroid_belts, options_for_select((0..9).to_a, @system.pbg[1]), {}, { class: 'form-control' } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Gas Giants' %>
-              <%= f.select :gas_giants, options_for_select((0..9).to_a, @system.pbg[2]), {}, { class: 'form-control' } %>
-            </div>
-          
-            <div class="form-group">
-              <%= f.label 'Faction' %>
-              <div class="input-group">
-                <%= f.select :allegiance, options_for_select(@factions.map { |f| [f.name, f.name] }, selected: @system.allegiance), { include_blank: true }, { class: "form-control", id: "faction_select" } %>
-                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFactionModal">
-                  New Faction
-                </button>
-              </div>
-            </div>
-            
-            <div class='col-12'><%= f.submit class: 'btn btn-primary' %></div>
-          </div>            
-          </div>
-        </div>
+    <div class="col-12">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading"><%= pluralize(@system.errors.count, "error") %> prohibited this system from being saved:</h4>
+        <ul class="mb-0">
+          <% @system.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     </div>
-  </section>
+  <% end %>
+
+  <%= f.hidden_field :sector_id, value: @sector.id %>
+
+  <div class="col-md-6">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, maxlength: 45, class: 'form-control', placeholder: "System Name" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= f.label :location, class: "form-label" %> <small class="text-muted">(Ex. 0301)</small>
+    <%= f.number_field :location, class: 'form-control', placeholder: "Hex Location" %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :starport, "Starport", class: "form-label" %>
+    <%= f.select :starport, options_for_select(Shared::SystemMapping::PORT_MAP.map { |k, v| [v, k] }, selected: @system.uwp[0]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :planet_size, "Planet Size", class: "form-label" %>
+    <%= f.select :planet_size, options_for_select(Shared::SystemMapping::SIZE_MAP.map { |k, v| [v, k] }, selected: @system.uwp[1]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :atmosphere, "Atmosphere", class: "form-label" %>
+    <%= f.select :atmosphere, options_for_select(Shared::SystemMapping::ATMO_MAP.map { |k, v| [v, k] }, selected: @system.uwp[2]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :hydrosphere, "Hydrosphere", class: "form-label" %>
+    <%= f.select :hydrosphere, options_for_select(Shared::SystemMapping::HYDRO_MAP.map { |k, v| [v, k] }, selected: @system.uwp[3]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-8">
+    <div id="population" class="row">
+      <div class="col-md-6">
+        <%= f.label :pop_base, "Population Multiplier", class: "form-label" %>
+        <%= f.select :pop_base, options_for_select((0..9).to_a, @system.pbg[0]), {}, { class: 'form-select' } %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :population, "Population Exponent", class: "form-label" %>
+        <%= f.select :population, options_for_select(Shared::SystemMapping::POP_MAP.map { |k, v| [v.call(@system.pbg[0]), k] }, selected: @system.uwp[4]), {}, { class: "form-select" } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :goverment, "Government", class: "form-label" %>
+    <%= f.select :goverment, options_for_select(Shared::SystemMapping::GOV_MAP.map { |k, v| [v, k] }, selected: @system.uwp[5]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :law, "Law Level", class: "form-label" %>
+    <%= f.select :law, options_for_select(Shared::SystemMapping::LAW_MAP.map { |k, v| [v, k] }, selected: @system.uwp[6]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :tech_level, "Tech Level", class: "form-label" %>
+    <%= f.select :tech_level, options_for_select(Shared::SystemMapping::TECH_MAP.map { |k, v| [v, k] }, selected: @system.uwp[8]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :base, "Bases", class: "form-label" %>
+    <%= f.select :base, options_for_select(Shared::SystemMapping::BASES_MAP.map { |k, v| [v, k] },selected: @system.base[0]), { include_blank: true }, { class: "form-select" } %>
+  </div>
+
+  <%# TODO: travel advisory dropdown not showing selected value on form load %>
+  <div class="col-md-4">
+    <%= f.label :ring, "Travel Advisory", class: "form-label" %>
+    <%= f.select :ring, options_for_select(Shared::SystemMapping::ADVISORY_MAP.map { |k, v| [v, k] }, selected: @system.ring[0]), {}, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-2">
+    <%= f.label :asteroid_belts, "Asteroid Belts", class: "form-label" %>
+    <%= f.select :asteroid_belts, options_for_select((0..9).to_a, @system.pbg[1]), {}, { class: 'form-select' } %>
+  </div>
+
+  <div class="col-md-2">
+    <%= f.label :gas_giants, "Gas Giants", class: "form-label" %>
+    <%= f.select :gas_giants, options_for_select((0..9).to_a, @system.pbg[2]), {}, { class: 'form-select' } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :notes1, "Note 1", class: "form-label" %>
+    <%= f.select :notes1, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[0,2]), { include_blank: true },  { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :notes2, "Note 2", class: "form-label" %>
+    <%= f.select :notes2, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[3,2]), { include_blank: true }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-md-4">
+    <%= f.label :notes3, "Note 3", class: "form-label" %>
+    <%= f.select :notes3, options_for_select(Shared::SystemMapping::NOTES_MAP.map { |k, v| [v, k] }, selected: @system.notes[6,2]), { include_blank: true }, { class: "form-select" } %>
+  </div>
+
+  <div class="col-12 mt-3 pt-3 border-top">
+    <%= f.label :allegiance, "Faction Allegiance", class: "form-label" %>
+    <div class="input-group">
+      <%= f.select :allegiance, options_for_select(@factions.map { |fac| [fac.name, fac.name] }, selected: @system.allegiance), { include_blank: "No Allegiance" }, { class: "form-select", id: "faction_select" } %>
+      <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFactionModal">
+        <i class="bi bi-plus-circle"></i> New Faction
+      </button>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <%= f.submit class: 'btn btn-primary px-4' %>
+    <%= link_to 'Cancel', systems_path(sector_id: @sector.id), class: "btn btn-secondary px-4" %>
+  </div>
 
 <% end %>
 

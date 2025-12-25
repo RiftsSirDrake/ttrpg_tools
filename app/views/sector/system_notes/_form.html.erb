@@ -1,4 +1,4 @@
-<%= form_for @system_note, url: @system_note.persisted? ? system_note_path(@system_note) : system_notes_path, html: {class: "form_for_notes"} do |f| %>
+<%= form_for @system_note, url: @system_note.persisted? ? system_system_note_path(system_id: @system.id, id: @system_note.id) : system_system_notes_path(system_id: @system.id), html: {class: "form_for_notes"} do |f| %>
 
   <% if @system_note.errors.any? %>
     <div id="error_explanation">

@@ -5,10 +5,10 @@ _fixture:
 
 one:
   name: MyString
-  author: test@example.com
-  public_view: 
+  author: one@example.com
+  public_view: 0
 
 two:
   name: MyString
-  author: test@example.com
-  public_view: 
+  author: one@example.com
+  public_view: 0

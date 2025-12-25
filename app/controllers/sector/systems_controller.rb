@@ -6,21 +6,26 @@ class Sector::SystemsController < ApplicationController
   include Sector::SystemsHelper
   
   def index
-    @systems = SectorModel::System.where("sector_id = ?", params[:sector_id])
     @sector = SectorModel::Sector.find(params[:sector_id])
+    if can_view_systems?(@sector, current_user)
+      @systems = SectorModel::System.where("sector_id = ?", params[:sector_id])
+    else
+      redirect_back_or_to sector_path(@sector), alert: "You do not have permission to view systems for this sector."
+    end
   end
 
   def bulk_upload
     @sector = SectorModel::Sector.find(params[:sector_id])
-    unless @sector.author == current_user.email
-      redirect_to systems_path(sector_id: params[:sector_id])
+    unless can_edit_systems?(@sector, current_user)
+      redirect_back_or_to systems_path(sector_id: params[:sector_id]), alert: "You do not have permission to edit systems."
     end
   end
 
+  # TODO: bulk upload is not properly handling bases, traits, asteroid, and gas giants
   def process_bulk_upload
     @sector = SectorModel::Sector.find(params[:sector_id])
     
-    if @sector.author == current_user.email
+    if can_edit_systems?(@sector, current_user)
       file = params[:file]
       if file.present? && (file.path.ends_with?('.xlsx') || file.path.ends_with?('.csv'))
         if file.path.ends_with?('.xlsx')
@@ -120,13 +125,17 @@ class Sector::SystemsController < ApplicationController
         redirect_to bulk_upload_systems_path(sector_id: @sector.id)
       end
     else
-      redirect_to systems_path(sector_id: params[:sector_id])
+      redirect_back_or_to systems_path(sector_id: params[:sector_id]), alert: "You do not have permission to edit systems."
     end
   end
 
   def show
     @system = SectorModel::System.select('systems.*, factions.name as faction_name, factions.description as faction_description').joins('left join factions on factions.name = systems.allegiance').find(params[:id])
-    @system_notes = SectorModel::SystemNote.where(system_id: @system.id)
+    @sector = @system.sector
+    unless can_view_systems?(@sector, current_user)
+      redirect_back_or_to sector_path(@sector), alert: "You do not have permission to view systems for this sector."
+    end
+    @system_notes = visible_system_notes(@system, current_user)
   end
 
   def new
@@ -134,7 +143,7 @@ class Sector::SystemsController < ApplicationController
     @factions = SectorModel::Faction.where(sector_id: @sector.id)
     @page_libs = [:color_picker]
     
-    if @sector.author == current_user.email
+    if can_edit_systems?(@sector, current_user)
       @system = SectorModel::System.new
       @system.uwp = ""
       @system.pbg = 000
@@ -142,7 +151,7 @@ class Sector::SystemsController < ApplicationController
       @system.notes = ""
       @system.ring = ""
     else
-      redirect_to systems_path(sector_id: params[:sector_id])
+      redirect_back_or_to systems_path(sector_id: @sector.id), alert: "You do not have permission to edit systems."
     end
     
   end
@@ -151,7 +160,7 @@ class Sector::SystemsController < ApplicationController
     @sector = SectorModel::Sector.find(params[:sector_model_system][:sector_id])
     @factions = SectorModel::Faction.where(sector_id: @sector.id)
     
-    if @sector.author == current_user.email
+    if can_edit_systems?(@sector, current_user)
       @system = SectorModel::System.new(params.require(:sector_model_system).permit(:sector_id, :name, :location, :base, :ring, :allegiance, :created_at, :updated_at))
       @system.sector = @sector
       @system.uwp = combine_uwp_params(params[:sector_model_system])
@@ -165,7 +174,7 @@ class Sector::SystemsController < ApplicationController
       end
       
     else
-      redirect_to systems_path(sector_id: params[:sector_id])
+      redirect_back_or_to systems_path(sector_id: @sector.id), alert: "You do not have permission to edit systems."
     end
     
   end
@@ -176,8 +185,8 @@ class Sector::SystemsController < ApplicationController
     @factions = SectorModel::Faction.where(sector_id: @sector.id)
     @page_libs = [:color_picker]
 
-    unless @sector.author == current_user.email
-      redirect_to systems_path(sector_id: @system.sector_id)
+    unless can_edit_systems?(@sector, current_user)
+      redirect_back_or_to systems_path(sector_id: @system.sector_id), alert: "You do not have permission to edit systems."
     end
   end
 
@@ -186,7 +195,7 @@ class Sector::SystemsController < ApplicationController
     @sector = SectorModel::Sector.find(@system.sector_id)
     @factions = SectorModel::Faction.where(sector_id: @sector.id)
     
-    if @sector.author == current_user.email
+    if can_edit_systems?(@sector, current_user)
       @system.uwp = combine_uwp_params(params[:sector_model_system])
       @system.notes = combine_note_params(params[:sector_model_system])
       @system.pbg = combine_pbg_params(params[:sector_model_system])
@@ -196,22 +205,20 @@ class Sector::SystemsController < ApplicationController
       else
         render 'edit'
       end
-      
     else
-      redirect_to systems_path(sector_id: @system.sector_id)
+      redirect_back_or_to systems_path(sector_id: @system.sector_id), alert: "You do not have permission to edit systems."
     end
-      
   end
 
   def destroy
     @system = SectorModel::System.find(params[:id])
     @sector = SectorModel::Sector.find(@system.sector_id)
     
-    if @sector.author == current_user.email
+    if can_edit_systems?(@sector, current_user)
       @system.destroy
-      redirect_to systems_path(sector_id: params[:sector_id])
+      redirect_to systems_path(sector_id: @sector.id)
     else
-      redirect_to systems_path(sector_id: @system.sector_id)
+      redirect_back_or_to systems_path(sector_id: @system.sector_id), alert: "You do not have permission to edit systems."
     end
     
   end

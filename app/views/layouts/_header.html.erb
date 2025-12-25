@@ -21,18 +21,18 @@
   
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header">
-                <h6>TBD User Email</h6>
-                <span>TBD User Role</span>
+                <h6><%= current_user.email %></h6>
+                <span><%= current_user.role.capitalize %></span>
               </li>
               <li>
                 <hr class="dropdown-divider">
               </li>
   
               <li>
-                <a class="dropdown-item d-flex align-items-center" href="#">
+                <%= link_to profile_path, class: "dropdown-item d-flex align-items-center" do %>
                   <i class="bi bi-person"></i>
                   <span>My Profile</span>
-                </a>
+                <% end %>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -65,6 +65,21 @@
           </a>
         </li>
         
+        <% if current_user.admin? %>
+          <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#admin-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-shield-lock"></i><span>Admin</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="admin-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+              <li>
+                <%= link_to admin_users_path do %>
+                  <i class="bi bi-circle"></i><span>User Management</span>
+                <% end %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+
         <% if current_user.admin? || current_user.member? %>
           <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#sector-nav" data-bs-toggle="collapse" href="#">
@@ -83,10 +98,10 @@
         <li class="nav-heading">Misc</li>
   
         <li class="nav-item">
-          <a class="nav-link collapsed" href="users-profile.html">
+          <%= link_to profile_path, class: "nav-link collapsed" do %>
             <i class="bi bi-person"></i>
-            <span>TBD</span>
-          </a>
+            <span>Profile</span>
+          <% end %>
         </li>
       </ul>
   

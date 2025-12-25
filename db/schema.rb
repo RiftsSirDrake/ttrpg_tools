@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_23_234500) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_24_164308) do
   create_table "factions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "sector_id", null: false
     t.string "name"
@@ -19,6 +19,23 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_23_234500) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["sector_id"], name: "index_factions_on_sector_id"
+  end
+
+  create_table "sector_permissions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "sector_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "can_view_sector"
+    t.boolean "can_edit_sector"
+    t.boolean "can_view_factions"
+    t.boolean "can_edit_factions"
+    t.boolean "can_view_systems"
+    t.boolean "can_edit_systems"
+    t.boolean "can_view_system_notes"
+    t.boolean "can_edit_system_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sector_id"], name: "index_sector_permissions_on_sector_id"
+    t.index ["user_id"], name: "index_sector_permissions_on_user_id"
   end
 
   create_table "sectors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -36,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_23_234500) do
     t.binary "public_view"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text "content"
   end
 
   create_table "system_overrides", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -76,5 +94,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_23_234500) do
   end
 
   add_foreign_key "factions", "sectors"
+  add_foreign_key "sector_permissions", "sectors"
+  add_foreign_key "sector_permissions", "users"
   add_foreign_key "systems", "sectors"
 end

@@ -1,60 +1,62 @@
-<% content_for :page_title, 'Edit Sector' %>
-
-<%= form_with model: @sector, url: sector_path(@sector), method: :patch do |f| %>
-
-  <% if @sector.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@sector.errors.count, "error") %> prohibited this sector from being saved:
-      </h2>
-      <ul>
-        <% @sector.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  
+<div class="container-fluid">
   <div class="pagetitle">
-    <h1>New Sector</h1>
+    <h1>Edit Sector</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item action"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item"><%= link_to @sector.name, sector_path(@sector) %></li>
+        <li class="breadcrumb-item active">Edit</li>
       </ol>
     </nav>
   </div>
 
-    <section class='section'>
-      <div class='row'>
-        <div class='col-lg-10'>
-          <div class='card'>
-            <div class='card-body'>
-              <h5 class='card-title'>
-              </h5>
-            <div>
+  <section class="section">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Update Sector Settings</h5>
+
+            <%= form_with model: @sector, url: sector_path(@sector), method: :patch, html: { class: "row g-3" } do |f| %>
+              <% if @sector.errors.any? %>
+                <div class="col-12">
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading"><%= pluralize(@sector.errors.count, "error") %> prohibited this sector from being saved:</h4>
+                    <ul class="mb-0">
+                      <% @sector.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                </div>
+              <% end %>
+
               <%= f.hidden_field :author, value: current_user.email %>
-              
-            <div class="form-group form_input_padding">
-              <%= f.label :name %>
-              <%= f.text_field :name, class: 'form-control' %>
-            </div>
-            
-            <div class="form_input_padding">
-              <div class="form-check form-switch">
-                <%= f.label :public_view, class: "form-check-label" %>
-                <%= f.check_box :public_view, class: 'form-check-input' %>
+              <%= f.hidden_field :updated_at, value: Time.now %>
+
+              <div class="col-12">
+                <%= f.label :name, class: "form-label" %>
+                <%= f.text_field :name, class: 'form-control' %>
               </div>
-            </div>
-  
-            <%= f.hidden_field :updated_at, value: Time.now %>
-  
-            <div class='col-12 form_input_padding'><%= f.submit class: 'btn btn-primary' %></div>  
-          </div>            
+
+              <div class="col-12 mt-3">
+                <div class="form-check form-switch">
+                  <%= f.check_box :public_view, class: 'form-check-input' %>
+                  <%= f.label :public_view, "Open To Public?", class: "form-check-label" %>
+                </div>
+                <div class="form-text">If enabled, any user can view this sector.</div>
+              </div>
+
+              <div class="text-center mt-4">
+                <%= f.submit "Update Sector", class: 'btn btn-primary' %>
+                <%= link_to 'Cancel', sector_path(@sector), class: "btn btn-secondary" %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   </section>
-  
-<% end %>
+</div>

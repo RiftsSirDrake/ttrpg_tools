@@ -1,59 +1,105 @@
-<% content_for :page_title, 'Sectors' %>
+<div class="container-fluid">
+  <div class="pagetitle">
+    <h1>Sectors</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Sectors</li>
+      </ol>
+    </nav>
+  </div>
 
-<div class="pagetitle">
-  <h1>Sectors</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
-    </ol>
-  </nav>
-</div>
-
-<section>
-  <div class="col-12">
-    <div class="card overflow-auto">
-      <div class="card-body">
-        <h5 class="card-title">Sectors <span>| <%= link_to 'New Sector', new_sector_path %></span></h5>
-        <table class="table table-borderless table-sm table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Systems</th>
-              <th scope="col">Hexmap</th>
-              <th scope="col">Factions</th>
-              <th scope="col">Public</th>
-              <th scope="col">Created</th>
-              <th scope="col">Updated</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% unless @sectors.blank? %>
-              <% @sectors.each do |sector| %>
-                <% if sector.author == current_user.email || sector.public_view == '1' || current_user.admin? %>
-                <tr>
-                  <th scope="row"><%= link_to sector.name, sector_path(sector) %></th>
-                  <td><%= link_to "View", systems_path(sector_id: sector.id) %></td>
-                  <td><%= link_to "View", "/hex_system/hexmap?sector_id=#{sector.id}" %></td>
-                  <td><%= link_to "View", factions_path(sector_id: sector.id) %></td>
-                  <td><%= sector.public_view == '1' ? 'Yes' : 'No' %></td>
-                  <td><%= sector.created_at.strftime("%m/%d/%Y") %></td>
-                  <td><%= sector.updated_at.strftime("%m/%d/%Y") %></td>
-                  <td>
-                    <% if sector.author == current_user.email || current_user.admin? %>
-                      <div class='btn-group'>
-                        <%= link_to 'Edit', edit_sector_path(sector), class: "btn btn-warning", style:"width: 5em" %>
-                        <%= link_to 'Delete', sector_path(sector), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", style:"width: 5em" %>
-                      </div>
-                    <% end %>
-                  </td>
-                </tr>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card overflow-auto">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title">Sectors</h5>
+              <% if current_user.member? || current_user.admin? %>
+                <%= link_to new_sector_path, class: 'btn btn-primary' do %>
+                  <i class="bi bi-plus-circle"></i> New Sector
                 <% end %>
               <% end %>
-            <% end %>
-          </tbody>
-        </table>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th class="text-center">Systems</th>
+                    <th class="text-center">Hexmap</th>
+                    <th class="text-center">Factions</th>
+                    <th class="text-center">Public</th>
+                    <th class="text-center">Created</th>
+                    <th class="text-center">Updated</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% unless @sectors.blank? %>
+                    <% @sectors.each do |sector| %>
+                      <tr>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-globe fs-4 me-2"></i>
+                            <strong><%= link_to sector.name, sector_path(sector) %></strong>
+                          </div>
+                        </td>
+                        <td class="text-center">
+                          <% if can_view_systems?(sector, current_user) %>
+                            <%= link_to systems_path(sector_id: sector.id), class: "btn btn-outline-info btn-sm" do %>
+                              <i class="bi bi-layers"></i> View
+                            <% end %>
+                          <% end %>
+                        </td>
+                        <td class="text-center">
+                          <% if can_view_sector?(sector, current_user) %>
+                            <%= link_to "/hex_system/hexmap?sector_id=#{sector.id}", class: "btn btn-outline-info btn-sm" do %>
+                              <i class="bi bi-grid-3x3"></i> View
+                            <% end %>
+                          <% end %>
+                        </td>
+                        <td class="text-center">
+                          <% if can_view_factions?(sector, current_user) %>
+                            <%= link_to factions_path(sector_id: sector.id), class: "btn btn-outline-info btn-sm" do %>
+                              <i class="bi bi-people"></i> View
+                            <% end %>
+                          <% end %>
+                        </td>
+                        <td class="text-center">
+                          <% if sector.public_view == '1' %>
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Yes</span>
+                          <% else %>
+                            <span class="badge bg-secondary"><i class="bi bi-x-circle me-1"></i> No</span>
+                          <% end %>
+                        </td>
+                        <td class="text-center text-muted small"><%= sector.created_at.strftime("%m/%d/%Y") %></td>
+                        <td class="text-center text-muted small"><%= sector.updated_at.strftime("%m/%d/%Y") %></td>
+                        <td class="text-end">
+                          <% if can_edit_sector?(sector, current_user) %>
+                            <div class="btn-group" role="group">
+                              <%= link_to edit_sector_path(sector), class: 'btn btn-outline-secondary btn-sm', title: 'Edit' do %>
+                                <i class="bi bi-pencil"></i>
+                              <% end %>
+                              <% if sector.author == current_user.email || current_user.admin? %>
+                                <%= link_to sector_path(sector), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger btn-sm', title: 'Delete' do %>
+                                  <i class="bi bi-trash"></i>
+                                <% end %>
+                              <% end %>
+                            </div>
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>

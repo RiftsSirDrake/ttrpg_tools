@@ -1,0 +1,91 @@
+<div class="container-fluid">
+  <div class="pagetitle">
+    <h1>Add Permission for <%= @sector.name %></h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item"><%= link_to @sector.name, sector_path(@sector) %></li>
+        <li class="breadcrumb-item"><%= link_to "Permissions", sector_permissions_path(@sector) %></li>
+        <li class="breadcrumb-item active">New</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New User Permission</h5>
+
+            <%= form_with(model: @permission, url: sector_permissions_path(@sector), local: true, class: "row g-3") do |f| %>
+              <div class="col-12 mb-3">
+                <%= f.label :user_id, class: "form-label" %>
+                <%= f.collection_select :user_id, @users, :id, :email, {}, { class: "form-select" } %>
+              </div>
+
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label d-block">Sector Access</label>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_view_sector, class: "form-check-input" %>
+                      <%= f.label :can_view_sector, "View Sector", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_edit_sector, class: "form-check-input" %>
+                      <%= f.label :can_edit_sector, "Edit Sector", class: "form-check-label" %>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label d-block">Factions Access</label>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_view_factions, class: "form-check-input" %>
+                      <%= f.label :can_view_factions, "View Factions", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_edit_factions, class: "form-check-input" %>
+                      <%= f.label :can_edit_factions, "Edit Factions", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label d-block">Systems Access</label>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_view_systems, class: "form-check-input" %>
+                      <%= f.label :can_view_systems, "View Systems", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_edit_systems, class: "form-check-input" %>
+                      <%= f.label :can_edit_systems, "Edit Systems", class: "form-check-label" %>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label d-block">Notes Access</label>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_view_system_notes, class: "form-check-input" %>
+                      <%= f.label :can_view_system_notes, "View Notes", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check form-switch">
+                      <%= f.check_box :can_edit_system_notes, class: "form-check-input" %>
+                      <%= f.label :can_edit_system_notes, "Edit Notes", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <%= f.submit "Grant Permissions", class: "btn btn-primary" %>
+                <%= link_to 'Cancel', sector_permissions_path(@sector), class: "btn btn-secondary" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -16,14 +16,25 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :sectors, controller:'sector/sectors'
+  resources :sectors, controller:'sector/sectors' do
+    resources :permissions, controller: 'sector/permissions'
+  end
   resources :systems, controller:'sector/systems' do
     collection do
       get 'bulk_upload'
       post 'process_bulk_upload'
     end
+    resources :system_notes, controller: 'sector/system_notes'
   end
   resources :factions, controller:'sector/factions'
-  resources :system_notes, controller:'sector/system_notes'
+  resource :profile, only: [:show], controller: 'profiles'
+
+  namespace :admin do
+    resources :users do
+      member do
+        patch :reset_password
+      end
+    end
+  end
 
 end

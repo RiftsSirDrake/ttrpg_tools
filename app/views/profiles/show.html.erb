@@ -1,0 +1,147 @@
+<div class="container-fluid">
+  <div class="pagetitle">
+    <h1>Profile</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Profile</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-4">
+
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <i class="bi bi-person-circle fs-1 text-primary mb-2"></i>
+            <h2><%= @user.email %></h2>
+            <span class="badge <%= case @user.role; when 'admin' then 'bg-danger'; when 'member' then 'bg-success'; else 'bg-secondary'; end %>">
+              <%= @user.role.capitalize %>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-xl-8">
+
+        <div class="card">
+          <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">
+                  <i class="bi bi-info-circle me-1"></i> Overview
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-sectors">
+                  <i class="bi bi-globe me-1"></i> My Sectors
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">
+                  <i class="bi bi-gear me-1"></i> Settings
+                </button>
+              </li>
+
+            </ul>
+            <div class="tab-content pt-2">
+
+              <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                <h5 class="card-title">Profile Details</h5>
+
+                <div class="row mb-3">
+                  <div class="col-lg-3 col-md-4 label fw-bold text-primary">Email</div>
+                  <div class="col-lg-9 col-md-8">
+                    <i class="bi bi-envelope me-2"></i> <%= @user.email %>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-lg-3 col-md-4 label fw-bold text-primary">Role</div>
+                  <div class="col-lg-9 col-md-8">
+                    <% role_class = case @user.role; when 'admin' then 'bg-danger'; when 'member' then 'bg-success'; else 'bg-secondary'; end %>
+                    <span class="badge <%= role_class %>"><%= @user.role.capitalize %></span>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-lg-3 col-md-4 label fw-bold text-primary">Joined</div>
+                  <div class="col-lg-9 col-md-8">
+                    <i class="bi bi-calendar-check me-2"></i> <%= @user.created_at.strftime("%B %d, %Y") %>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="tab-pane fade profile-sectors pt-3" id="profile-sectors">
+                <h5 class="card-title">My Sectors</h5>
+                <% if @sectors.any? %>
+                  <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col" class="text-center">Created</th>
+                          <th scope="col" class="text-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @sectors.each do |sector| %>
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <i class="bi bi-globe fs-5 me-2 text-info"></i>
+                                <strong><%= link_to sector.name, sector_path(sector) %></strong>
+                              </div>
+                            </td>
+                            <td class="text-center text-muted small"><%= sector.created_at.strftime("%m/%d/%Y") %></td>
+                            <td class="text-end">
+                              <div class="btn-group" role="group">
+                                <%= link_to sector_path(sector), class: 'btn btn-outline-info btn-sm', title: 'View' do %>
+                                  <i class="bi bi-eye"></i>
+                                <% end %>
+                                <%= link_to edit_sector_path(sector), class: "btn btn-outline-secondary btn-sm", title: 'Edit' do %>
+                                  <i class="bi bi-pencil"></i>
+                                <% end %>
+                              </div>
+                            </td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                <% else %>
+                  <div class="alert alert-info" role="alert">
+                    <i class="bi bi-info-circle me-2"></i> You haven't created any sectors yet.
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="tab-pane fade pt-3" id="profile-settings">
+                <h5 class="card-title">Account Settings</h5>
+                <div class="row mb-3 align-items-center">
+                  <div class="col-lg-3 col-md-4 label fw-bold text-primary">Password</div>
+                  <div class="col-lg-9 col-md-8">
+                    <%= link_to edit_user_registration_path, class: "btn btn-primary" do %>
+                      <i class="bi bi-key me-1"></i> Change Password
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- End Bordered Tabs -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>

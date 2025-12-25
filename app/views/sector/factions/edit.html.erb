@@ -1,68 +1,71 @@
 <% content_for :page_title, 'Edit Faction' %>
 
-<%= form_with model: @faction, url: faction_path(@faction), method: :patch do |f| %>
-
-  <% if @faction.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@faction.errors.count, "error") %> prohibited this faction from being saved:
-      </h2>
-      <ul>
-        <% @faction.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<div class="container-fluid">
   <div class="pagetitle">
-    <h1>New Faction</h1>
+    <h1>Edit Faction</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
-        <li class="breadcrumb-item active"><%= link_to @sector.name, factions_path(sector_id: @sector.id) %></li>
+        <li class="breadcrumb-item"><%= link_to @sector.name, sector_path(@sector) %></li>
+        <li class="breadcrumb-item"><%= link_to "Factions", factions_path(sector_id: @sector.id) %></li>
+        <li class="breadcrumb-item active">Edit</li>
       </ol>
     </nav>
   </div>
-  
-  <section class='section'>
-    <div class='row'>
-      <div class='col-lg-10'>
-        <div class='card'>
-          <div class='card-body'>
-            <h5 class='card-title'>
-              Faction located in: <%= @sector.name %> sector
+
+  <section class="section">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Update Faction Settings</h5>
+
+            <%= form_with model: @faction, url: faction_path(@faction), method: :patch, html: { class: "row g-3" } do |f| %>
+              <% if @faction.errors.any? %>
+                <div class="col-12">
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading"><%= pluralize(@faction.errors.count, "error") %> prohibited this faction from being saved:</h4>
+                    <ul class="mb-0">
+                      <% @faction.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                </div>
+              <% end %>
+
               <%= f.hidden_field :sector_id, value: @sector.id %>
-            </h5>
-            <div>
-              
-            <div class="form-group form_input_padding">
-              <%= f.label :name %>
-              <%= f.text_field :name, class: 'form-control' %>
-            </div>
-            
-            <div class="form-group form_input_padding">
-              <%= f.label :description %>
-              <%= f.text_field :description, class: 'form-control' %>
-            </div>
-            
-            <div class="form-group form_input_padding">
-              <%= f.label :color_code %>
-              <%= f.text_field :color_code, id: 'color_picker' %>
-            </div>
-            
-            <%= f.hidden_field :updated_at, value: Time.now %>
-            
-            <div class='col-12 form_input_padding'><%= f.submit class: 'btn btn-primary' %></div>
-            </div>            
+              <%= f.hidden_field :updated_at, value: Time.now %>
+
+              <div class="col-12">
+                <%= f.label :name, class: "form-label" %>
+                <%= f.text_field :name, class: 'form-control' %>
+              </div>
+
+              <div class="col-12">
+                <%= f.label :description, class: "form-label" %>
+                <%= f.text_area :description, class: 'form-control', rows: 3 %>
+              </div>
+
+              <div class="col-12 mt-3">
+                <%= f.label :color_code, "Faction Color", class: "form-label d-block" %>
+                <%= f.text_field :color_code, id: 'color_picker', class: "form-control" %>
+                <div class="form-text">Choose a color to represent this faction on the hexmap.</div>
+              </div>
+
+              <div class="text-center mt-4">
+                <%= f.submit "Update Faction", class: 'btn btn-primary px-4' %>
+                <%= link_to 'Cancel', factions_path(sector_id: @sector.id), class: "btn btn-secondary px-4" %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   </section>
-  
-<% end %>
+</div>
 
 <script>
   $(document).ready(function() {

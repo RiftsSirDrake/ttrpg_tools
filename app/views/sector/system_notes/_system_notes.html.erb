@@ -1,6 +1,6 @@
   <div class="pagetitle">
     <h1>Notes <span>| 
-    <% if current_user.member? || current_user.admin? %>
+    <% if can_edit_system_notes?(@sector, current_user) %>
       <button class='btn btn-primary btn-sm open-modal-click' id="new_note">New Note</button>
     <% end %></span></h1>
   </div>
@@ -11,10 +11,10 @@
         <div class="card-body">
           <h5 class="card-title"><%= note.author.split('@').first %> <span>| <small><%= note.updated_at.strftime("%m/%d/%Y") %></small></span></h5>
           <%= note.content %>
-          <% unless note.author != current_user.email || !current_user.admin? %>
+          <% if can_edit_system_notes?(@sector, current_user) && (note.author == current_user.email || @sector.author == current_user.email || current_user.admin?) %>
             <div class="pt-3">
-              <button class='btn btn-warning open-modal-click' id="edit_note" data-url="<%= edit_system_note_path(note, sector_model_system_note: { system_id: @system.id }) %>">Edit</button>
-              <%= link_to 'Delete', system_note_path(note, sector_model_system_note: { system_id: @system.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
+              <button class='btn btn-warning open-modal-click' id="edit_note" data-url="<%= edit_system_system_note_path(system_id: @system.id, id: note.id) %>">Edit</button>
+              <%= link_to 'Delete', system_system_note_path(system_id: @system.id, id: note.id), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
             </div>
           <% end %>          
         </div>
@@ -44,7 +44,7 @@
       var target = "";
 
       if (clicked.attr("id") == "new_note") {
-        target = "<%= j new_system_note_path(sector_model_system_note: { system_id: @system.id }) %>"
+        target = "<%= j new_system_system_note_path(system_id: @system.id) %>"
       } else if (clicked.attr("id") == "edit_note") {
         target = clicked.data("url")
       }
@@ -69,12 +69,12 @@
       data: form.serialize(),
       dataType: 'script',
       success: function(data, textStatus, xhr) {
-        if (xhr.status === 204) {
+        if (xhr.status === 204 || xhr.status === 200) {
           closeSystemNotesModal();
 
           $('.modal-content').html('');
           $.ajax({
-            url: '<%= system_notes_path(system_id: @system.id, partial: "yes") %>',
+            url: '<%= system_system_notes_path(system_id: @system.id, partial: "yes") %>',
             type: 'GET',
             success: function(data) {
               $('#notes_table').html(data);

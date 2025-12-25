@@ -1,55 +1,89 @@
 <% content_for :page_title, 'Factions' %>
 
-<div class="pagetitle">
-  <h1>Factions</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
-    </ol>
-  </nav>
-</div>
+<div class="container-fluid">
+  <div class="pagetitle">
+    <h1>Factions</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item"><%= link_to @sector.name, sector_path(@sector) %></li>
+        <li class="breadcrumb-item active">Factions</li>
+      </ol>
+    </nav>
+  </div>
 
-<section>
-  <div class="col-12">
-    <div class="card overflow-auto">
-      <div class="card-body">
-        <h5 class="card-title">Factions <span>| <%= link_to 'New Faction', new_faction_path(sector_model_faction: { sector_id: params[:sector_id] }) %></span></h5>
-        <table class="table table-borderless table-sm table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Color</th>
-              <th scope="col">Created Date</th>
-              <th scope="col">Last Updated</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% unless @factions.blank? %>
-              <% @factions.each do |faction| %>
-                <tr>
-                  <td><%= faction.name %></td>
-                  <td><%= faction.description %></td>
-                  <td><i class="bi bi-flag-fill" style="color: <%= faction.color_code %>; font-size: 1.75em"></i></td>
-                  <td><%= faction.created_at.strftime("%m/%d/%Y") %></td>
-                  <td><%= faction.updated_at.strftime("%m/%d/%Y") %></td>
-                  <td>
-                    <% unless @sector.author != current_user.email %>
-                      <div class="btn-group">
-                        <%= link_to 'Edit', edit_faction_path(faction, sector_model_faction: { sector_id: params[:sector_id] }), class: "btn btn-warning" %>
-                        <%= link_to 'Delete', faction_path(faction, sector_model_faction: { sector_id: params[:sector_id] }), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>                        
-                      </div>
-
-                    <% end %>
-                  </td>
-                </tr>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card overflow-auto">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title">Factions for <%= @sector.name %></h5>
+              <% if can_edit_factions?(@sector, current_user) %>
+                <%= link_to new_faction_path(sector_model_faction: { sector_id: @sector.id }), class: 'btn btn-primary' do %>
+                  <i class="bi bi-plus-circle"></i> New Faction
+                <% end %>
               <% end %>
-            <% end %>
-          </tbody>
-        </table>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col" class="text-center">Color</th>
+                    <th scope="col" class="text-center">Created</th>
+                    <th scope="col" class="text-center">Updated</th>
+                    <% if can_edit_factions?(@sector, current_user) %>
+                      <th scope="col" class="text-end">Actions</th>
+                    <% end %>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% unless @factions.blank? %>
+                    <% @factions.each do |faction| %>
+                      <tr>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-people fs-5 me-2 text-info"></i>
+                            <strong><%= link_to faction.name, faction_path(faction, sector_id: @sector.id) %></strong>
+                          </div>
+                        </td>
+                        <td><%= faction.description %></td>
+                        <td class="text-center">
+                          <i class="bi bi-flag-fill fs-4" style="color: <%= faction.color_code %>;" title="<%= faction.color_code %>"></i>
+                        </td>
+                        <td class="text-center text-muted small"><%= faction.created_at.strftime("%m/%d/%Y") %></td>
+                        <td class="text-center text-muted small"><%= faction.updated_at.strftime("%m/%d/%Y") %></td>
+                        <% if can_edit_factions?(@sector, current_user) %>
+                          <td class="text-end">
+                            <div class="btn-group" role="group">
+                              <%= link_to edit_faction_path(faction, sector_model_faction: { sector_id: @sector.id }), class: 'btn btn-outline-secondary btn-sm', title: 'Edit' do %>
+                                <i class="bi bi-pencil"></i>
+                              <% end %>
+                              <%= link_to faction_path(faction, sector_model_faction: { sector_id: @sector.id }), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger btn-sm', title: 'Delete' do %>
+                                <i class="bi bi-trash"></i>
+                              <% end %>
+                            </div>
+                          </td>
+                        <% end %>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-3">
+              <%= link_to sector_path(@sector), class: 'btn btn-secondary' do %>
+                <i class="bi bi-arrow-left"></i> Back to Sector
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>

@@ -1,0 +1,84 @@
+<div class="container-fluid">
+  <div class="pagetitle">
+    <h1>Permissions for <%= @sector.name %></h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><%= link_to "Sectors", sectors_path %></li>
+        <li class="breadcrumb-item"><%= link_to @sector.name, sector_path(@sector) %></li>
+        <li class="breadcrumb-item active">Permissions</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title">User Permissions</h5>
+              <%= link_to new_sector_permission_path(@sector), class: 'btn btn-primary' do %>
+                <i class="bi bi-person-plus"></i> Add User
+              <% end %>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th class="text-center">Sector</th>
+                    <th class="text-center">Factions</th>
+                    <th class="text-center">Systems</th>
+                    <th class="text-center">Notes</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @permissions.each do |permission| %>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <i class="bi bi-person-circle fs-4 me-2"></i>
+                          <span><%= permission.user.email %></span>
+                        </div>
+                      </td>
+                      <td class="text-center">
+                        <%= render partial: 'permission_badges', locals: { view: permission.can_view_sector, edit: permission.can_edit_sector } %>
+                      </td>
+                      <td class="text-center">
+                        <%= render partial: 'permission_badges', locals: { view: permission.can_view_factions, edit: permission.can_edit_factions } %>
+                      </td>
+                      <td class="text-center">
+                        <%= render partial: 'permission_badges', locals: { view: permission.can_view_systems, edit: permission.can_edit_systems } %>
+                      </td>
+                      <td class="text-center">
+                        <%= render partial: 'permission_badges', locals: { view: permission.can_view_system_notes, edit: permission.can_edit_system_notes } %>
+                      </td>
+                      <td class="text-end">
+                        <div class="btn-group" role="group">
+                          <%= link_to edit_sector_permission_path(@sector, permission), class: 'btn btn-outline-secondary btn-sm', title: 'Edit' do %>
+                            <i class="bi bi-pencil"></i>
+                          <% end %>
+                          <%= link_to sector_permission_path(@sector, permission), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger btn-sm', title: 'Remove' do %>
+                            <i class="bi bi-trash"></i>
+                          <% end %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="mt-3">
+              <%= link_to sector_path(@sector), class: 'btn btn-secondary' do %>
+                <i class="bi bi-arrow-left"></i> Back to Sector
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -8,6 +8,11 @@ class HexSystemController < ApplicationController
 			return
 		end
 
+		unless can_view_sector?(@sector, current_user)
+			redirect_back_or_to sectors_path, alert: "You do not have permission to view this sector's hexmap."
+			return
+		end
+
 		@factions = SectorModel::Faction.where(sector_id: @sector.id)
 		raw_hexmap_data = SectorModel::System.hexmap(@sector.id)
 

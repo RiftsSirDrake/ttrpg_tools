@@ -1,13 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  sector_id: 1
-  system_id: 1
-  author: MyString
-  public_view: 
+  sector_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  system_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  author: one@example.com
+  public_view: true
+  content: "This is a test note for system one."
 
 two:
-  sector_id: 1
-  system_id: 1
-  author: MyString
-  public_view: 
+  sector_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  system_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  author: two@example.com
+  public_view: false
+  content: "This is another test note for system one."
