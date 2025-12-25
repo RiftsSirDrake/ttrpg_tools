@@ -63,7 +63,8 @@
 		el.classList.add('oi-viz','oi-map','oi-map-hex');
 
 		// Add an inner element
-		if(!el.querySelector('.hexmap-inner')){
+		this.el = el.querySelector('.oi-map-inner');
+		if(!this.el){
 			const otop = document.createElement('div');
 			otop.classList.add('oi-top');
 			otop.innerHTML = '<div class="oi-left"></div><div class="oi-right"></div>';

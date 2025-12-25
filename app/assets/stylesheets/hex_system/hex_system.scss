@@ -29,24 +29,28 @@
   text-align: center;
   background: black;
   color: white;
-  padding: 0.25em 0.5em;
-  transform: translate3d(-50%,50%,0);
-  transition: left 0.1s linear,
-  top 0.1s linear;
+  padding: 0.5em 1em;
+  transform: translate3d(-50%,-100%,0);
   border-radius: 4px;
+  z-index: 1000;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  font-size: 0.9em;
+  line-height: 1.4;
 }
 
 #hexmap .hex-tip::after {
-  content: ""; position: absolute;
-  bottom: auto;
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
   width: 0;
   height: 0;
   border: 0.5em solid transparent;
-  left: 50%;
-  top: 0%;
-  transform: translate3d(-50%,-100%,0);
+  transform: translate3d(-50%, 0, 0);
   border-color: transparent;
-  border-bottom-color: black;
+  border-top-color: black;
 }
 
 #hexmap tspan {font-size: 14px;}

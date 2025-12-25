@@ -176,26 +176,37 @@
 
   // Make a tooltip
   hex.on('mouseover',function(e){
-  	var svg,tip,bb,bbo,hex;
-  	svg = e.data.hexmap.el;
-  	hex = e.target;
+  	var container,tip,bb,bbo,hex_el,path_el;
+  	container = e.data.hexmap.el || e.data.hexmap._attr.el; // Use inner element or fallback to main element
+  	hex_el = e.currentTarget; // Use currentTarget to get the hex group
+  	path_el = hex_el.querySelector('path'); // Use the path element for precise bounding box
+  	
   	// Get any existing tooltip for this hexmap
-  	tip = svg.querySelector('.hex-tip');
+  	tip = container.querySelector('.hex-tip');
   	if(!tip){
   		// Add a new tooltip
   		tip = document.createElement('div');
   		tip.classList.add('hex-tip');
-  		svg.appendChild(tip);
+  		container.appendChild(tip);
   	}
   	// Update contents of tooltip
-  	tip.innerHTML = '<a href="/systems/'+e.data.data.sys_id+'">'+e.data.data.n+'</a>'+
+  	tip.innerHTML = '<strong><a href="/systems/'+e.data.data.sys_id+'" style="color: #4db3ff;">'+e.data.data.n+'</a></strong>'+
   	  '<br />'+'Traveller Coordinates '+e.data.data.hex_loc.toLocaleString()+
   	  '<br /> Hexmap Coordinates q:'+e.data.data.q+' r:'+e.data.data.r;
+  	
   	// Update position of tooltip
-  	bb = hex.getBoundingClientRect();
-  	bbo = svg.getBoundingClientRect();
-  	tip.style.left = Math.round(bb.left + bb.width/2 - bbo.left + svg.scrollLeft)+'px';
-  	tip.style.top = Math.round(bb.top + bb.height/2 - bbo.top -15)+'px';
+  	bb = (path_el || hex_el).getBoundingClientRect();
+  	bbo = container.getBoundingClientRect();
+
+    // Account for any scaling (e.g. browser zoom or CSS transforms)
+    var scaleX = bbo.width / container.offsetWidth || 1;
+    var scaleY = bbo.height / container.offsetHeight || 1;
+  	
+  	var left = (bb.left + bb.width/2 - bbo.left) / scaleX - container.clientLeft;
+  	var top = (bb.top - bbo.top) / scaleY - container.clientTop - 10; // Position above the hex
+  	
+  	tip.style.left = Math.round(left)+'px';
+  	tip.style.top = Math.round(top)+'px';
   });
 
 </script>
