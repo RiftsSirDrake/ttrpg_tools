@@ -21,7 +21,6 @@ class Sector::SystemsController < ApplicationController
     end
   end
 
-  # TODO: bulk upload is not properly handling bases, traits, asteroid, and gas giants
   def process_bulk_upload
     @sector = SectorModel::Sector.find(params[:sector_id])
     

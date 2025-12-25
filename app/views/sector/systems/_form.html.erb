@@ -76,13 +76,12 @@
 
   <div class="col-md-4">
     <%= f.label :base, "Bases", class: "form-label" %>
-    <%= f.select :base, options_for_select(Shared::SystemMapping::BASES_MAP.map { |k, v| [v, k] },selected: @system.base[0]), { include_blank: true }, { class: "form-select" } %>
+    <%= f.select :base, options_for_select(Shared::SystemMapping::BASES_MAP.map { |k, v| [v, k] },selected: @system.base), { include_blank: true }, { class: "form-select" } %>
   </div>
 
-  <%# TODO: travel advisory dropdown not showing selected value on form load %>
   <div class="col-md-4">
     <%= f.label :ring, "Travel Advisory", class: "form-label" %>
-    <%= f.select :ring, options_for_select(Shared::SystemMapping::ADVISORY_MAP.map { |k, v| [v, k] }, selected: @system.ring[0]), {}, { class: "form-select" } %>
+    <%= f.select :ring, options_for_select(Shared::SystemMapping::ADVISORY_MAP.map { |k, v| [v, k] }, selected: @system.ring), {}, { class: "form-select" } %>
   </div>
 
   <div class="col-md-2">
