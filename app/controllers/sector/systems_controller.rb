@@ -227,5 +227,7 @@ class Sector::SystemsController < ApplicationController
   def system_params
     params.require(:sector_model_system).permit(:sector_id, :name, :location, :uwp, :base, :notes, :ring, :pbg, :allegiance, :created_at, :updated_at)
   end
-  
+
+  # TODO: Add in ability to bulk edit/delete multiple systems at once.
+
 end

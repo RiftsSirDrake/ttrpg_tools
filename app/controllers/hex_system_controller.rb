@@ -17,6 +17,7 @@ class HexSystemController < ApplicationController
 		raw_hexmap_data = SectorModel::System.hexmap(@sector.id)
 
 		@organized_data = raw_hexmap_data.map {|point| {sys_id: point.id, n: point.name, q: point.q, r: point.r, hex_loc: point.location,
+			allegiance: point.allegiance,
 			colour: "#{point.color_code.nil? ? "rgb(247, 171, 45)" : point.color_code}"}}
 			
 		raw_json_data = @organized_data.as_json.to_json
@@ -28,6 +29,9 @@ class HexSystemController < ApplicationController
 		end
 
 		gon.data = formatted_data
+		gon.hex_color = @sector.hex_color.presence || "#f8f9fa"
+		gon.border_width = @sector.border_width.presence || 4
+		gon.border_opacity = @sector.border_opacity.presence || 0.5
 	end
 
 	private
@@ -35,5 +39,7 @@ class HexSystemController < ApplicationController
 	def presets
 		@page_libs = [:hexmap]
 	end
-	
+
+	# TODO: Add in ability to edit system faction from the hexmap.
+
 end

@@ -69,7 +69,10 @@ class Sector::SectorsController < ApplicationController
   private
 
   def sector_params
-    params.require(:sector_model_sector).permit(:author, :name, :public_view, :created_at, :updated_at)
+    params.require(:sector_model_sector).permit(:author, :name, :public_view, :hex_color, :border_width, :border_opacity, :created_at, :updated_at)
   end
-  
+
+  # TODO: Add in ability to export an entire sector, its systems, notes, factions, and sector settings.
+  #   This should be done in a way that it could later be reimported to recreate that sector.
+
 end

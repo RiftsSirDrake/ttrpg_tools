@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_24_164308) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_25_203141) do
   create_table "factions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "sector_id", null: false
     t.string "name"
@@ -44,6 +44,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_24_164308) do
     t.binary "public_view"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "hex_color"
+    t.integer "border_width"
+    t.float "border_opacity"
   end
 
   create_table "system_notes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

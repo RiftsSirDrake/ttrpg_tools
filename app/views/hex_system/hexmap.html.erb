@@ -90,13 +90,56 @@
 <% if @organized_data.present? %>
 <script>
 	var data = gon.data
+
+  function getNeighbor(q, r, e) {
+    var isEven = (q % 2 === 0);
+    switch (e) {
+      case 1: return { q: q, r: r + 1 }; // Top
+      case 2: return isEven ? { q: q + 1, r: r } : { q: q + 1, r: r + 1 }; // Top-Right
+      case 3: return isEven ? { q: q + 1, r: r - 1 } : { q: q + 1, r: r }; // Bottom-Right
+      case 4: return { q: q, r: r - 1 }; // Bottom
+      case 5: return isEven ? { q: q - 1, r: r - 1 } : { q: q - 1, r: r }; // Bottom-Left
+      case 6: return isEven ? { q: q - 1, r: r } : { q: q - 1, r: r + 1 }; // Top-Left
+    }
+  }
+
+  function calculateBoundaries(hexes) {
+    var boundaries = {};
+    var coordMap = {};
+    for (var id in hexes) {
+      var h = hexes[id];
+      coordMap[h.q + "," + h.r] = h.allegiance;
+    }
+
+    for (var id in hexes) {
+      var h = hexes[id];
+      var allegiance = h.allegiance;
+      if (!allegiance) continue;
+
+      if (!boundaries[allegiance]) {
+        boundaries[allegiance] = { edges: [], color: h.colour };
+      }
+
+      for (var e = 1; e <= 6; e++) {
+        var neighbor = getNeighbor(h.q, h.r, e);
+        if (coordMap[neighbor.q + "," + neighbor.r] !== allegiance) {
+          boundaries[allegiance].edges.push({ q: h.q, r: h.r, e: e });
+        }
+      }
+    }
+    return boundaries;
+  }
+
+  var hexjson = {
+    "layout": "odd-q",
+    "hexes": data,
+    "boundaries": calculateBoundaries(data)
+  };
+
 	hex = new OI.hexmap(document.getElementById('hexmap'),{
 		'grid': {'show':true},
 		// The HexJSON layout
-		'hexjson':{
-			"layout":"odd-q",
-			"hexes": data
-		},
+		'hexjson': hexjson,
 		'label':{
 			'show': true,	// Show a label
 			'clip': true,	// Make sure the label is clipped to the hexagon
@@ -116,6 +159,19 @@
 				return tspans;
 			}
 		},
+    'ready': function() {
+      this.updateBoundaries(function(n, props) {
+        return {
+          'stroke': props.color || 'black',
+          'stroke-width': gon.border_width,
+          'opacity': gon.border_opacity,
+          'stroke-linecap': 'round'
+        };
+      });
+      this.updateColours(function(r) {
+        return gon.hex_color;
+      });
+    }
 	});
 
   // Make a tooltip

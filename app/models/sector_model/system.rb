@@ -107,10 +107,10 @@ class SectorModel::System < ApplicationRecord
   end
 
   def self.hexmap(sector_id)
-    select("systems.id as id, systems.name as name, systems.location as location, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r, factions.color_code as color_code")
+    select("systems.id as id, systems.name as name, systems.location as location, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r, factions.color_code as color_code, systems.allegiance as allegiance")
     .joins('left join factions on factions.name = systems.allegiance')
     .where(sector_id: sector_id)
-    .group("systems.location, systems.id, systems.name, factions.color_code")
+    .group("systems.location, systems.id, systems.name, factions.color_code, systems.allegiance")
   end
 
 end
