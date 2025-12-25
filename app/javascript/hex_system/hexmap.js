@@ -108,7 +108,6 @@
 			}
 		}
 
-		this._origin = new Hexagon(0,0,this.mapping.layout);
 
 		// Can load a file or a hexjson data structure
 		this.load = function(file,prop,fn){
@@ -148,6 +147,15 @@
 
 		// We'll need to change the sizes when the window changes size
 		addEvent('resize',window,{},function(event){ _obj.size(); });
+
+		if (typeof ResizeObserver === 'function') {
+			const ro = new ResizeObserver(entries => {
+				for (let entry of entries) {
+					_obj.size();
+				}
+			});
+			ro.observe(el);
+		}
 
 		this.setHexStyle = function(r){
 			let h, style, cls, p;
@@ -317,7 +325,10 @@
 			tall = h;
 			this.properties.size = this.estimateSize();
 			
-			if (constructed) this.fitToRange();
+			if (constructed) {
+				this.fitToRange();
+				this.updateLabels();
+			}
 
 			return this;
 		};
@@ -339,11 +350,12 @@
 		};
 
 		this.setMapping = function(mapping){
-			this.mapping = mapping;
-			if(!this.properties) this.properties = { "x": 100, "y": 100 };
-			const p = mapping.layout.split("-");
-			this.properties.shift = p[0];
-			this.properties.orientation = p[1];
+ 		this.mapping = mapping;
+ 		if(!this.properties) this.properties = { "x": 100, "y": 100 };
+ 		const p = mapping.layout.split("-");
+ 		this.properties.shift = p[0];
+ 		this.properties.orientation = p[1];
+ 		this._origin = new Hexagon(0,0,mapping.layout);
 
 			// Calculate the range of q and r
 			range.q = {min:Infinity,max:-Infinity};
@@ -550,7 +562,7 @@
 		};
 
 		this.fitToRange = function(){
-			if(!svg) return this;
+			if(!svg || wide <= 0 || tall <= 0) return this;
 			let dx, dy, w, h, extent, r;
 			extent = new Extent();
 			for(r in this.areas) extent.extend(this.areas[r]);

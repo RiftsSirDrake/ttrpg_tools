@@ -1,5 +1,6 @@
 class Sector::SectorsController < ApplicationController
   before_action :check_member, only: [:new, :edit, :update, :destroy]
+  before_action :presets, only: [:new, :edit, :create, :update]
    
   def index
     @sectors = SectorModel::Sector.left_outer_joins(:sector_permissions)
@@ -19,6 +20,9 @@ class Sector::SectorsController < ApplicationController
 
   def new
     @sector = SectorModel::Sector.new
+    gon.hex_color = "#f8f9fa"
+    gon.border_width = 4
+    gon.border_opacity = 0.5
   end
 
   def create
@@ -37,6 +41,10 @@ class Sector::SectorsController < ApplicationController
     unless can_edit_sector?(@sector, current_user)
       redirect_back_or_to sectors_path, alert: "You do not have permission to edit this sector."
     end
+
+    gon.hex_color = @sector.hex_color.presence || "#f8f9fa"
+    gon.border_width = @sector.border_width.presence || 4
+    gon.border_opacity = @sector.border_opacity.presence || 0.5
   end
 
   def update
@@ -67,6 +75,19 @@ class Sector::SectorsController < ApplicationController
   end
 
   private
+
+  def presets
+    @page_libs = [:hexmap]
+    
+    # Sample data for hexmap preview
+    @preview_data = {
+      "0" => { n: "System A", q: 1, r: 1, hex_loc: "0101", allegiance: "Faction 1", colour: "#ff5733" },
+      "1" => { n: "System B", q: 1, r: 2, hex_loc: "0102", allegiance: "Faction 1", colour: "#ff5733" },
+      "2" => { n: "System C", q: 2, r: 1, hex_loc: "0201", allegiance: "Faction 2", colour: "#33ff57" },
+      "3" => { n: "System D", q: 2, r: 2, hex_loc: "0202", allegiance: "Faction 2", colour: "#33ff57" }
+    }
+    gon.data = @preview_data
+  end
 
   def sector_params
     params.require(:sector_model_sector).permit(:author, :name, :public_view, :hex_color, :border_width, :border_opacity, :created_at, :updated_at)

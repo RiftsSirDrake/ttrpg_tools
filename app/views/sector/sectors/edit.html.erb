@@ -12,13 +12,13 @@
   </div>
 
   <section class="section">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
+    <div class="row">
+      <div class="col-lg-7">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Update Sector Settings</h5>
 
-            <%= form_with model: @sector, url: sector_path(@sector), method: :patch, html: { class: "row g-3" } do |f| %>
+            <%= form_with model: @sector, url: sector_path(@sector), method: :patch, html: { id: "sector-form", class: "row g-3" } do |f| %>
               <% if @sector.errors.any? %>
                 <div class="col-12">
                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -69,12 +69,128 @@
 
               <div class="text-center mt-4">
                 <%= f.submit "Update Sector", class: 'btn btn-primary' %>
+                <button type="button" id="reload-preview" class="btn btn-outline-info">
+                  <i class="bi bi-arrow-clockwise"></i> Reload Preview
+                </button>
                 <%= link_to 'Cancel', sector_path(@sector), class: "btn btn-secondary" %>
               </div>
             <% end %>
           </div>
         </div>
       </div>
+
+      <div class="col-lg-5">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Hexmap Preview</h5>
+            <div id="hexmap-preview" style="min-height: 400px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;"></div>
+            <div class="form-text mt-2">
+              <i class="bi bi-info-circle"></i> This is a sample preview showing how your color and border settings will appear on the actual hexmap.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var data = gon.data;
+    var previewContainer = document.getElementById('hexmap-preview');
+    var hex;
+
+    function getNeighbor(q, r, e) {
+      var isEven = (q % 2 === 0);
+      switch (e) {
+        case 1: return { q: q, r: r + 1 };
+        case 2: return isEven ? { q: q + 1, r: r } : { q: q + 1, r: r + 1 };
+        case 3: return isEven ? { q: q + 1, r: r - 1 } : { q: q + 1, r: r };
+        case 4: return { q: q, r: r - 1 };
+        case 5: return isEven ? { q: q - 1, r: r - 1 } : { q: q - 1, r: r };
+        case 6: return isEven ? { q: q - 1, r: r } : { q: q - 1, r: r + 1 };
+      }
+    }
+
+    function calculateBoundaries(hexes) {
+      var boundaries = {};
+      var coordMap = {};
+      for (var id in hexes) {
+        var h = hexes[id];
+        coordMap[h.q + "," + h.r] = h.allegiance;
+      }
+
+      for (var id in hexes) {
+        var h = hexes[id];
+        var allegiance = h.allegiance;
+        if (!allegiance) continue;
+
+        if (!boundaries[allegiance]) {
+          boundaries[allegiance] = { edges: [], color: h.colour };
+        }
+
+        for (var e = 1; e <= 6; e++) {
+          var neighbor = getNeighbor(h.q, h.r, e);
+          if (coordMap[neighbor.q + "," + neighbor.r] !== allegiance) {
+            boundaries[allegiance].edges.push({ q: h.q, r: h.r, e: e });
+          }
+        }
+      }
+      return boundaries;
+    }
+
+    function renderHexmap() {
+      // Clear existing content
+      previewContainer.innerHTML = '';
+      
+      if (!data) return;
+
+      var hexjson = {
+        "layout": "odd-q",
+        "hexes": data,
+        "boundaries": calculateBoundaries(data)
+      };
+
+      var hexColorInput = document.querySelector('[name*="[hex_color]"]');
+      var borderWidthInput = document.querySelector('[name*="[border_width]"]');
+      var borderOpacityInput = document.querySelector('[name*="[border_opacity]"]');
+
+      var hexColor = hexColorInput ? hexColorInput.value : "#f8f9fa";
+      var borderWidth = (borderWidthInput && borderWidthInput.value !== "") ? parseInt(borderWidthInput.value) : 4;
+      var borderOpacity = (borderOpacityInput && borderOpacityInput.value !== "") ? parseFloat(borderOpacityInput.value) : 0.5;
+
+      hex = new OI.hexmap(previewContainer, {
+        'grid': {'show': true},
+        'hexjson': hexjson,
+        'label': {
+          'show': true,
+          'clip': true,
+          'format': function(txt, attr) {
+            return '<tspan class="off">' + txt.substr(0, 3) + '</tspan>';
+          }
+        },
+        'ready': function() {
+          this.updateBoundaries(function(n, props) {
+            return {
+              'stroke': props.color || 'black',
+              'stroke-width': borderWidth,
+              'opacity': borderOpacity,
+              'stroke-linecap': 'round'
+            };
+          });
+          this.updateColours(function(r) {
+            return hexColor;
+          });
+        }
+      });
+    }
+
+    // Initial render
+    renderHexmap();
+
+    // Reload button
+    document.getElementById('reload-preview').addEventListener('click', function() {
+      renderHexmap();
+    });
+  });
+</script>
