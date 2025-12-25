@@ -275,8 +275,11 @@
 			this.el.style.height = '';
 			this.el.style.width = '';
 			el.removeAttribute('style');
+			el.style.width = '100%';
 			w = el.offsetWidth;
 			h = el.offsetHeight;
+			el.style.width = '';
+
 			this.el.style.height = h+'px';
 			this.el.style.width = w+'px';
 
@@ -310,9 +313,9 @@
 			}
 			setAttr(svg,{'style':'width:100%;height:100%;max-width: 100%; max-height: 100%; margin: auto; background: none;'});
 
-			this.properties.size = this.estimateSize();
 			wide = w;
 			tall = h;
+			this.properties.size = this.estimateSize();
 			
 			if (constructed) this.fitToRange();
 
@@ -555,6 +558,16 @@
 			dx = extent.x.max - extent.x.min;
 			dy = extent.y.max - extent.y.min;
 			
+			const contentAspect = dx / dy;
+			const neededWidth = contentAspect * tall;
+			
+			if (neededWidth < wide) {
+				this.el.style.width = neededWidth + 'px';
+				wide = neededWidth;
+			} else {
+				this.el.style.width = '100%';
+			}
+
 			const containerAspect = wide / tall;
 			w = dx;
 			h = dy;
