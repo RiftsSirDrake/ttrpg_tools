@@ -12,12 +12,15 @@
 
 #hexmap .hex-cell path {
   stroke: black; stroke-width: 1px;
-  transition: fill 0.2s ease-in,
-  stroke 0.2s ease-in,
-  stroke-width 0.2s ease-in;
+  transition: all 0.2s ease;
 }
 
-#hexmap .hex-cell.hover path { stroke-width: 1px; }
+#hexmap .hex-cell.hover path {
+  stroke: #0d6efd;
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 5px rgba(13, 110, 253, 0.5));
+  z-index: 10;
+}
 
 @media only screen and (max-width: 700px) {
   /* Don't bother with labels if it is too small */
@@ -26,31 +29,12 @@
 
 #hexmap .hex-tip {
   position: absolute;
-  text-align: center;
-  background: black;
-  color: white;
-  padding: 0.5em 1em;
-  transform: translate3d(-50%,-100%,0);
-  border-radius: 4px;
-  z-index: 1000;
+  z-index: 1050;
   pointer-events: none;
-  white-space: nowrap;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  font-size: 0.9em;
-  line-height: 1.4;
 }
 
 #hexmap .hex-tip::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border: 0.5em solid transparent;
-  transform: translate3d(-50%, 0, 0);
-  border-color: transparent;
-  border-top-color: black;
+  display: none;
 }
 
 #hexmap tspan {font-size: 14px;}
@@ -59,3 +43,13 @@
 
 .hexmap-inner {padding: 2em;}
 
+
+.hex-tip {
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.hex:hover {
+  cursor: pointer;
+}

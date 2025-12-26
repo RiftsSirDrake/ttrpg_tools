@@ -16,9 +16,17 @@ class HexSystemController < ApplicationController
 		@factions = SectorModel::Faction.where(sector_id: @sector.id)
 		raw_hexmap_data = SectorModel::System.hexmap(@sector.id)
 
-		@organized_data = raw_hexmap_data.map {|point| {sys_id: point.id, n: point.name, q: point.q, r: point.r, hex_loc: point.location,
-			allegiance: point.allegiance,
-			colour: "#{point.color_code.nil? ? "rgb(247, 171, 45)" : point.color_code}"}}
+		@organized_data = raw_hexmap_data.map do |point|
+			{
+				sys_id: point.id, n: point.name, q: point.q, r: point.r, hex_loc: point.location,
+				allegiance: point.allegiance,
+				colour: "#{point.color_code.nil? ? "rgb(247, 171, 45)" : point.color_code}",
+				starport: point.starport,
+				tech_level: point.tech_level,
+				population: point.population,
+				advisory: point.advisory
+			}
+		end
 			
 		raw_json_data = @organized_data.as_json.to_json
 		parsed_data = JSON.parse(raw_json_data)

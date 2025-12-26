@@ -14,103 +14,75 @@ class SectorModel::System < ApplicationRecord
 
   # Start of methods to convert UWP codes into human readable attributes.
   def starport
-    unless self.uwp.nil?
-    PORT_MAP[self.uwp[0]] if PORT_MAP.key?(self.uwp[0])
-    end
+    PORT_MAP[uwp[0]] if uwp.present?
   end
   
   def planet_size
-    unless self.uwp.nil?
-    SIZE_MAP[self.uwp[1]] if SIZE_MAP.key?(self.uwp[1])
-  end
+    SIZE_MAP[uwp[1]] if uwp.present?
   end
   
   def atmosphere
-    unless self.uwp.nil?
-    ATMO_MAP[self.uwp[2]] if ATMO_MAP.key?(self.uwp[2])
-  end
+    ATMO_MAP[uwp[2]] if uwp.present?
   end
   
   def hydrosphere
-    unless self.uwp.nil?
-    HYDRO_MAP[self.uwp[3]] if HYDRO_MAP.key?(self.uwp[3])
-  end
+    HYDRO_MAP[uwp[3]] if uwp.present?
   end
   
   def pop_base
   end
   
   def population
-    unless self.uwp.nil?
-    POP_MAP[self.uwp[4]].call(self.pbg) if POP_MAP.key?(self.uwp[4])
-  end
+    return unless uwp.present?
+    val = POP_MAP[uwp[4]]
+    val.is_a?(Proc) ? val.call(pbg) : val
   end
   
   def goverment
-    unless self.uwp.nil?
-    GOV_MAP[self.uwp[5]] if GOV_MAP.key?(self.uwp[5])
-  end
+    GOV_MAP[uwp[5]] if uwp.present?
   end
   
   def law
-    unless self.uwp.nil?
-    LAW_MAP[self.uwp[6]] if LAW_MAP.key?(self.uwp[6])
-  end
+    LAW_MAP[uwp[6]] if uwp.present?
   end
   
   def tech_level
-    unless self.uwp.nil?
-    TECH_MAP[self.uwp[8]] if TECH_MAP.key?(self.uwp[8])
-  end
+    TECH_MAP[uwp[8]] if uwp.present?
   end
   
   def bases
-    unless self.base.nil?
-    BASES_MAP[self.base[0]] if BASES_MAP.key?(self.base[0])
-  end
+    BASES_MAP[base[0]] if base.present?
   end
 
   def notes1
-    unless self.notes.nil?
-    NOTES_MAP[self.notes[0,2]] if NOTES_MAP.key?(self.notes[0,2])
-  end
+    NOTES_MAP[notes[0,2]] if notes.present?
   end
 
   def notes2
-    unless self.notes.nil?
-    NOTES_MAP[self.notes[3,2]] if NOTES_MAP.key?(self.notes[3,2])
-  end
+    NOTES_MAP[notes[3,2]] if notes.present?
   end
 
   def notes3
-    unless self.notes.nil?
-    NOTES_MAP[self.notes[6,2]] if NOTES_MAP.key?(self.notes[6,2])
-  end
+    NOTES_MAP[notes[6,2]] if notes.present?
   end
   
   def advisory
-    unless self.nil?
-    ADVISORY_MAP[self.ring] if ADVISORY_MAP.key?(self.ring)
-  end
+    ADVISORY_MAP[ring]
   end
   
   def asteroid_belts
-    unless self.pbg.nil?
-    self.pbg[1]
-    end
+    pbg[1] if pbg.present?
   end
   
   def gas_giants
-    unless self.pbg.nil?
-    self.pbg[2]
-    end
+    pbg[2] if pbg.present?
   end
 
   def self.hexmap(sector_id)
-    select("systems.id as id, systems.name as name, systems.location as location, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r, factions.color_code as color_code, systems.allegiance as allegiance")
+    select("systems.id as id, systems.name as name, systems.location as location, SUM(SUBSTRING(location, 1, 2)) AS q, SUM(SUBSTRING(location, 3, 2) - 41) * -1 AS r, factions.color_code as color_code, systems.allegiance as allegiance, systems.uwp as uwp, systems.pbg as pbg, systems.base as base, systems.notes as notes, systems.ring as ring")
     .joins('left join factions on factions.name = systems.allegiance')
     .where(sector_id: sector_id)
-    .group("systems.location, systems.id, systems.name, factions.color_code, systems.allegiance")
+    .group("systems.location, systems.id, systems.name, factions.color_code, systems.allegiance, systems.uwp, systems.pbg, systems.base, systems.notes, systems.ring")
   end
 
 end

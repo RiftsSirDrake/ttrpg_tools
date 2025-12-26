@@ -71,18 +71,18 @@ module Shared
     }.tap { |h| h.default = "None" }
 
     POP_MAP = {
-      "C" => proc { |pbg| "#{pbg[0]} Trillion"},
-      "B" => proc { |pbg| "#{pbg[0]}00 Billion"},
-      "A" => proc { |pbg| "#{pbg[0]}0 Billion"},
-      "9" => proc { |pbg| "#{pbg[0]} Billion"},
-      "8" => proc { |pbg| "#{pbg[0]}00 Million"},
-      "7" => proc { |pbg| "#{pbg[0]}0 Million"},
-      "6" => proc { |pbg| "#{pbg[0]} Million"},
-      "5" => proc { |pbg| "#{pbg[0]}00 Thousand"},
-      "4" => proc { |pbg| "#{pbg[0]}0 Thousand"},
-      "3" => proc { |pbg| "#{pbg[0]} Thousand"},
-      "2" => proc { |pbg| "#{pbg[0]}00"},
-      "1" => proc { |pbg| "#{pbg[0].to_i * 10}"},
+      "C" => proc { |pbg| pbg.present? ? "#{pbg[0]} Trillion" : "Unknown" },
+      "B" => proc { |pbg| pbg.present? ? "#{pbg[0]}00 Billion" : "Unknown" },
+      "A" => proc { |pbg| pbg.present? ? "#{pbg[0]}0 Billion" : "Unknown" },
+      "9" => proc { |pbg| pbg.present? ? "#{pbg[0]} Billion" : "Unknown" },
+      "8" => proc { |pbg| pbg.present? ? "#{pbg[0]}00 Million" : "Unknown" },
+      "7" => proc { |pbg| pbg.present? ? "#{pbg[0]}0 Million" : "Unknown" },
+      "6" => proc { |pbg| pbg.present? ? "#{pbg[0]} Million" : "Unknown" },
+      "5" => proc { |pbg| pbg.present? ? "#{pbg[0]}00 Thousand" : "Unknown" },
+      "4" => proc { |pbg| pbg.present? ? "#{pbg[0]}0 Thousand" : "Unknown" },
+      "3" => proc { |pbg| pbg.present? ? "#{pbg[0]} Thousand" : "Unknown" },
+      "2" => proc { |pbg| pbg.present? ? "#{pbg[0]}00" : "Unknown" },
+      "1" => proc { |pbg| pbg.present? ? "#{pbg[0].to_i * 10}" : "Unknown" },
       "0" => proc { |pbg| "None"}
     }.tap { |h| h.default = "None" }
 

@@ -189,10 +189,27 @@
   		tip.classList.add('hex-tip');
   		container.appendChild(tip);
   	}
-  	// Update contents of tooltip
-  	tip.innerHTML = '<strong><a href="/systems/'+e.data.data.sys_id+'" style="color: #4db3ff;">'+e.data.data.n+'</a></strong>'+
-  	  '<br />'+'Traveller Coordinates '+e.data.data.hex_loc.toLocaleString()+
-  	  '<br /> Hexmap Coordinates q:'+e.data.data.q+' r:'+e.data.data.r;
+
+    var hex_data = e.data.data;
+    var faction_color = hex_data.colour || '#4db3ff';
+    var starport_short = hex_data.starport ? hex_data.starport.split('-')[0].trim() : 'Unknown';
+    var advisory_text = hex_data.advisory && !hex_data.advisory.startsWith('None') ? 
+                        '<div class="mt-1 text-danger fw-bold"><i class="bi bi-exclamation-triangle"></i> ' + hex_data.advisory + '</div>' : '';
+
+  	// Update contents of tooltip with Bootstrap Card styling
+  	tip.innerHTML = 
+      '<div class="card shadow-sm border-0" style="min-width: 200px; overflow: hidden;">' +
+        '<div class="card-header py-1 px-2 text-white" style="background-color: ' + faction_color + ';">' +
+          '<h6 class="mb-0 fw-bold">' + hex_data.n + ' <small class="opacity-75">(' + hex_data.hex_loc + ')</small></h6>' +
+        '</div>' +
+        '<div class="card-body p-2 small text-dark">' +
+          '<div class="mb-1"><strong><i class="bi bi-flag"></i> Faction:</strong> ' + (hex_data.allegiance || 'None') + '</div>' +
+          '<div class="mb-1"><strong><i class="bi bi-fuel-pump"></i> Port:</strong> ' + starport_short + '</div>' +
+          '<div class="mb-1"><strong><i class="bi bi-tools"></i> Tech Level:</strong> ' + (hex_data.tech_level || 'N/A') + '</div>' +
+          '<div class="mb-1"><strong><i class="bi bi-people"></i> Population:</strong> ' + (hex_data.population || 'Unknown') + '</div>' +
+          advisory_text +
+        '</div>' +
+      '</div>';
   	
   	// Update position of tooltip
   	bb = (path_el || hex_el).getBoundingClientRect();
@@ -203,10 +220,31 @@
     var scaleY = bbo.height / container.offsetHeight || 1;
   	
   	var left = (bb.left + bb.width/2 - bbo.left) / scaleX - container.clientLeft;
-  	var top = (bb.top - bbo.top) / scaleY - container.clientTop - 10; // Position above the hex
+  	var top = (bb.top - bbo.top) / scaleY - container.clientTop - 5; // Position above the hex
   	
   	tip.style.left = Math.round(left)+'px';
   	tip.style.top = Math.round(top)+'px';
+    tip.style.transform = 'translateX(-50%) translateY(-100%)';
+    tip.style.position = 'absolute';
+    tip.style.zIndex = '1050';
+    tip.style.display = 'block'; // Ensure it's visible when hovering
+  });
+
+  // Hide tooltip on mouseout
+  hex.on('mouseout', function(e) {
+    var container = e.data.hexmap.el || e.data.hexmap._attr.el;
+    var tip = container.querySelector('.hex-tip');
+    if (tip) {
+      tip.style.display = 'none';
+    }
+  });
+
+  // Handle click on hex to navigate to system
+  hex.on('click', function(e) {
+    var sys_id = e.data.data.sys_id;
+    if (sys_id) {
+      window.location.href = '/systems/' + sys_id;
+    }
   });
 
 </script>
