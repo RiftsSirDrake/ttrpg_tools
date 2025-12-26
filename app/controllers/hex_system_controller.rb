@@ -17,6 +17,9 @@ class HexSystemController < ApplicationController
 		raw_hexmap_data = SectorModel::System.hexmap(@sector.id)
 
 		@organized_data = raw_hexmap_data.map do |point|
+			# Check for capital traits in the notes
+			is_capital = point.notes.to_s.split.any? { |note| ['Cp', 'Cs', 'Cx'].include?(note) }
+
 			{
 				sys_id: point.id, n: point.name, q: point.q, r: point.r, hex_loc: point.location,
 				allegiance: point.allegiance,
@@ -24,7 +27,8 @@ class HexSystemController < ApplicationController
 				starport: point.starport,
 				tech_level: point.tech_level,
 				population: point.population,
-				advisory: point.advisory
+				advisory: point.advisory,
+				is_capital: is_capital
 			}
 		end
 			

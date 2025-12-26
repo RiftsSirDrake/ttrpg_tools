@@ -262,9 +262,13 @@
 			//		* y - the vertical position in pixels
 			//		* hex - the hexagon's HexJSON properties
 			'format': function(txt,attr){
-				tspans = '<tspan class="off">'+txt.substr(0,3)+'</tspan>';
-				lines = txt.split(/ /);
-				lines.push(attr.hex.hex_loc.toLocaleString());
+        var name = txt;
+        var style = "";
+        if (attr.hex.is_capital) {
+          name = name.toUpperCase();
+          style = ' fill="red" font-weight="bold"';
+        }
+				tspans = '<tspan class="off"' + style + '>'+name.substring(0,10)+'</tspan>';
 				return tspans;
 			}
 		},
