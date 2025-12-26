@@ -222,6 +222,13 @@
   };
 
   function mapReady() {
+    if (gon.background_image && gon.background_images && gon.background_images[gon.background_image]) {
+      var backgroundUrl = gon.background_images[gon.background_image];
+      this.el.style.backgroundImage = "url('" + backgroundUrl + "')";
+      this.el.style.backgroundSize = "cover";
+      this.el.style.backgroundPosition = "center";
+      this.el.style.backgroundRepeat = "no-repeat";
+    }
     this.updateBoundaries(function(n, props) {
       return {
         'stroke': props.color || 'black',

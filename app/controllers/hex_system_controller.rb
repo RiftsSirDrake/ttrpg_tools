@@ -40,6 +40,11 @@ class HexSystemController < ApplicationController
 		gon.hex_color = @sector.hex_color.presence || "#f8f9fa"
 		gon.border_width = @sector.border_width.presence || 4
 		gon.border_opacity = @sector.border_opacity.presence || 0.5
+		gon.background_image = @sector.background_image.presence
+		gon.background_images = Dir.glob(Rails.root.join('app', 'assets', 'images', 'backgrounds', '*.svg')).each_with_object({}) do |f, hash|
+			filename = File.basename(f)
+			hash[filename] = ActionController::Base.helpers.image_path("backgrounds/#{filename}")
+		end
 		gon.can_edit = can_edit_systems?(@sector, current_user)
 	end
 

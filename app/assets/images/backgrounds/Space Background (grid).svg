@@ -1,0 +1,115 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" preserveAspectRatio="none">
+
+  <!--
+    Dark background version
+    - Tight fit for oi.hexmap.js 32x40
+    - No margins, no padding
+    - Stretch-safe
+  -->
+
+  <defs>
+    <style>
+      .sub {
+        stroke: #cfd6ff;
+        stroke-opacity: 0.18;
+        stroke-width: 2;
+        stroke-dasharray: 10 8;
+        fill: none;
+      }
+      .border {
+        stroke: #cfd6ff;
+        stroke-opacity: 0.30;
+        stroke-width: 3;
+        fill: none;
+      }
+    </style>
+
+    <!-- Dark space gradient -->
+    <radialGradient id="space" cx="50%" cy="45%" r="85%">
+      <stop offset="0%" stop-color="#0b0f1a"></stop>
+      <stop offset="55%" stop-color="#060810"></stop>
+      <stop offset="100%" stop-color="#02030a"></stop>
+    </radialGradient>
+
+    <!-- Vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="90%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"></stop>
+      <stop offset="75%" stop-color="#000" stop-opacity="0.15"></stop>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.30"></stop>
+    </radialGradient>
+
+    <!-- Stars -->
+    <circle id="t" r="0.7" fill="#ffffff" opacity="0.20"></circle>
+    <circle id="s" r="1.0" fill="#ffffff" opacity="0.24"></circle>
+    <circle id="m" r="1.5" fill="#ffffff" opacity="0.28"></circle>
+    <circle id="b" r="2.3" fill="#ffffff" opacity="0.34"></circle>
+  </defs>
+
+  <!-- ===== Background ===== -->
+  <rect x="0" y="0" width="1000" height="1250" fill="url(#space)"></rect>
+
+  <!-- ===== Dense starfield ===== -->
+  <g id="stars">
+
+    <!-- Big stars -->
+    <use href="#b" x="120" y="180"></use>
+    <use href="#b" x="340" y="940"></use>
+    <use href="#b" x="560" y="360"></use>
+    <use href="#b" x="720" y="620"></use>
+    <use href="#b" x="860" y="220"></use>
+    <use href="#b" x="920" y="780"></use>
+    <use href="#b" x="520" y="1120"></use>
+    <use href="#b" x="160" y="1160"></use>
+
+    <!-- Medium stars -->
+    <use href="#m" x="60" y="80"></use><use href="#m" x="90" y="520"></use><use href="#m" x="140" y="980"></use>
+    <use href="#m" x="200" y="260"></use><use href="#m" x="240" y="760"></use><use href="#m" x="280" y="460"></use>
+    <use href="#m" x="340" y="140"></use><use href="#m" x="380" y="660"></use><use href="#m" x="420" y="1080"></use>
+    <use href="#m" x="470" y="300"></use><use href="#m" x="520" y="860"></use><use href="#m" x="560" y="520"></use>
+    <use href="#m" x="620" y="160"></use><use href="#m" x="660" y="700"></use><use href="#m" x="700" y="420"></use>
+    <use href="#m" x="760" y="240"></use><use href="#m" x="800" y="820"></use><use href="#m" x="840" y="500"></use>
+    <use href="#m" x="900" y="140"></use><use href="#m" x="940" y="420"></use><use href="#m" x="980" y="980"></use>
+
+    <!-- Small + tiny stars -->
+    <g>
+      <use href="#s" x="22" y="190"></use><use href="#t" x="40" y="410"></use><use href="#s" x="58" y="720"></use>
+      <use href="#t" x="74" y="1020"></use><use href="#s" x="88" y="600"></use><use href="#t" x="104" y="320"></use>
+      <use href="#s" x="120" y="860"></use><use href="#t" x="136" y="520"></use><use href="#s" x="152" y="1080"></use>
+      <use href="#t" x="168" y="740"></use><use href="#s" x="184" y="180"></use><use href="#t" x="200" y="420"></use>
+      <use href="#s" x="216" y="920"></use><use href="#t" x="232" y="640"></use><use href="#s" x="248" y="300"></use>
+      <use href="#t" x="264" y="520"></use><use href="#s" x="280" y="780"></use><use href="#t" x="296" y="1040"></use>
+      <use href="#s" x="312" y="620"></use><use href="#t" x="328" y="360"></use><use href="#s" x="344" y="900"></use>
+      <use href="#t" x="360" y="520"></use><use href="#s" x="376" y="760"></use><use href="#t" x="392" y="1080"></use>
+      <use href="#s" x="408" y="420"></use><use href="#t" x="424" y="160"></use><use href="#s" x="440" y="660"></use>
+      <use href="#t" x="456" y="900"></use><use href="#s" x="472" y="520"></use><use href="#t" x="488" y="260"></use>
+      <use href="#s" x="504" y="740"></use><use href="#t" x="520" y="1000"></use><use href="#s" x="536" y="620"></use>
+      <use href="#t" x="552" y="360"></use><use href="#s" x="568" y="860"></use><use href="#t" x="584" y="520"></use>
+      <use href="#s" x="600" y="260"></use><use href="#t" x="616" y="700"></use><use href="#s" x="632" y="980"></use>
+      <use href="#t" x="648" y="520"></use><use href="#s" x="664" y="340"></use><use href="#t" x="680" y="760"></use>
+      <use href="#s" x="696" y="1020"></use><use href="#t" x="712" y="620"></use><use href="#s" x="728" y="420"></use>
+      <use href="#t" x="744" y="180"></use><use href="#s" x="760" y="520"></use><use href="#t" x="776" y="820"></use>
+      <use href="#s" x="792" y="1080"></use><use href="#t" x="808" y="620"></use><use href="#s" x="824" y="360"></use>
+      <use href="#t" x="840" y="780"></use><use href="#s" x="856" y="1020"></use><use href="#t" x="872" y="520"></use>
+      <use href="#s" x="888" y="260"></use><use href="#t" x="904" y="700"></use><use href="#s" x="920" y="980"></use>
+      <use href="#t" x="936" y="520"></use><use href="#s" x="952" y="360"></use><use href="#t" x="968" y="820"></use>
+      <use href="#s" x="984" y="1080"></use>
+    </g>
+  </g>
+
+  <!-- ===== Subsector boundaries ===== -->
+
+  <rect class="border" x="0" y="0" width="1000" height="1250"></rect>
+
+  <path class="sub" d="M 250 0 L 250 1250"></path>
+  <path class="sub" d="M 500 0 L 500 1250"></path>
+  <path class="sub" d="M 750 0 L 750 1250"></path>
+
+  <path class="sub" d="M 0 312.5 L 1000 312.5"></path>
+  <path class="sub" d="M 0 625 L 1000 625"></path>
+  <path class="sub" d="M 0 937.5 L 1000 937.5"></path>
+
+  <!-- Vignette overlay -->
+  <rect x="0" y="0" width="1000" height="1250" fill="url(#vignette)"></rect>
+
+</svg>

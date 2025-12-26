@@ -47,6 +47,14 @@
                 <div class="form-text">Choose the background color for the hexagons on the hexmap. Default is #f8f9fa.</div>
               </div>
 
+              <div class="col-12 mt-3">
+                <%= f.label :background_image, "Sector Background Image", class: "form-label" %>
+                <%= f.select :background_image, 
+                    options_for_select([["None", nil]] + Dir.glob(Rails.root.join('app', 'assets', 'images', 'backgrounds', '*.svg')).map { |f| [File.basename(f, '.svg').titleize, File.basename(f)] }, @sector.background_image), 
+                    {}, { class: "form-select" } %>
+                <div class="form-text">Choose a background image for the entire sector map.</div>
+              </div>
+
               <div class="col-md-6 mt-3">
                 <%= f.label :border_width, "Border Thickness (px)", class: "form-label" %>
                 <%= f.number_field :border_width, class: 'form-control', min: 0, max: 20, step: 1 %>
@@ -154,10 +162,12 @@
       var hexColorInput = document.querySelector('[name*="[hex_color]"]');
       var borderWidthInput = document.querySelector('[name*="[border_width]"]');
       var borderOpacityInput = document.querySelector('[name*="[border_opacity]"]');
+      var backgroundImageInput = document.querySelector('[name*="[background_image]"]');
 
       var hexColor = hexColorInput ? hexColorInput.value : "#f8f9fa";
       var borderWidth = (borderWidthInput && borderWidthInput.value !== "") ? parseInt(borderWidthInput.value) : 4;
       var borderOpacity = (borderOpacityInput && borderOpacityInput.value !== "") ? parseFloat(borderOpacityInput.value) : 0.5;
+      var backgroundImage = backgroundImageInput ? backgroundImageInput.value : "";
 
       hex = new OI.hexmap(previewContainer, {
         'grid': {'show': true},
@@ -170,6 +180,14 @@
           }
         },
         'ready': function() {
+          if (backgroundImage && gon.background_images && gon.background_images[backgroundImage]) {
+            var backgroundUrl = gon.background_images[backgroundImage];
+            this.el.style.backgroundImage = "url('" + backgroundUrl + "')";
+            this.el.style.backgroundSize = "cover";
+            this.el.style.backgroundPosition = "center";
+            this.el.style.backgroundRepeat = "no-repeat";
+          }
+
           this.updateBoundaries(function(n, props) {
             return {
               'stroke': props.color || 'black',

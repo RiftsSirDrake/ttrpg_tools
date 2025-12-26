@@ -173,8 +173,35 @@
 			}
 			if(this.mapping.hexes[r]['class']) cls += " "+this.mapping.hexes[r]['class'];
 			setAttr(h.path,style);
+
+			// Update label color for readability
+			if(h.label){
+				const contrastColor = getContrastColor(h.fillcolour || style.fill);
+				setAttr(h.label, {'fill': contrastColor});
+			}
+
 			return h;
 		};
+
+		function getContrastColor(hexcolor){
+			if(!hexcolor) return '#000000';
+			// If it's a named color or something else, we might need more complex logic, 
+			// but for hex codes:
+			if(hexcolor.slice(0, 1) === '#') hexcolor = hexcolor.slice(1);
+
+			// If 3-digit hex, convert to 6-digit
+			if(hexcolor.length === 3) {
+				hexcolor = hexcolor.split('').map(function (hex) {
+					return hex + hex;
+				}).join('');
+			}
+
+			const r = parseInt(hexcolor.substr(0,2),16);
+			const g = parseInt(hexcolor.substr(2,2),16);
+			const b = parseInt(hexcolor.substr(4,2),16);
+			const yiq = ((r*299)+(g*587)+(b*114))/1000;
+			return (yiq >= 128) ? '#000000' : '#ffffff';
+		}
 
 		this.toFront = function(r){
 			const outline = this.areas[r].hex.cloneNode(true);
@@ -420,7 +447,7 @@
 							'hex':this.mapping.hexes[r],
 							'overlay':false,
 							'size':this.properties.size,
-							'font-size':parseFloat(getComputedStyle(this.areas[r].label)['font-size'])||this.properties.s.sin,
+							'font-size':parseFloat(getComputedStyle(this.areas[r].label)['font-size'])||(this.properties.size/2),
 							'line-height':parseFloat(getComputedStyle(this.areas[r].label)['line-height'])
 						});
 					}

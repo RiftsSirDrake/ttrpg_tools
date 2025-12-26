@@ -1,0 +1,118 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<!--
+  Traveller-style starfield background SVG.
+  - Designed to stretch to ANY container size (preserveAspectRatio="none")
+  - Transparent by default (so you can set background-color in CSS)
+  - Uses a dense, deterministic star distribution (no JS needed)
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+
+  <defs>
+    <!-- Optional subtle vignette (kept very light; looks good when stretched) -->
+    <radialGradient id="vignette" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.00"></stop>
+      <stop offset="70%" stop-color="#000000" stop-opacity="0.12"></stop>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"></stop>
+    </radialGradient>
+
+    <!-- A soft "glow" for a few larger stars -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.1" result="b"></feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="b"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+    <!-- Star symbol (tiny circle). We'll stamp it many times with <use>. -->
+    <circle id="starTiny" r="0.7" fill="#ffffff" fill-opacity="0.18"></circle>
+    <circle id="starSmall" r="1.0" fill="#ffffff" fill-opacity="0.22"></circle>
+    <circle id="starMed" r="1.4" fill="#ffffff" fill-opacity="0.26"></circle>
+    <circle id="starBig" r="2.0" fill="#ffffff" fill-opacity="0.30"></circle>
+  </defs>
+
+  <!-- Background fill is intentionally omitted so the SVG can sit over any CSS bg color.
+       If you want a baked-in dark base, uncomment below:
+  -->
+  <rect width="1000" height="1000" fill="#050711"/>
+
+
+  <!-- Dense starfield (deterministic) -->
+  <g id="stars">
+
+    <!-- ===== Big / glow stars (few) ===== -->
+    <g filter="url(#softGlow)">
+      <use href="#starBig" x="86" y="112"></use>
+      <use href="#starBig" x="212" y="744"></use>
+      <use href="#starBig" x="418" y="260"></use>
+      <use href="#starBig" x="632" y="498"></use>
+      <use href="#starBig" x="788" y="168"></use>
+      <use href="#starBig" x="904" y="610"></use>
+      <use href="#starBig" x="540" y="872"></use>
+      <use href="#starBig" x="120" y="920"></use>
+    </g>
+
+    <!-- ===== Medium stars (some) ===== -->
+    <g>
+      <use href="#starMed" x="34" y="54"></use><use href="#starMed" x="76" y="310"></use><use href="#starMed" x="98" y="842"></use>
+      <use href="#starMed" x="140" y="180"></use><use href="#starMed" x="166" y="640"></use><use href="#starMed" x="196" y="420"></use>
+      <use href="#starMed" x="238" y="94"></use><use href="#starMed" x="264" y="540"></use><use href="#starMed" x="292" y="896"></use>
+      <use href="#starMed" x="332" y="212"></use><use href="#starMed" x="358" y="700"></use><use href="#starMed" x="386" y="468"></use>
+      <use href="#starMed" x="430" y="84"></use><use href="#starMed" x="456" y="606"></use><use href="#starMed" x="486" y="344"></use>
+      <use href="#starMed" x="526" y="176"></use><use href="#starMed" x="552" y="734"></use><use href="#starMed" x="582" y="938"></use>
+      <use href="#starMed" x="616" y="270"></use><use href="#starMed" x="646" y="812"></use><use href="#starMed" x="676" y="398"></use>
+      <use href="#starMed" x="712" y="104"></use><use href="#starMed" x="742" y="566"></use><use href="#starMed" x="770" y="902"></use>
+      <use href="#starMed" x="806" y="292"></use><use href="#starMed" x="836" y="736"></use><use href="#starMed" x="864" y="452"></use>
+      <use href="#starMed" x="910" y="92"></use><use href="#starMed" x="936" y="330"></use><use href="#starMed" x="964" y="858"></use>
+    </g>
+
+    <!-- ===== Small stars (more) ===== -->
+    <g>
+      <use href="#starSmall" x="18" y="18"></use><use href="#starSmall" x="28" y="140"></use><use href="#starSmall" x="44" y="230"></use><use href="#starSmall" x="52" y="410"></use>
+      <use href="#starSmall" x="64" y="520"></use><use href="#starSmall" x="72" y="720"></use><use href="#starSmall" x="88" y="610"></use><use href="#starSmall" x="104" y="44"></use>
+      <use href="#starSmall" x="118" y="300"></use><use href="#starSmall" x="132" y="476"></use><use href="#starSmall" x="150" y="90"></use><use href="#starSmall" x="162" y="248"></use>
+      <use href="#starSmall" x="178" y="560"></use><use href="#starSmall" x="190" y="820"></use><use href="#starSmall" x="206" y="170"></use><use href="#starSmall" x="220" y="350"></use>
+      <use href="#starSmall" x="236" y="720"></use><use href="#starSmall" x="248" y="980"></use><use href="#starSmall" x="270" y="120"></use><use href="#starSmall" x="282" y="310"></use>
+      <use href="#starSmall" x="298" y="620"></use><use href="#starSmall" x="312" y="760"></use><use href="#starSmall" x="328" y="40"></use><use href="#starSmall" x="344" y="330"></use>
+      <use href="#starSmall" x="356" y="550"></use><use href="#starSmall" x="372" y="860"></use><use href="#starSmall" x="392" y="150"></use><use href="#starSmall" x="406" y="290"></use>
+      <use href="#starSmall" x="422" y="510"></use><use href="#starSmall" x="438" y="780"></use><use href="#starSmall" x="450" y="960"></use><use href="#starSmall" x="468" y="120"></use>
+      <use href="#starSmall" x="482" y="430"></use><use href="#starSmall" x="498" y="650"></use><use href="#starSmall" x="512" y="820"></use><use href="#starSmall" x="528" y="40"></use>
+      <use href="#starSmall" x="546" y="300"></use><use href="#starSmall" x="560" y="520"></use><use href="#starSmall" x="576" y="680"></use><use href="#starSmall" x="590" y="860"></use>
+      <use href="#starSmall" x="606" y="90"></use><use href="#starSmall" x="622" y="360"></use><use href="#starSmall" x="638" y="610"></use><use href="#starSmall" x="652" y="910"></use>
+      <use href="#starSmall" x="670" y="200"></use><use href="#starSmall" x="686" y="470"></use><use href="#starSmall" x="700" y="740"></use><use href="#starSmall" x="718" y="980s"></use>
+    </g>
+
+    <!-- ===== Tiny stars (lots) ===== -->
+    <!-- Intentionally dense. All coordinates are in 0..1000 so scaling is uniform. -->
+    <g>
+      <use href="#starTiny" x="12" y="80"></use><use href="#starTiny" x="22" y="260"></use><use href="#starTiny" x="30" y="610"></use><use href="#starTiny" x="40" y="880"></use>
+      <use href="#starTiny" x="55" y="160"></use><use href="#starTiny" x="62" y="340"></use><use href="#starTiny" x="70" y="940"></use><use href="#starTiny" x="82" y="460"></use>
+      <use href="#starTiny" x="92" y="730"></use><use href="#starTiny" x="102" y="560"></use><use href="#starTiny" x="112" y="680"></use><use href="#starTiny" x="122" y="860"></use>
+      <use href="#starTiny" x="134" y="20"></use><use href="#starTiny" x="144" y="390"></use><use href="#starTiny" x="154" y="710"></use><use href="#starTiny" x="166" y="940"></use>
+      <use href="#starTiny" x="176" y="120"></use><use href="#starTiny" x="186" y="270"></use><use href="#starTiny" x="198" y="590"></use><use href="#starTiny" x="208" y="900"></use>
+      <use href="#starTiny" x="218" y="60"></use><use href="#starTiny" x="228" y="430"></use><use href="#starTiny" x="240" y="780"></use><use href="#starTiny" x="250" y="520"></use>
+      <use href="#starTiny" x="262" y="210"></use><use href="#starTiny" x="272" y="980"></use><use href="#starTiny" x="284" y="360"></use><use href="#starTiny" x="296" y="640"></use>
+      <use href="#starTiny" x="306" y="860"></use><use href="#starTiny" x="318" y="120"></use><use href="#starTiny" x="328" y="470"></use><use href="#starTiny" x="340" y="740"></use>
+      <use href="#starTiny" x="350" y="920"></use><use href="#starTiny" x="362" y="60"></use><use href="#starTiny" x="372" y="250"></use><use href="#starTiny" x="382" y="560"></use>
+      <use href="#starTiny" x="394" y="820"></use><use href="#starTiny" x="404" y="980"></use><use href="#starTiny" x="416" y="130"></use><use href="#starTiny" x="426" y="410"></use>
+      <use href="#starTiny" x="436" y="690"></use><use href="#starTiny" x="448" y="900"></use><use href="#starTiny" x="458" y="210"></use><use href="#starTiny" x="470" y="520"></use>
+      <use href="#starTiny" x="480" y="760"></use><use href="#starTiny" x="492" y="40"></use><use href="#starTiny" x="504" y="320"></use><use href="#starTiny" x="514" y="580"></use>
+      <use href="#starTiny" x="526" y="860"></use><use href="#starTiny" x="536" y="980"></use><use href="#starTiny" x="548" y="170"></use><use href="#starTiny" x="560" y="420"></use>
+      <use href="#starTiny" x="570" y="660"></use><use href="#starTiny" x="582" y="930"></use><use href="#starTiny" x="592" y="240"></use><use href="#starTiny" x="604" y="540"></use>
+      <use href="#starTiny" x="614" y="780"></use><use href="#starTiny" x="626" y="70"></use><use href="#starTiny" x="636" y="300"></use><use href="#starTiny" x="648" y="600"></use>
+      <use href="#starTiny" x="660" y="860"></use><use href="#starTiny" x="670" y="990"></use><use href="#starTiny" x="682" y="150"></use><use href="#starTiny" x="694" y="450"></use>
+      <use href="#starTiny" x="704" y="720"></use><use href="#starTiny" x="716" y="910"></use><use href="#starTiny" x="726" y="120"></use><use href="#starTiny" x="738" y="380"></use>
+      <use href="#starTiny" x="748" y="640"></use><use href="#starTiny" x="760" y="860"></use><use href="#starTiny" x="770" y="980"></use><use href="#starTiny" x="782" y="200"></use>
+      <use href="#starTiny" x="794" y="500"></use><use href="#starTiny" x="804" y="740"></use><use href="#starTiny" x="816" y="900"></use><use href="#starTiny" x="826" y="40"></use>
+      <use href="#starTiny" x="838" y="320"></use><use href="#starTiny" x="850" y="600"></use><use href="#starTiny" x="860" y="820"></use><use href="#starTiny" x="872" y="980"></use>
+      <use href="#starTiny" x="882" y="180"></use><use href="#starTiny" x="894" y="460"></use><use href="#starTiny" x="904" y="720"></use><use href="#starTiny" x="916" y="940"></use>
+      <use href="#starTiny" x="926" y="120"></use><use href="#starTiny" x="938" y="360"></use><use href="#starTiny" x="948" y="620"></use><use href="#starTiny" x="960" y="860"></use>
+      <use href="#starTiny" x="970" y="980"></use><use href="#starTiny" x="982" y="220"></use><use href="#starTiny" x="992" y="480"></use>
+    </g>
+
+  </g>
+
+  <!-- Very subtle vignette overlay -->
+  <rect width="1000" height="1000" fill="url(#vignette)"></rect>
+
+</svg>
