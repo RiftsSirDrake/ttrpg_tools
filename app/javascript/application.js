@@ -4,3 +4,4 @@
 //= require popper
 //= require bootstrap
 //= require NiceAdmin.js
+//= require theme_toggle.js

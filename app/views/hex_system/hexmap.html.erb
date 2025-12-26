@@ -231,7 +231,7 @@
     }
     this.updateBoundaries(function(n, props) {
       return {
-        'stroke': props.color || 'black',
+        'stroke': props.color || (document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444' : 'black'),
         'stroke-width': gon.border_width,
         'opacity': gon.border_opacity,
         'stroke-linecap': 'round'
@@ -243,7 +243,10 @@
   }
 
 	hex = new OI.hexmap(document.getElementById('hexmap'),{
-		'grid': {'show':true},
+		'grid': {'show':<%= @sector.show_grid %>},
+    'style': {
+      'grid': { 'fill-opacity': <%= @sector.grid_opacity.presence || 0.1 %> }
+    },
 		// The HexJSON layout
 		'hexjson': hexjson,
 		'label':{
@@ -296,7 +299,7 @@
         '<div class="card-header py-1 px-2 text-white" style="background-color: ' + faction_color + ';">' +
           '<h6 class="mb-0 fw-bold">' + hex_data.n + ' <small class="opacity-75">(' + hex_data.hex_loc + ')</small></h6>' +
         '</div>' +
-        '<div class="card-body p-2 small text-dark">' +
+        '<div class="card-body p-2 small">' +
           '<div class="mb-1"><strong><i class="bi bi-flag"></i> Faction:</strong> ' + (hex_data.allegiance || 'None') + '</div>' +
           '<div class="mb-1"><strong><i class="bi bi-fuel-pump"></i> Port:</strong> ' + starport_short + '</div>' +
           '<div class="mb-1"><strong><i class="bi bi-tools"></i> Tech Level:</strong> ' + (hex_data.tech_level || 'N/A') + '</div>' +

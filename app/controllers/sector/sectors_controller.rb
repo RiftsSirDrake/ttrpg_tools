@@ -24,6 +24,8 @@ class Sector::SectorsController < ApplicationController
     gon.border_width = 4
     gon.border_opacity = 0.5
     gon.background_image = nil
+    gon.show_grid = true
+    gon.grid_opacity = 0.1
     gon.background_images = Dir.glob(Rails.root.join('app', 'assets', 'images', 'backgrounds', '*.svg')).each_with_object({}) do |f, hash|
       filename = File.basename(f)
       hash[filename] = ActionController::Base.helpers.image_path("backgrounds/#{filename}")
@@ -51,6 +53,8 @@ class Sector::SectorsController < ApplicationController
     gon.border_width = @sector.border_width.presence || 4
     gon.border_opacity = @sector.border_opacity.presence || 0.5
     gon.background_image = @sector.background_image.presence
+    gon.show_grid = @sector.show_grid
+    gon.grid_opacity = @sector.grid_opacity.presence || 0.1
     gon.background_images = Dir.glob(Rails.root.join('app', 'assets', 'images', 'backgrounds', '*.svg')).each_with_object({}) do |f, hash|
       filename = File.basename(f)
       hash[filename] = ActionController::Base.helpers.image_path("backgrounds/#{filename}")
@@ -100,7 +104,7 @@ class Sector::SectorsController < ApplicationController
   end
 
   def sector_params
-    params.require(:sector_model_sector).permit(:author, :name, :public_view, :hex_color, :border_width, :border_opacity, :background_image, :created_at, :updated_at)
+    params.require(:sector_model_sector).permit(:author, :name, :public_view, :hex_color, :border_width, :border_opacity, :background_image, :show_grid, :grid_opacity, :created_at, :updated_at)
   end
 
   # TODO: Add in ability to export an entire sector, its systems, notes, factions, and sector settings.

@@ -67,6 +67,20 @@
                 <div class="form-text">Transparency of faction boundaries. Default is 0.5.</div>
               </div>
 
+              <div class="col-md-6 mt-3">
+                <%= f.label :grid_opacity, "Grid Opacity (0-1)", class: "form-label" %>
+                <%= f.number_field :grid_opacity, class: 'form-control', min: 0, max: 1, step: 0.05 %>
+                <div class="form-text">Transparency of the hex grid. Default is 0.1.</div>
+              </div>
+
+              <div class="col-md-6 mt-3">
+                <div class="form-check form-switch pt-4">
+                  <%= f.check_box :show_grid, class: 'form-check-input' %>
+                  <%= f.label :show_grid, "Show Hex Grid?", class: "form-check-label" %>
+                </div>
+                <div class="form-text">Toggle visibility of the hexagon grid lines.</div>
+              </div>
+
               <div class="col-12 mt-3">
                 <div class="form-check form-switch">
                   <%= f.check_box :public_view, class: 'form-check-input' %>
@@ -91,7 +105,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Hexmap Preview</h5>
-            <div id="hexmap-preview" style="min-height: 400px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;"></div>
+            <div id="hexmap-preview" class="bg-light-subtle border rounded" style="min-height: 400px;"></div>
             <div class="form-text mt-2">
               <i class="bi bi-info-circle"></i> This is a sample preview showing how your color and border settings will appear on the actual hexmap.
             </div>
@@ -163,14 +177,21 @@
       var borderWidthInput = document.querySelector('[name*="[border_width]"]');
       var borderOpacityInput = document.querySelector('[name*="[border_opacity]"]');
       var backgroundImageInput = document.querySelector('[name*="[background_image]"]');
+      var showGridInput = document.querySelector('[name*="[show_grid]"]');
+      var gridOpacityInput = document.querySelector('[name*="[grid_opacity]"]');
 
       var hexColor = hexColorInput ? hexColorInput.value : "#f8f9fa";
       var borderWidth = (borderWidthInput && borderWidthInput.value !== "") ? parseInt(borderWidthInput.value) : 4;
       var borderOpacity = (borderOpacityInput && borderOpacityInput.value !== "") ? parseFloat(borderOpacityInput.value) : 0.5;
       var backgroundImage = backgroundImageInput ? backgroundImageInput.value : "";
+      var showGrid = showGridInput ? showGridInput.checked : true;
+      var gridOpacity = (gridOpacityInput && gridOpacityInput.value !== "") ? parseFloat(gridOpacityInput.value) : 0.1;
 
       hex = new OI.hexmap(previewContainer, {
-        'grid': {'show': true},
+        'grid': {'show': showGrid},
+        'style': {
+          'grid': { 'fill-opacity': gridOpacity }
+        },
         'hexjson': hexjson,
         'label': {
           'show': true,
@@ -190,7 +211,7 @@
 
           this.updateBoundaries(function(n, props) {
             return {
-              'stroke': props.color || 'black',
+              'stroke': props.color || (document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#444' : 'black'),
               'stroke-width': borderWidth,
               'opacity': borderOpacity,
               'stroke-linecap': 'round'

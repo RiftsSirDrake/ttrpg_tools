@@ -1,0 +1,195 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" preserveAspectRatio="none">
+
+  <!--
+    Traveller sector background for oi.hexmap.js (32x40)
+    - Tight-fit (no margins)
+    - Dark base + nebula regions + lots of stars
+    - Stretch-safe: preserveAspectRatio="none"
+    - No hex lines (let oi.hexmap render them)
+  -->
+
+  <defs>
+    <style>
+      .sub {
+        stroke: #cfd6ff;
+        stroke-opacity: 0.16;
+        stroke-width: 2;
+        stroke-dasharray: 10 8;
+        fill: none;
+      }
+      .border {
+        stroke: #cfd6ff;
+        stroke-opacity: 0.24;
+        stroke-width: 3;
+        fill: none;
+      }
+    </style>
+
+    <!-- Dark space gradient -->
+    <radialGradient id="space" cx="50%" cy="45%" r="90%">
+      <stop offset="0%" stop-color="#0b0f1a"></stop>
+      <stop offset="55%" stop-color="#060810"></stop>
+      <stop offset="100%" stop-color="#02030a"></stop>
+    </radialGradient>
+
+    <!-- Vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="95%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"></stop>
+      <stop offset="70%" stop-color="#000" stop-opacity="0.12"></stop>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.28"></stop>
+    </radialGradient>
+
+    <!-- Star symbols -->
+    <circle id="t" r="0.65" fill="#ffffff" opacity="0.22"></circle>
+    <circle id="s" r="0.95" fill="#ffffff" opacity="0.22"></circle>
+    <circle id="m" r="1.35" fill="#ffffff" opacity="0.26"></circle>
+    <circle id="b" r="2.10" fill="#ffffff" opacity="0.30"></circle>
+
+    <!-- Soft glow for a few brighter stars -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.1" result="b"></feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="b"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+    <!-- Repeatable dense star tile (keeps file size reasonable, stretches cleanly) -->
+    <pattern id="starsDense" patternUnits="userSpaceOnUse" width="250" height="250">
+      <rect width="250" height="250" fill="transparent"></rect>
+      <!-- Mix of tiny/small stars -->
+      <circle cx="12" cy="20" r="0.65" fill="#fff" opacity="0.20"></circle>
+      <circle cx="30" cy="80" r="0.65" fill="#fff" opacity="0.22"></circle>
+      <circle cx="48" cy="210" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="66" cy="140" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="92" cy="36" r="0.65" fill="#fff" opacity="0.21"></circle>
+      <circle cx="110" cy="190" r="0.65" fill="#fff" opacity="0.19"></circle>
+      <circle cx="132" cy="110" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="150" cy="52" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="166" cy="220" r="0.65" fill="#fff" opacity="0.20"></circle>
+      <circle cx="184" cy="156" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="206" cy="84" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="228" cy="24" r="0.65" fill="#fff" opacity="0.20"></circle>
+      <circle cx="236" cy="204" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="214" cy="234" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="78" cy="244" r="0.65" fill="#fff" opacity="0.20"></circle>
+      <circle cx="20" cy="150" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="120" cy="16" r="0.95" fill="#fff" opacity="0.20"></circle>
+      <circle cx="246" cy="120" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="160" cy="180" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="98" cy="200" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <!-- A couple medium stars per tile -->
+      <circle cx="40" cy="40" r="1.35" fill="#fff" opacity="0.22"></circle>
+      <circle cx="200" cy="130" r="1.35" fill="#fff" opacity="0.22"></circle>
+    </pattern>
+
+    <!-- Nebula noise filter (tinted) -->
+    <filter id="nebulaNoise" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="7" result="noise"></feTurbulence>
+      <feColorMatrix in="noise" type="matrix" result="softNoise" values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          0 0 0 0.65 0"></feColorMatrix>
+      <feGaussianBlur in="softNoise" stdDeviation="12" result="blurred"></feGaussianBlur>
+      <!-- Slight contrast -->
+      <feComponentTransfer in="blurred" result="neb">
+        <feFuncA type="gamma" amplitude="1" exponent="1.2" offset="0"></feFuncA>
+      </feComponentTransfer>
+    </filter>
+
+    <!-- Color washes for nebula regions -->
+    <linearGradient id="nebA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7b3cff" stop-opacity="0.22"></stop>
+      <stop offset="55%" stop-color="#2ea6ff" stop-opacity="0.10"></stop>
+      <stop offset="100%" stop-color="#00ffd5" stop-opacity="0.08"></stop>
+    </linearGradient>
+
+    <linearGradient id="nebB" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff4aa2" stop-opacity="0.18"></stop>
+      <stop offset="60%" stop-color="#ffb14a" stop-opacity="0.08"></stop>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.00"></stop>
+    </linearGradient>
+
+    <linearGradient id="nebC" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2cff74" stop-opacity="0.12"></stop>
+      <stop offset="55%" stop-color="#2ea6ff" stop-opacity="0.08"></stop>
+      <stop offset="100%" stop-color="#7b3cff" stop-opacity="0.10"></stop>
+    </linearGradient>
+
+    <!-- Nebula blur (for the color wash shapes) -->
+    <filter id="nebulaBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18"></feGaussianBlur>
+    </filter>
+  </defs>
+
+  <!-- ===== Base background ===== -->
+  <rect x="0" y="0" width="1000" height="1250" fill="url(#space)"></rect>
+
+  <!-- ===== Nebula regions (color wash + noise overlay) ===== -->
+  <g id="nebula" style="mix-blend-mode: screen;">
+    <!-- Region 1 -->
+    <path d="M 40 260
+             C 120 120, 340 80, 480 200
+             C 620 320, 540 520, 360 560
+             C 200 600, 80 520, 40 420 Z" fill="url(#nebA)" filter="url(#nebulaBlur)"></path>
+
+    <!-- Region 2 -->
+    <path d="M 560 80
+             C 720 40, 920 140, 960 280
+             C 995 420, 880 520, 740 500
+             C 620 480, 520 360, 540 220 Z" fill="url(#nebB)" filter="url(#nebulaBlur)"></path>
+
+    <!-- Region 3 -->
+    <path d="M 140 760
+             C 260 660, 460 660, 560 780
+             C 680 920, 640 1120, 460 1160
+             C 300 1195, 140 1090, 120 940 Z" fill="url(#nebC)" filter="url(#nebulaBlur)"></path>
+  </g>
+
+  <!-- Noise overlay for nebula texture (masked by broad rectangles over same areas) -->
+  <g id="nebulaTexture" style="mix-blend-mode: overlay;">
+    <rect x="0" y="0" width="1000" height="1250" filter="url(#nebulaNoise)" opacity="0.22"></rect>
+  </g>
+
+  <!-- ===== Starfield (lots) ===== -->
+  <!-- Tile fill gives you “more stars” without huge file size -->
+  <rect x="0" y="0" width="1000" height="1250" fill="url(#starsDense)"></rect>
+
+  <!-- Add a handful of brighter/glow stars on top for depth -->
+  <g id="brightStars" filter="url(#softGlow)">
+    <use href="#b" x="120" y="180"></use>
+    <use href="#b" x="340" y="940"></use>
+    <use href="#b" x="560" y="360"></use>
+    <use href="#b" x="720" y="620"></use>
+    <use href="#b" x="860" y="220"></use>
+    <use href="#b" x="920" y="780"></use>
+    <use href="#b" x="520" y="1120"></use>
+    <use href="#b" x="160" y="1160"></use>
+
+    <use href="#m" x="90" y="520"></use>
+    <use href="#m" x="240" y="760"></use>
+    <use href="#m" x="520" y="860"></use>
+    <use href="#m" x="660" y="700"></use>
+    <use href="#m" x="800" y="820"></use>
+    <use href="#m" x="940" y="420"></use>
+  </g>
+
+  <!-- ===== Subsector boundaries (8x10 within 32x40) ===== -->
+  <rect class="border" x="0" y="0" width="1000" height="1250"></rect>
+
+  <!-- Vertical subsectors: 4 blocks across -->
+  <path class="sub" d="M 250 0 L 250 1250"></path>
+  <path class="sub" d="M 500 0 L 500 1250"></path>
+  <path class="sub" d="M 750 0 L 750 1250"></path>
+
+  <!-- Horizontal subsectors: 4 blocks down -->
+  <path class="sub" d="M 0 312.5 L 1000 312.5"></path>
+  <path class="sub" d="M 0 625 L 1000 625"></path>
+  <path class="sub" d="M 0 937.5 L 1000 937.5"></path>
+
+  <!-- ===== Vignette ===== -->
+  <rect x="0" y="0" width="1000" height="1250" fill="url(#vignette)"></rect>
+
+</svg>

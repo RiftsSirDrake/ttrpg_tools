@@ -1,0 +1,143 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" preserveAspectRatio="none">
+
+  <!--
+    Traveller sector background
+    - Dark space + nebula regions + dense stars
+    - NO grid, NO borders, NO guides
+    - Tight-fit, stretch-safe for oi.hexmap.js
+  -->
+
+  <defs>
+    <!-- ================= BASE SPACE ================= -->
+    <radialGradient id="space" cx="50%" cy="45%" r="90%">
+      <stop offset="0%" stop-color="#0b0f1a"></stop>
+      <stop offset="55%" stop-color="#060810"></stop>
+      <stop offset="100%" stop-color="#02030a"></stop>
+    </radialGradient>
+
+    <!-- Edge vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="95%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"></stop>
+      <stop offset="70%" stop-color="#000" stop-opacity="0.12"></stop>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.30"></stop>
+    </radialGradient>
+
+    <!-- ================= STARS ================= -->
+    <circle id="t" r="0.65" fill="#ffffff" opacity="0.22"></circle>
+    <circle id="s" r="0.95" fill="#ffffff" opacity="0.24"></circle>
+    <circle id="m" r="1.35" fill="#ffffff" opacity="0.28"></circle>
+    <circle id="b" r="2.1" fill="#ffffff" opacity="0.34"></circle>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.1" result="b"></feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="b"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+
+    <!-- Dense repeatable star tile -->
+    <pattern id="starsDense" patternUnits="userSpaceOnUse" width="240" height="240">
+      <rect width="240" height="240" fill="transparent"></rect>
+
+      <!-- tiny + small -->
+      <circle cx="18" cy="22" r="0.65" fill="#fff" opacity="0.20"></circle>
+      <circle cx="42" cy="74" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="66" cy="140" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="90" cy="30" r="0.65" fill="#fff" opacity="0.20"></circle>
+      <circle cx="120" cy="180" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="150" cy="60" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="176" cy="220" r="0.65" fill="#fff" opacity="0.20"></circle>
+      <circle cx="200" cy="120" r="0.95" fill="#fff" opacity="0.22"></circle>
+      <circle cx="222" cy="36" r="0.65" fill="#fff" opacity="0.18"></circle>
+      <circle cx="98" cy="210" r="0.65" fill="#fff" opacity="0.20"></circle>
+
+      <!-- a couple medium -->
+      <circle cx="38" cy="38" r="1.35" fill="#fff" opacity="0.22"></circle>
+      <circle cx="188" cy="156" r="1.35" fill="#fff" opacity="0.22"></circle>
+    </pattern>
+
+    <!-- ================= NEBULA ================= -->
+    <filter id="nebulaBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22"></feGaussianBlur>
+    </filter>
+
+    <filter id="nebulaNoise" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="9"></feTurbulence>
+      <feGaussianBlur stdDeviation="14"></feGaussianBlur>
+      <feComponentTransfer>
+        <feFuncA type="gamma" amplitude="1" exponent="1.15"></feFuncA>
+      </feComponentTransfer>
+    </filter>
+
+    <!-- Nebula color washes -->
+    <linearGradient id="nebA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7b3cff" stop-opacity="0.22"></stop>
+      <stop offset="60%" stop-color="#2ea6ff" stop-opacity="0.10"></stop>
+      <stop offset="100%" stop-color="#00ffd5" stop-opacity="0.08"></stop>
+    </linearGradient>
+
+    <linearGradient id="nebB" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff4aa2" stop-opacity="0.18"></stop>
+      <stop offset="65%" stop-color="#ffb14a" stop-opacity="0.08"></stop>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+    </linearGradient>
+
+    <linearGradient id="nebC" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2cff74" stop-opacity="0.12"></stop>
+      <stop offset="55%" stop-color="#2ea6ff" stop-opacity="0.08"></stop>
+      <stop offset="100%" stop-color="#7b3cff" stop-opacity="0.10"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- ================= BACKGROUND ================= -->
+  <rect width="1000" height="1250" fill="url(#space)"></rect>
+
+  <!-- ================= NEBULA REGIONS ================= -->
+  <g style="mix-blend-mode: screen;">
+    <path d="M 60 260
+             C 160 120, 380 80, 520 220
+             C 660 360, 580 560, 400 600
+             C 220 640, 80 520, 60 420 Z" fill="url(#nebA)" filter="url(#nebulaBlur)"></path>
+
+    <path d="M 580 90
+             C 760 40, 960 160, 980 300
+             C 1000 460, 860 540, 720 510
+             C 600 480, 520 360, 540 220 Z" fill="url(#nebB)" filter="url(#nebulaBlur)"></path>
+
+    <path d="M 160 780
+             C 300 660, 520 660, 620 820
+             C 740 1000, 640 1160, 460 1180
+             C 280 1200, 140 1080, 140 940 Z" fill="url(#nebC)" filter="url(#nebulaBlur)"></path>
+  </g>
+
+  <!-- Nebula texture -->
+  <rect width="1000" height="1250" filter="url(#nebulaNoise)" opacity="0.22" style="mix-blend-mode: overlay;"></rect>
+
+  <!-- ================= STARS ================= -->
+  <rect width="1000" height="1250" fill="url(#starsDense)"></rect>
+
+  <!-- Brighter foreground stars -->
+  <g filter="url(#softGlow)">
+    <use href="#b" x="120" y="180"></use>
+    <use href="#b" x="340" y="940"></use>
+    <use href="#b" x="560" y="360"></use>
+    <use href="#b" x="720" y="620"></use>
+    <use href="#b" x="860" y="220"></use>
+    <use href="#b" x="920" y="780"></use>
+    <use href="#b" x="520" y="1120"></use>
+    <use href="#b" x="160" y="1160"></use>
+
+    <use href="#m" x="90" y="520"></use>
+    <use href="#m" x="240" y="760"></use>
+    <use href="#m" x="520" y="860"></use>
+    <use href="#m" x="660" y="700"></use>
+    <use href="#m" x="800" y="820"></use>
+    <use href="#m" x="940" y="420"></use>
+  </g>
+
+  <!-- ================= VIGNETTE ================= -->
+  <rect width="1000" height="1250" fill="url(#vignette)"></rect>
+
+</svg>
