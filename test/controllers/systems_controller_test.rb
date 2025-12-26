@@ -90,4 +90,19 @@ class SystemsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to systems_path(sector_id: @sector.id)
   end
+
+  test "should update allegiance if author" do
+    system = systems(:one)
+    patch update_allegiance_system_url(system), params: { allegiance: "New Faction" }, as: :json
+    assert_response :success
+    assert_equal "New Faction", system.reload.allegiance
+  end
+
+  test "should not update allegiance if not authorized" do
+    @sector.update(author: 'other@example.com')
+    system = systems(:one)
+    patch update_allegiance_system_url(system), params: { allegiance: "New Faction" }, as: :json
+    assert_response :forbidden
+    assert_not_equal "New Faction", system.reload.allegiance
+  end
 end

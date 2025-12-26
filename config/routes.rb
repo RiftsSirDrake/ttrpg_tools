@@ -24,6 +24,9 @@ Rails.application.routes.draw do
       get 'bulk_upload'
       post 'process_bulk_upload'
     end
+    member do
+      patch 'update_allegiance'
+    end
     resources :system_notes, controller: 'sector/system_notes'
   end
   resources :factions, controller:'sector/factions'

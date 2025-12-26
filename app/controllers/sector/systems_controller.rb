@@ -222,6 +222,22 @@ class Sector::SystemsController < ApplicationController
     
   end
 
+  def update_allegiance
+    @system = SectorModel::System.find(params[:id])
+    @sector = @system.sector
+
+    if can_edit_systems?(@sector, current_user)
+      if @system.update(allegiance: params[:allegiance])
+        color = SectorModel::Faction.find_by(sector_id: @sector.id, name: @system.allegiance)&.color_code || "rgb(247, 171, 45)"
+        render json: { success: true, allegiance: @system.allegiance, color: color }
+      else
+        render json: { success: false, errors: @system.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { success: false, error: "You do not have permission to edit this system." }, status: :forbidden
+    end
+  end
+
   private
 
   def system_params

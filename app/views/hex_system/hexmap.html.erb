@@ -68,6 +68,12 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Actions</h5>
+            <% if can_edit_systems?(@sector, current_user) %>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="editModeToggle">
+                <label class="form-check-label" for="editModeToggle">Edit Factions Mode</label>
+              </div>
+            <% end %>
             <div class="d-grid gap-2">
               <%= link_to factions_path(sector_id: @sector.id), class: "btn btn-outline-info btn-sm" do %>
                 <i class="bi bi-people"></i> View Factions
@@ -85,6 +91,85 @@
     </div>
   </section>
 </div>
+
+<!-- Faction Edit Modal -->
+<% if can_edit_systems?(@sector, current_user) %>
+<div class="modal fade" id="editFactionModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change System Faction</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editFactionForm">
+          <input type="hidden" id="modalSystemId" name="system_id">
+          <div class="mb-3">
+            <label class="form-label">System</label>
+            <input type="text" id="modalSystemName" class="form-control" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="modalFactionSelect" class="form-label">New Faction</label>
+            <div class="input-group">
+              <select class="form-select" id="modalFactionSelect" name="allegiance">
+                <option value="">Independent</option>
+                <% @factions.order(:name).each do |faction| %>
+                  <option value="<%= faction.name %>"><%= faction.name %></option>
+                <% end %>
+              </select>
+              <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newFactionModal">
+                <i class="bi bi-plus-circle"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <%= link_to "#", id: "viewSystemBtn", class: "btn btn-outline-info me-auto" do %>
+          <i class="bi bi-eye"></i> View Details
+        <% end %>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveFactionBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<!-- New Faction Modal -->
+<% if can_edit_factions?(@sector, current_user) %>
+<div class="modal fade" id="newFactionModal" tabindex="-1" aria-labelledby="newFactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newFactionModalLabel">New Faction</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with model: SectorModel::Faction.new, url: factions_path, id: "new_faction_form", local: false do |f| %>
+          <%= f.hidden_field :sector_id, value: @sector.id %>
+          <div class="mb-3">
+            <%= f.label :name, class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", required: true %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :description, class: "form-label" %>
+            <%= f.text_area :description, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :color_code, class: "form-label" %>
+            <%= f.text_field :color_code, id: 'color_picker_modal', class: "form-control" %>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveNewFactionBtn">Save Faction</button>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
 
 
 <% if @organized_data.present? %>
@@ -136,6 +221,20 @@
     "boundaries": calculateBoundaries(data)
   };
 
+  function mapReady() {
+    this.updateBoundaries(function(n, props) {
+      return {
+        'stroke': props.color || 'black',
+        'stroke-width': gon.border_width,
+        'opacity': gon.border_opacity,
+        'stroke-linecap': 'round'
+      };
+    });
+    this.updateColours(function(r) {
+      return gon.hex_color;
+    });
+  }
+
 	hex = new OI.hexmap(document.getElementById('hexmap'),{
 		'grid': {'show':true},
 		// The HexJSON layout
@@ -159,19 +258,7 @@
 				return tspans;
 			}
 		},
-    'ready': function() {
-      this.updateBoundaries(function(n, props) {
-        return {
-          'stroke': props.color || 'black',
-          'stroke-width': gon.border_width,
-          'opacity': gon.border_opacity,
-          'stroke-linecap': 'round'
-        };
-      });
-      this.updateColours(function(r) {
-        return gon.hex_color;
-      });
-    }
+    'ready': mapReady
 	});
 
   // Make a tooltip
@@ -239,13 +326,142 @@
     }
   });
 
-  // Handle click on hex to navigate to system
+  // Handle click on hex to navigate or edit
   hex.on('click', function(e) {
     var sys_id = e.data.data.sys_id;
-    if (sys_id) {
+    var sys_name = e.data.data.n;
+    var allegiance = e.data.data.allegiance;
+    var editMode = document.getElementById('editModeToggle') && document.getElementById('editModeToggle').checked;
+    
+    if (gon.can_edit && editMode) {
+      // Show edit modal
+      var modal = new bootstrap.Modal(document.getElementById('editFactionModal'));
+      document.getElementById('modalSystemId').value = sys_id;
+      document.getElementById('modalSystemName').value = sys_name;
+      document.getElementById('modalFactionSelect').value = allegiance || "";
+      
+      // Update the "View Details" button URL
+      var viewBtn = document.getElementById('viewSystemBtn');
+      if (viewBtn) {
+        viewBtn.href = '/systems/' + sys_id;
+      }
+      
+      modal.show();
+    } else if (sys_id) {
       window.location.href = '/systems/' + sys_id;
     }
   });
+
+  if (gon.can_edit) {
+    // Initialize color picker for the new faction modal
+    if ($.fn.spectrum) {
+      $('#color_picker_modal').spectrum({
+          preferredFormat: "rgb",
+          showInput: true
+      });
+    }
+
+    // Handle new faction creation
+    var saveNewFactionBtn = document.getElementById('saveNewFactionBtn');
+    if (saveNewFactionBtn) {
+      saveNewFactionBtn.addEventListener('click', function() {
+        var btn = $(this);
+        var form = $('#new_faction_form');
+        
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        btn.prop('disabled', true);
+        btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+        
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(),
+            dataType: 'json',
+            success: function(data) {
+                if (data && data.name) {
+                    var newOption = new Option(data.name, data.name, true, true);
+                    $('#modalFactionSelect').append(newOption).trigger('change');
+                }
+                
+                // Close the new faction modal
+                var modalElement = document.getElementById('newFactionModal');
+                var modal = bootstrap.Modal.getInstance(modalElement);
+                if (!modal) modal = new bootstrap.Modal(modalElement);
+                modal.hide();
+
+                form[0].reset();
+                if ($.fn.spectrum) {
+                    $('#color_picker_modal').spectrum('set', '');
+                }
+                btn.prop('disabled', false).text('Save Faction');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error creating faction:', error);
+                alert('Error creating faction');
+                btn.prop('disabled', false).text('Save Faction');
+            }
+        });
+      });
+    }
+
+    document.getElementById('saveFactionBtn').addEventListener('click', function() {
+      var btn = this;
+      var sys_id = document.getElementById('modalSystemId').value;
+      var new_allegiance = document.getElementById('modalFactionSelect').value;
+      
+      btn.disabled = true;
+      var originalContent = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+
+      fetch('/systems/' + sys_id + '/update_allegiance', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ allegiance: new_allegiance })
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          // Update local data
+          var updated = false;
+          for (var id in data) {
+            if (data[id].sys_id == sys_id) {
+              data[id].allegiance = result.allegiance;
+              data[id].colour = result.color;
+              updated = true;
+              break;
+            }
+          }
+          
+          if (updated) {
+            hexjson.boundaries = calculateBoundaries(data);
+            hex.load(hexjson, mapReady);
+          }
+
+          // Close modal
+          var modalElement = document.getElementById('editFactionModal');
+          var modal = bootstrap.Modal.getInstance(modalElement);
+          if (modal) modal.hide();
+        } else {
+          alert('Error: ' + (result.errors ? result.errors.join(', ') : result.error));
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving.');
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+      });
+    });
+  }
 
 </script>
 <% end %>
